@@ -31,6 +31,22 @@
 		<Compiler>
 			<Add option="-Wall" />
 		</Compiler>
+		<Unit filename="estructuras/comentario.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="estructuras/comentario.h" />
+		<Unit filename="estructuras/domicilio.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="estructuras/domicilio.h" />
+		<Unit filename="estructuras/pelicula.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="estructuras/pelicula.h" />
+		<Unit filename="estructuras/usuario.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="estructuras/usuario.h" />
 		<Unit filename="main.c">
 			<Option compilerVar="CC" />
 		</Unit>
