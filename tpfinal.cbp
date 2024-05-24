@@ -39,6 +39,10 @@
 			<Option compilerVar="CC" />
 		</Unit>
 		<Unit filename="estructuras/domicilio.h" />
+		<Unit filename="estructuras/mock.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="estructuras/mock.h" />
 		<Unit filename="estructuras/pelicula.c">
 			<Option compilerVar="CC" />
 		</Unit>

@@ -1,5 +1,6 @@
 #ifndef USUARIO_H_INCLUDED
 #define USUARIO_H_INCLUDED
+#include "domicilio.h"
 
 typedef struct{
     int idUsuario;
@@ -14,5 +15,7 @@ typedef struct{
     stDomicilio domicilio;
     int eliminado; // 0 si está activo - 1 si está eliminado
 }stUsuario;
+
+stUsuario cargarUsuarioRandom();
 
 #endif // USUARIO_H_INCLUDED

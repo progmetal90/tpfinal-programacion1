@@ -1,6 +1,8 @@
 #ifndef COMENTARIO_H_INCLUDED
 #define COMENTARIO_H_INCLUDED
 
+#include <string.h>
+
 typedef struct {
     int idComentario;  // unico, autoincremental
     int idPelicula;
