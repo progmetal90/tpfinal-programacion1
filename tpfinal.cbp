@@ -39,10 +39,10 @@
 			<Option compilerVar="CC" />
 		</Unit>
 		<Unit filename="estructuras/domicilio.h" />
-		<Unit filename="estructuras/mock.c">
+		<Unit filename="estructuras/fecha.c">
 			<Option compilerVar="CC" />
 		</Unit>
-		<Unit filename="estructuras/mock.h" />
+		<Unit filename="estructuras/fecha.h" />
 		<Unit filename="estructuras/pelicula.c">
 			<Option compilerVar="CC" />
 		</Unit>
@@ -51,6 +51,10 @@
 			<Option compilerVar="CC" />
 		</Unit>
 		<Unit filename="estructuras/usuario.h" />
+		<Unit filename="librerias/mock.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="librerias/mock.h" />
 		<Unit filename="main.c">
 			<Option compilerVar="CC" />
 		</Unit>

@@ -1,17 +1,23 @@
 #ifndef COMENTARIO_H_INCLUDED
 #define COMENTARIO_H_INCLUDED
 
+#define DIM_TITULO_COMENTARIO 100
+#define DIM_DESCRIPCION_COMENTARIO 100
+
 #include <string.h>
+#include "fecha.h"
 
 typedef struct {
     int idComentario;  // unico, autoincremental
     int idPelicula;
     int idUsuario;
-    char tituloComentario[100];
-    char descripcion[500];
+    char titulo[DIM_TITULO_COMENTARIO];
+    char descripcion[DIM_TITULO_COMENTARIO];
     int puntaje; // de 1 a 5 "estrellas"
-    char fechaComentario[20]; // o se puede hacer con dia, mes, anio.
+    stFecha fechaComentario;
     int eliminado; // 0 si está activo - 1 si está eliminado
 }stComentario;
+
+void mostrarComentario(stComentario comentario);
 
 #endif // COMENTARIO_H_INCLUDED

@@ -1,17 +1,20 @@
 #ifndef DOMICILIO_H_INCLUDED
 #define DOMICILIO_H_INCLUDED
 
-#define TAM_CALLE 50
+#define DIM_CALLE 50
+#define DIM_CIUDAD 100
+#define DIM_LOCALIDAD 50
+#define DIM_PAIS 100
+
 #include <string.h>
-#include "mock.h"
 
 typedef struct{
-    char calle[TAM_CALLE];
+    char calle[DIM_CALLE];
     int altura;
     int cp;
-    char ciudad[100];
-    char localidad[50];
-    char pais[100];
+    char ciudad[DIM_CIUDAD];
+    char localidad[DIM_LOCALIDAD];
+    char pais[DIM_PAIS];
 } stDomicilio;
 
 stDomicilio cargarDomicilioRandom();

@@ -1,21 +1,30 @@
 #ifndef USUARIO_H_INCLUDED
 #define USUARIO_H_INCLUDED
+
+#define DIM_EMAIL 100
+#define DIM_PASSWORD 20
+#define DIM_USERNAME 20
+#define CANT_GENEROS 3
+#define DIM_PELISFAVORITAS 50
+#define DIM_DNI 10
+
 #include "domicilio.h"
+#include "fecha.h"
 
 typedef struct{
     int idUsuario;
-    char email[100];
-    char password[20];
-    char username[20];
+    char email[DIM_EMAIL];
+    char password[DIM_PASSWORD];
+    char username[DIM_USERNAME];
     int esAdmin;  // 1 = si  0 = no
     char genero;
-    int fechaNacimiento[3]; // [dia, mes, anio] TODO: fecha podria ser una estructura?
-    int pelisFavoritas[50]; // Guarda ID de pelicula
-    char dni[10];
+    stFecha nacimiento;
+    int pelisFavoritas[DIM_PELISFAVORITAS]; // Guarda ID de pelicula
+    char dni[DIM_DNI];
     stDomicilio domicilio;
     int eliminado; // 0 si está activo - 1 si está eliminado
 }stUsuario;
 
-stUsuario cargarUsuarioRandom();
+void mostrarUsuario(stUsuario usuario);
 
 #endif // USUARIO_H_INCLUDED
