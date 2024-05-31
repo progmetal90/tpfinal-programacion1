@@ -17,6 +17,6 @@ typedef struct{
     char pais[DIM_PAIS];
 } stDomicilio;
 
-stDomicilio cargarDomicilioRandom();
+void mostrarDomicilio(stDomicilio domicilio);
 
 #endif // DOMICILIO_H_INCLUDED
