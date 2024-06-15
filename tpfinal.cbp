@@ -43,6 +43,14 @@
 			<Option compilerVar="CC" />
 		</Unit>
 		<Unit filename="estructuras/fecha.h" />
+		<Unit filename="estructuras/interfaz.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="estructuras/interfaz.h" />
+		<Unit filename="estructuras/menu.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="estructuras/menu.h" />
 		<Unit filename="estructuras/pelicula.c">
 			<Option compilerVar="CC" />
 		</Unit>
@@ -62,10 +70,6 @@
 		<Unit filename="main.c">
 			<Option compilerVar="CC" />
 		</Unit>
-		<Unit filename="menu.c">
-			<Option compilerVar="CC" />
-		</Unit>
-		<Unit filename="menu.h" />
 		<Extensions>
 			<lib_finder disable_auto="1" />
 		</Extensions>

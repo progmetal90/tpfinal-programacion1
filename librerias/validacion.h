@@ -15,6 +15,7 @@
 int validarEmail(char email[]);
 int validarContrasenia(char contrasenia[]);
 int contarCaracterEnString(char string[], char caracter);
+int enRango(int valor, int min, int max);
 
 
 #endif // AUTENTIFICACION_H_INCLUDED

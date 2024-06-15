@@ -58,3 +58,12 @@ int validarContrasenia(char contrasenia[]){
     return valido;
 }
 
+int enRango(int valor, int min, int max){
+    int estaEnRango = 0;
+
+    if(valor >= min && valor <= max){ // Incluyente
+        estaEnRango = 1;
+    }
+
+    return estaEnRango;
+}
