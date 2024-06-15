@@ -12,7 +12,7 @@ stInterfaz inicializarInterfaz(){
                 .titulo = "LOGIN",
                 .opcionesUsuario = {
                     "Iniciar sesion",
-                    "Crear nuevo usuario"
+                    "Crear nuevo usuario",
                 },
                 .cantOpcionesUsuario = 2,
                 .opcionesAdmin = {
@@ -20,7 +20,8 @@ stInterfaz inicializarInterfaz(){
                 .cantOpcionesAdmin = 0,
                 .menuObjetivoUsuario = {
                     1,
-                    1}, // TODO: definir constantes para cada menu, no usar nros magicos
+                    1,
+                }, // TODO: definir constantes para cada menu, no usar nros magicos
                 .menuObjetivoAdmin = {
                 }
             },
@@ -30,22 +31,44 @@ stInterfaz inicializarInterfaz(){
                 .opcionesUsuario = {
                     "Agregar pelicula",
                     "Filtrar pelicula",
-                    "Modificar datos de usuario"
+                    "Agregar comentario",
+                    "Modificar datos de usuario",
                 },
-                .cantOpcionesUsuario = 3,
+                .cantOpcionesUsuario = 4,
                 .opcionesAdmin = {
                     "Modificar usuarios",
-                    "OpcionAdmin 2"
+                    "OpcionAdmin 2",
                 },
                 .cantOpcionesAdmin = 2,
                 .menuObjetivoUsuario = {
                     1, // placeholder
-                    1,
-                    1},
+                    2,
+                    15,
+                    },
                 .menuObjetivoAdmin = {
                     1,
                     1}
-            }
+            },
+            {
+                .idMenu = 2,
+                .titulo = "FILTRAR PELICULA",
+                .opcionesUsuario = {
+                    "Filtrar por NOMBRE",
+                    "Filtrar por DIRECTOR",
+                    "Filtrar por ESTUDIO",
+                },
+                .cantOpcionesUsuario = 4,
+                .opcionesAdmin = {
+                },
+                .cantOpcionesAdmin = 0,
+                .menuObjetivoUsuario = {
+                    1001, // placeholder
+                    1002,
+                    1003,
+                    },
+                .menuObjetivoAdmin = {
+                }
+            },
         }
     };
 
@@ -74,12 +97,13 @@ void ejecutarInterfaz(stInterfaz interfaz){
         }
         else if (validarOpcion(opcion, menuActual.cantOpcionesUsuario, menuActual.cantOpcionesAdmin)){
             idProximoMenu = interfaz.menus[interfaz.posHistorial].menuObjetivoUsuario[interfaz.posHistorial];
+            // TODO: hacer un IF para opciones de admin
 
             if(idProximoMenu >= 1000){
                 // Es una funcion, ejecutarla por switch
                 // No cambiar historial
                 // TODO: implementar switch con metodos para modificar memoria
-                // Posiblemente en una libreria aparte
+                // Posiblemente en una libreria aparte (controlador)
             }
             else if(idProximoMenu != idMenuActual){
                 // Navegar hacia el proximo menu
