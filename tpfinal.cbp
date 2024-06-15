@@ -35,6 +35,10 @@
 			<Option compilerVar="CC" />
 		</Unit>
 		<Unit filename="estructuras/comentario.h" />
+		<Unit filename="estructuras/controlador.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="estructuras/controlador.h" />
 		<Unit filename="estructuras/domicilio.c">
 			<Option compilerVar="CC" />
 		</Unit>
@@ -47,6 +51,10 @@
 			<Option compilerVar="CC" />
 		</Unit>
 		<Unit filename="estructuras/interfaz.h" />
+		<Unit filename="estructuras/memoria.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="estructuras/memoria.h" />
 		<Unit filename="estructuras/menu.c">
 			<Option compilerVar="CC" />
 		</Unit>
