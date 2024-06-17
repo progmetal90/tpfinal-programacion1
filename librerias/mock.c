@@ -1,4 +1,3 @@
-#include <stdio.h>
 #include "mock.h"
 
 const char directores[][DIM_DIRECTOR] = {
@@ -218,14 +217,27 @@ stPelicula cargarPeliculaRandom(){
     return pelicula;
 }
 
-stFecha cargarFechaRandom(){
-    stFecha fecha;
+void cargarFechaRandom(char * fecha){
+    char aux[DIM_FECHA];
+    char aux2[DIM_FECHA];
 
-    fecha.dia = rand()%28+1;
-    fecha.mes = rand()%12+1;
-    fecha.anio = rand()%105+1900;
+    int dia = rand()%28+1;
+    int mes = rand()%12+1;
+    int anio = rand()%105+1900;
 
-    return fecha;
+    itoa(anio, aux, 10);
+    strcat(aux, "/");
+
+    itoa(mes, aux2, 10);
+    strcat(aux, aux2);
+    strcat(aux, "/");
+
+    itoa(dia, aux2, 10);
+    strcat(aux, aux2);
+
+    printf("%s\n", aux);
+
+    strcpy(fecha, aux);
 }
 
 stComentario cargarComentarioRandom(){
@@ -237,7 +249,7 @@ stComentario cargarComentarioRandom(){
     cargarTituloComentarioRandom(comentario.titulo);
     cargarDescripcionComentarioRandom(comentario.descripcion);
     comentario.puntaje = rand()%5+1;
-    comentario.fechaComentario = cargarFechaRandom();
+    cargarFechaRandom(comentario.fechaComentario);
     comentario.eliminado = 0;
 
     return comentario;
@@ -251,7 +263,7 @@ stUsuario cargarUsuarioRandom(){
     cargarUsernameRandom(usuario.username);
     usuario.esAdmin = 0;
     usuario.genero = cargarGeneroRandom();
-    usuario.nacimiento = cargarFechaRandom();
+    cargarFechaRandom(usuario.fechaNacimiento);
     // TODO: cargar pelis favoritas??
     usuario.domicilio = cargarDomicilioRandom();
     cargarDniRandom(usuario.dni);
