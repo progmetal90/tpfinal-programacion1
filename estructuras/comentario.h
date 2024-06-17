@@ -14,7 +14,7 @@ typedef struct {
     char titulo[DIM_TITULO_COMENTARIO];
     char descripcion[DIM_TITULO_COMENTARIO];
     int puntaje; // de 1 a 5 "estrellas"
-    stFecha fechaComentario;
+    char fechaComentario[DIM_FECHA];
     int eliminado; // 0 si está activo - 1 si está eliminado
 }stComentario;
 

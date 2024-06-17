@@ -1,14 +1,14 @@
 #ifndef FECHA_H_INCLUDED
 #define FECHA_H_INCLUDED
+#include <time.h>
+#include <string.h>
+#include <stdlib.h>
 
-#define DIM_FECHA_STRING 11
+#define DIM_FECHA 20
+#define FORMATO_FECHA "%Y/%m/%d"
 
-typedef struct{
-    int dia;
-    int mes;
-    int anio;
-}stFecha;
 
-void fechaAString(stFecha fecha, char * buffer);
+void obtenerFechaActual(char * buffer);
+
 
 #endif // FECHA_H_INCLUDED
