@@ -9,5 +9,5 @@ void mostrarComentario(stComentario comentario){
     printf("Fecha: %s\n", fechaString);
     printf("Titulo: %s\n", comentario.titulo);
     printf("Descripcion: %s\n", comentario.descripcion);
-    printf("Puntaje: %d estrellas.", comentario.puntaje);
+    printf("Puntaje: %d estrellas.\n", comentario.puntaje);
 }
