@@ -96,7 +96,7 @@ void ejecutarInterfaz(stInterfaz interfaz){
             interfaz.posHistorial--;
         }
         else if (validarOpcion(opcion, menuActual.cantOpcionesUsuario, menuActual.cantOpcionesAdmin)){
-            idProximoMenu = interfaz.menus[interfaz.posHistorial].menuObjetivoUsuario[interfaz.posHistorial];
+            idProximoMenu = interfaz.menus[interfaz.posHistorial].menuObjetivoUsuario[opcion - 1];
             // TODO: hacer un IF para opciones de admin
 
             if(idProximoMenu >= 1000){
