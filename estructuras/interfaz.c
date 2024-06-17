@@ -43,7 +43,7 @@ stInterfaz inicializarInterfaz(){
                 .menuObjetivoUsuario = {
                     1, // placeholder
                     2,
-                    15,
+                    1,
                     },
                 .menuObjetivoAdmin = {
                     1,
@@ -57,14 +57,14 @@ stInterfaz inicializarInterfaz(){
                     "Filtrar por DIRECTOR",
                     "Filtrar por ESTUDIO",
                 },
-                .cantOpcionesUsuario = 4,
+                .cantOpcionesUsuario = 3,
                 .opcionesAdmin = {
                 },
                 .cantOpcionesAdmin = 0,
                 .menuObjetivoUsuario = {
-                    1001, // placeholder
-                    1002,
-                    1003,
+                    2, // placeholder
+                    2,
+                    2,
                     },
                 .menuObjetivoAdmin = {
                 }
@@ -75,7 +75,7 @@ stInterfaz inicializarInterfaz(){
     return interfaz;
 }
 
-void ejecutarInterfaz(stInterfaz interfaz){
+void ejecutarInterfaz(stInterfaz interfaz, stControlador controlador){
     int opcion;
     int idMenuActual;
     stMenu menuActual;
@@ -104,6 +104,7 @@ void ejecutarInterfaz(stInterfaz interfaz){
                 // No cambiar historial
                 // TODO: implementar switch con metodos para modificar memoria
                 // Posiblemente en una libreria aparte (controlador)
+                ejecutarSubprograma(idProximoMenu, controlador.memoria);
             }
             else if(idProximoMenu != idMenuActual){
                 // Navegar hacia el proximo menu

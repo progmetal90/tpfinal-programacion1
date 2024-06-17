@@ -5,6 +5,7 @@
 #include <stdlib.h>
 #include <conio.h>
 #include "menu.h"
+#include "controlador.h"
 #include "../librerias/validacion.h"
 
 #define ID_MENU_INVALIDO 9999
@@ -18,7 +19,7 @@ typedef struct{
 }stInterfaz;
 
 stInterfaz inicializarInterfaz();
-void ejecutarInterfaz();
+void ejecutarInterfaz(stInterfaz interfaz, stControlador controlador);
 int obtenerIdProximoMenu(stMenu menu, int opcion);
 void obtenerOpcion(int * opcion);
 int validarOpcion(int opcion, int validosUsuario, int validosAdmin);
