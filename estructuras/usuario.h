@@ -18,7 +18,7 @@ typedef struct{
     char username[DIM_USERNAME];
     int esAdmin;  // 1 = si  0 = no
     char genero;
-    stFecha nacimiento;
+    char fechaNacimiento[DIM_FECHA];
     int pelisFavoritas[DIM_PELISFAVORITAS]; // Guarda ID de pelicula
     char dni[DIM_DNI];
     stDomicilio domicilio;
