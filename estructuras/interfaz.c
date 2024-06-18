@@ -5,10 +5,10 @@ stInterfaz inicializarInterfaz(){
         .historial = {SM_LOGIN}, // Primer menu siempre sera id 0 (pantalla login)
         .posHistorial = 0, // Inicializa interfaz en la primer posicion (login)
 
-        // Declaracion de menus
+        // Declaracion de menus de usuario
         {
             {
-                .idMenu = 0,
+                .idMenu = SM_LOGIN,
                 .titulo = "LOGIN",
                 .opcionesUsuario = {
                     "Iniciar sesion",
@@ -21,51 +21,111 @@ stInterfaz inicializarInterfaz(){
                 .menuObjetivoUsuario = {
                     SP_INICIAR_SESION,
                     SP_CREAR_USUARIO,
-                }, // TODO: definir constantes para cada menu, no usar nros magicos
+                },
                 .menuObjetivoAdmin = {
                 }
             },
             {
-                .idMenu = 1,
+                .idMenu = SM_MENU_PRINCIPAL,
                 .titulo = "MENU PRINCIPAL",
                 .opcionesUsuario = {
+                    "Buscar pelicula",
                     "Agregar pelicula",
-                    "Filtrar pelicula",
-                    "Agregar comentario",
+                    "Favoritos",
                     "Modificar datos de usuario",
                 },
                 .cantOpcionesUsuario = 4,
                 .opcionesAdmin = {
-                    "Modificar usuarios",
-                    "OpcionAdmin 2",
+                    "Ver usuarios",
+                    "Eliminar usuario",
+                    "Eliminar pelicula",
                 },
-                .cantOpcionesAdmin = 2,
+                .cantOpcionesAdmin = 3,
                 .menuObjetivoUsuario = {
-                    1, // placeholder
-                    2,
-                    1,
-                    },
+                    SM_BUSCAR_PELICULA,
+                    SP_AGREGAR_PELICULA,
+                    SM_FAVORITOS,
+                    SP_MODIFICAR_USUARIO,
+                },
                 .menuObjetivoAdmin = {
-                    1,
-                    1}
+                    SP_VER_USUARIOS,
+                    SM_BAJA_USUARIO,
+                    SM_BAJA_PELICULA,
+                }
             },
             {
-                .idMenu = 2,
-                .titulo = "FILTRAR PELICULA",
+                .idMenu = SM_BUSCAR_PELICULA,
+                .titulo = "BUSCAR PELICULA",
                 .opcionesUsuario = {
                     "Filtrar por NOMBRE",
                     "Filtrar por DIRECTOR",
-                    "Filtrar por ESTUDIO",
+                    "Filtrar por CATEGORIA",
                 },
                 .cantOpcionesUsuario = 3,
                 .opcionesAdmin = {
                 },
                 .cantOpcionesAdmin = 0,
                 .menuObjetivoUsuario = {
-                    2, // placeholder
-                    2,
-                    2,
-                    },
+                    SP_FILTRAR_POR_NOMBRE,
+                    SP_FILTRAR_POR_DIRECTOR,
+                    SP_FILTRAR_POR_CATEGORIA,
+                },
+                .menuObjetivoAdmin = {
+                }
+            },
+            {
+                .idMenu = SM_FAVORITOS,
+                .titulo = "FAVORITOS",
+                .opcionesUsuario = {
+                    "Mostrar favoritos",
+                    "Agregar",
+                    "Quitar",
+                },
+                .cantOpcionesUsuario = 3,
+                .opcionesAdmin = {
+                },
+                .cantOpcionesAdmin = 0,
+                .menuObjetivoUsuario = {
+                    SP_FILTRAR_POR_NOMBRE,
+                    SP_FILTRAR_POR_DIRECTOR,
+                    SP_FILTRAR_POR_CATEGORIA,
+                },
+                .menuObjetivoAdmin = {
+                }
+            },
+            {
+                .idMenu = SM_BAJA_USUARIO,
+                .titulo = "ADMINISTRAR USUARIO",
+                .opcionesUsuario = {
+                    "Dar de baja",
+                    "Eliminar definitivamente",
+                },
+                .cantOpcionesUsuario = 2,
+                .opcionesAdmin = {
+                },
+                .cantOpcionesAdmin = 0,
+                .menuObjetivoUsuario = {
+                    SP_BAJA_USUARIO,
+                    SP_ELIMINAR_USUARIO,
+                },
+                .menuObjetivoAdmin = {
+                }
+            },
+            {
+                .idMenu = SM_BAJA_PELICULA,
+                .titulo = "ADMINISTRAR PELICULA",
+                .opcionesUsuario = {
+                    "Dar de baja",
+                    "Eliminar definitivamente",
+                },
+                .cantOpcionesUsuario = 2,
+                .opcionesAdmin = {
+                },
+                .cantOpcionesAdmin = 0,
+                .menuObjetivoUsuario = {
+                    SP_BAJA_PELICULA,
+                    SP_ELIMINAR_PELICULA,
+                },
                 .menuObjetivoAdmin = {
                 }
             },
@@ -92,7 +152,7 @@ void ejecutarInterfaz(stInterfaz interfaz, stControlador * controlador){
         }
 
         idMenuActual = interfaz.historial[interfaz.posHistorial];
-        menuActual = interfaz.menus[idMenuActual];
+        menuActual = obtenerMenu(interfaz.menus, idMenuActual);
         mostrarMenu(menuActual);
 
         printf("\nIngrese una opcion: ");
@@ -114,8 +174,14 @@ void ejecutarInterfaz(stInterfaz interfaz, stControlador * controlador){
             }
         }
         else if (validarOpcion(opcion, menuActual.cantOpcionesUsuario, menuActual.cantOpcionesAdmin)){
-            idProximoMenu = interfaz.menus[interfaz.posHistorial].menuObjetivoUsuario[opcion - 1];
-            // TODO: hacer un IF para opciones de admin
+            if(opcion > 100 && controlador->usuarioLogueado->esAdmin == 1){
+                // Menu destino admin
+                idProximoMenu = interfaz.menus[interfaz.posHistorial].menuObjetivoAdmin[opcion - ADMIN_MENU_OFFSET];
+            }
+            else{
+                // Menu destino usuario
+                idProximoMenu = interfaz.menus[interfaz.posHistorial].menuObjetivoUsuario[opcion - USUARIO_MENU_OFFSET];
+            }
 
             if(idProximoMenu >= 1000){
                 // Es un subprograma, ejecutar por switch
@@ -134,6 +200,18 @@ void ejecutarInterfaz(stInterfaz interfaz, stControlador * controlador){
             interfaz.posHistorial = 0;
         }
     }
+}
+
+stMenu obtenerMenu(stMenu * menus, int idMenu){
+    stMenu aux;
+    int encontrado = 0;
+    for(int i = 0; i < DIM_ARR_MENU && encontrado == 0; i++){
+        if(menus[i].idMenu == idMenu){
+            aux = menus[i];
+            encontrado = 1;
+        }
+    }
+    return aux;
 }
 
 int confirmarSalida(char mensaje[]){
@@ -173,11 +251,14 @@ int obtenerIdProximoMenu(stMenu menu, int opcion){
 }
 
 int validarOpcion(int opcion, int validosUsuario, int validosAdmin){
-    int valido = 1;
+    int valido = 0;
+
+    int esOpcionValidaUsuario = enRango(opcion, USUARIO_MENU_OFFSET, USUARIO_MENU_OFFSET + validosUsuario);
+    int esOpcionValidaAdmin = enRango(opcion, ADMIN_MENU_OFFSET, ADMIN_MENU_OFFSET + validosAdmin);
 
     // Chequea que la opcion sea valida
-    if(!(enRango(opcion, USUARIO_MENU_OFFSET, USUARIO_MENU_OFFSET + validosUsuario) || enRango(opcion, ADMIN_MENU_OFFSET, ADMIN_MENU_OFFSET + validosAdmin))){
-        valido = 0;
+    if(esOpcionValidaAdmin || esOpcionValidaUsuario){
+        valido = 1;
     }
 
     return valido;
