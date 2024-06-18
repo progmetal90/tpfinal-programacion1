@@ -71,6 +71,8 @@
 			<Option compilerVar="CC" />
 		</Unit>
 		<Unit filename="librerias/mock.h" />
+		<Unit filename="librerias/submenus.h" />
+		<Unit filename="librerias/subprogramas.h" />
 		<Unit filename="librerias/validacion.c">
 			<Option compilerVar="CC" />
 		</Unit>
