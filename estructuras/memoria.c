@@ -17,7 +17,33 @@ stMemoria inicializarMemoria(){
     memoria.usuarios = (stUsuario *)malloc(sizeof(stUsuario) * memoria.dimUsuarios);
     memoria.peliculas = (stPelicula *)malloc(sizeof(stPelicula) * memoria.dimPeliculas);
 
+    cargarArchivosEnMemoria(&memoria);
+
     return memoria;
+}
+
+void cargarArchivosEnMemoria(stMemoria * memoria){
+    FILE * archiComentarios = fopen(NOM_ARCHIVO_COMENTARIOS, "rb");
+    FILE * archiUsuarios = fopen(NOM_ARCHIVO_USUARIOS, "rb");
+    FILE * archiPeliculas = fopen(NOM_ARCHIVO_PELICULAS, "rb");
+
+    if(archiComentarios){
+        fread(memoria->comentarios, sizeof(stComentario), memoria->vComentarios, archiComentarios);
+
+        fclose(archiComentarios);
+    }
+
+    if(archiUsuarios){
+        fread(memoria->usuarios, sizeof(stUsuario), memoria->vUsuarios, archiUsuarios);
+
+        fclose(archiUsuarios);
+    }
+
+    if(archiPeliculas){
+        fread(memoria->peliculas, sizeof(stPelicula), memoria->vPeliculas, archiPeliculas);
+
+        fclose(archiPeliculas);
+    }
 }
 
 /// MANEJO DE MEMORIA, INGRESO DE DATOS Y REDIMENSION DE ARRAYS
@@ -78,5 +104,25 @@ int obtenerCantidadElementos(char nombreArchivo[], int dimDatos){
 }
 
 void guardarCambios(stMemoria * memoria){
-    // TODO: llevar memoria a archivos
+    FILE * archiComentarios = fopen(NOM_ARCHIVO_COMENTARIOS, "wb");
+    FILE * archiUsuarios = fopen(NOM_ARCHIVO_USUARIOS, "wb");
+    FILE * archiPeliculas = fopen(NOM_ARCHIVO_PELICULAS, "wb");
+
+    if(archiComentarios){
+        fwrite(memoria->comentarios, sizeof(stComentario), memoria->vComentarios, archiComentarios);
+
+        fclose(archiComentarios);
+    }
+
+    if(archiUsuarios){
+        fwrite(memoria->usuarios, sizeof(stUsuario), memoria->vUsuarios, archiUsuarios);
+
+        fclose(archiUsuarios);
+    }
+
+    if(archiPeliculas){
+        fwrite(memoria->peliculas, sizeof(stPelicula), memoria->vPeliculas, archiPeliculas);
+
+        fclose(archiPeliculas);
+    }
 }

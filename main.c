@@ -9,12 +9,18 @@ int main()
     stMemoria memoria = inicializarMemoria(); // Cargo archivos a memoria
     stControlador controlador = inicializarControlador(&memoria);
 
-    // Provisorio: cargar 10 de cada estructura a memoria
-    for(int i = 0; i < 50; i++){
-        agregarComentario(&memoria, cargarComentarioRandom());
-        agregarUsuario(&memoria, cargarUsuarioRandom());
-        agregarPelicula(&memoria, cargarPeliculaRandom());
-    }
+//    stUsuario admin = cargarUsuarioRandom();
+//    admin.esAdmin = 1;
+//    strcpy(admin.username, "administrador");
+//    strcpy(admin.email, "admin@gmail.com");
+//    strcpy(admin.password, "1234");
+//
+//    agregarUsuario(&memoria, admin);
+//
+//    // Provisorio: cargar 10 de cada estructura a memoria
+//    for(int i = 0; i < 50; i++){
+//        agregarPelicula(&memoria, cargarPeliculaRandom());
+//    }
 
     stInterfaz interfaz = inicializarInterfaz();
     ejecutarInterfaz(interfaz, controlador);
