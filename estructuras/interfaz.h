@@ -19,10 +19,10 @@ typedef struct{
 }stInterfaz;
 
 stInterfaz inicializarInterfaz();
-void ejecutarInterfaz(stInterfaz interfaz, stControlador controlador);
+void ejecutarInterfaz(stInterfaz interfaz, stControlador * controlador);
 int obtenerIdProximoMenu(stMenu menu, int opcion);
 void obtenerOpcion(int * opcion);
 int validarOpcion(int opcion, int validosUsuario, int validosAdmin);
-int confirmarSalida();
+int confirmarSalida(char mensaje[]);
 
 #endif // INTERFAZ_H_INCLUDED

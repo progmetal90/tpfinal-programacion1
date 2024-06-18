@@ -13,7 +13,7 @@ int main()
 //    admin.esAdmin = 1;
 //    strcpy(admin.username, "administrador");
 //    strcpy(admin.email, "admin@gmail.com");
-//    strcpy(admin.password, "1234");
+//    strcpy(admin.password, "Abc123");
 //
 //    agregarUsuario(&memoria, admin);
 //
@@ -23,7 +23,7 @@ int main()
 //    }
 
     stInterfaz interfaz = inicializarInterfaz();
-    ejecutarInterfaz(interfaz, controlador);
+    ejecutarInterfaz(interfaz, &controlador);
 
     // TODO: guardar memoria en archivos
     guardarCambios(&memoria);

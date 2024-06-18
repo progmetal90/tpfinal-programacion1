@@ -2,7 +2,7 @@
 
 stInterfaz inicializarInterfaz(){
     stInterfaz interfaz = {
-        .historial = {0}, // Primer menu siempre sera id 0 (pantalla login)
+        .historial = {SM_LOGIN}, // Primer menu siempre sera id 0 (pantalla login)
         .posHistorial = 0, // Inicializa interfaz en la primer posicion (login)
 
         // Declaracion de menus
@@ -19,8 +19,8 @@ stInterfaz inicializarInterfaz(){
                 },
                 .cantOpcionesAdmin = 0,
                 .menuObjetivoUsuario = {
-                    1,
-                    1,
+                    SP_INICIAR_SESION,
+                    SP_CREAR_USUARIO,
                 }, // TODO: definir constantes para cada menu, no usar nros magicos
                 .menuObjetivoAdmin = {
                 }
@@ -75,7 +75,7 @@ stInterfaz inicializarInterfaz(){
     return interfaz;
 }
 
-void ejecutarInterfaz(stInterfaz interfaz, stControlador controlador){
+void ejecutarInterfaz(stInterfaz interfaz, stControlador * controlador){
     int opcion;
     int idMenuActual;
     stMenu menuActual;
@@ -84,6 +84,13 @@ void ejecutarInterfaz(stInterfaz interfaz, stControlador controlador){
     // Posicion menor a 0 indica que salimos del login (cerrar programa)
     while(interfaz.posHistorial >= 0){
         system("cls");
+
+        if(interfaz.posHistorial == 0 && controlador->usuarioLogueado){
+            // Si se inicio sesion correctamente, navegar hacia el menu principal
+            interfaz.posHistorial++;
+            interfaz.historial[1] = SM_MENU_PRINCIPAL;
+        }
+
         idMenuActual = interfaz.historial[interfaz.posHistorial];
         menuActual = interfaz.menus[idMenuActual];
         mostrarMenu(menuActual);
@@ -94,17 +101,27 @@ void ejecutarInterfaz(stInterfaz interfaz, stControlador controlador){
         if(opcion == 0){
             // Volver atras en el menu
             interfaz.posHistorial--;
+
+            if(controlador->usuarioLogueado){
+                if(interfaz.posHistorial == 0 && confirmarSalida("Desea cerrar sesion?") == 1){
+                    // Cierra sesion y vuelve al login
+                    controlador->usuarioLogueado = NULL;
+                }
+                else{
+                    // Regresa al menu principal
+                    interfaz.posHistorial = 1;
+                }
+            }
         }
         else if (validarOpcion(opcion, menuActual.cantOpcionesUsuario, menuActual.cantOpcionesAdmin)){
             idProximoMenu = interfaz.menus[interfaz.posHistorial].menuObjetivoUsuario[opcion - 1];
             // TODO: hacer un IF para opciones de admin
 
             if(idProximoMenu >= 1000){
-                // Es una funcion, ejecutarla por switch
+                // Es un subprograma, ejecutar por switch
                 // No cambiar historial
-                // TODO: implementar switch con metodos para modificar memoria
                 // Posiblemente en una libreria aparte (controlador)
-                ejecutarSubprograma(idProximoMenu, controlador.memoria);
+                ejecutarSubprograma(idProximoMenu, controlador);
             }
             else if(idProximoMenu != idMenuActual){
                 // Navegar hacia el proximo menu
@@ -113,22 +130,23 @@ void ejecutarInterfaz(stInterfaz interfaz, stControlador controlador){
             }
         }
 
-        if(interfaz.posHistorial == -1){
-            interfaz.posHistorial = confirmarSalida();
+        if(interfaz.posHistorial == -1 && !confirmarSalida("Desea salir del programa?")){
+            interfaz.posHistorial = 0;
         }
     }
 }
 
-int confirmarSalida(){
-    int confirma = -1;
-
+int confirmarSalida(char mensaje[]){
+    int confirma = 1;
     char opcion = 's';
-    printf("Esta seguro que desea salir? Presione ESC para salir, u otra tecla para continuar.");
+
+    printf(mensaje);
+    printf(" Presione ESC para salir, u otra tecla para continuar.");
     fflush(stdin);
     opcion = getch();
 
     if(opcion != 27){
-        confirma = 0; // asignar 0 a posHistorial para volver al login
+        confirma = 0;
     }
 
     return confirma;

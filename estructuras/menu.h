@@ -11,6 +11,8 @@
 #define USUARIO_MENU_OFFSET 1 // Menus usuario comienzan en 1
 #define ADMIN_MENU_OFFSET 101 // Menus admin comienzan en 100
 
+#include "../librerias/submenus.h"
+
 typedef struct{
     int idMenu;
     char titulo[DIM_TITULO_MENU];
