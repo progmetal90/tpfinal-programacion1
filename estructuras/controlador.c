@@ -97,3 +97,13 @@ void obtenerStringDeUsuario(char * buffer, int dimBuffer){
         }
     }
 }
+
+void obtenerOpcion(int * opcion){
+    // TODO: sanitizar input
+    // Esta entrada de momento solo puede recibir numeros. Cosas MALAS pasaran si recibe cualquier otra cosa.
+
+    // Considerar si scanf es suficiente o si es necesario usar otra forma para capturar input.
+    // Un combo de gets() y atoi por ahi es mas versatil
+    // Se podria recibir tanto strings como numeros, pero tambien complicaria las cosas
+    scanf("%d", opcion);
+}
