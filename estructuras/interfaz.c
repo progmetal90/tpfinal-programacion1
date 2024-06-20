@@ -140,6 +140,7 @@ void ejecutarInterfaz(stInterfaz interfaz, stControlador * controlador){
     int idMenuActual;
     stMenu menuActual;
     int idProximoMenu;
+    int esAdmin = 0;
 
     // Posicion menor a 0 indica que salimos del login (cerrar programa)
     while(interfaz.posHistorial >= 0){
@@ -151,9 +152,18 @@ void ejecutarInterfaz(stInterfaz interfaz, stControlador * controlador){
             interfaz.historial[1] = SM_MENU_PRINCIPAL;
         }
 
+        if(controlador->usuarioLogueado){
+            if(controlador->usuarioLogueado->esAdmin == 1){
+                esAdmin = 1;
+            }
+            else{
+                esAdmin = 0;
+            }
+        }
+
         idMenuActual = interfaz.historial[interfaz.posHistorial];
         menuActual = obtenerMenu(interfaz.menus, idMenuActual);
-        mostrarMenu(menuActual);
+        mostrarMenu(menuActual, esAdmin);
 
         printf("\nIngrese una opcion: ");
         obtenerOpcion(&opcion);
@@ -174,13 +184,17 @@ void ejecutarInterfaz(stInterfaz interfaz, stControlador * controlador){
             }
         }
         else if (validarOpcion(opcion, menuActual.cantOpcionesUsuario, menuActual.cantOpcionesAdmin)){
-            if(opcion > 100 && controlador->usuarioLogueado->esAdmin == 1){
+            if(enRango(opcion, ADMIN_MENU_OFFSET, ADMIN_MENU_OFFSET + MAX_OPCIONES_MENU) && esAdmin == 1){
                 // Menu destino admin
                 idProximoMenu = interfaz.menus[interfaz.posHistorial].menuObjetivoAdmin[opcion - ADMIN_MENU_OFFSET];
             }
-            else{
+            else if(enRango(opcion, USUARIO_MENU_OFFSET, USUARIO_MENU_OFFSET + MAX_OPCIONES_MENU)){
                 // Menu destino usuario
                 idProximoMenu = interfaz.menus[interfaz.posHistorial].menuObjetivoUsuario[opcion - USUARIO_MENU_OFFSET];
+            }
+            else{
+                // Destino invalido, mantenerse en el menu actual
+                idProximoMenu = idMenuActual;
             }
 
             if(idProximoMenu >= 1000){

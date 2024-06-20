@@ -24,7 +24,7 @@ typedef struct{
     int menuObjetivoAdmin[MAX_OPCIONES_MENU];
 }stMenu;
 
-void mostrarMenu(stMenu menu);
+void mostrarMenu(stMenu menu, int esAdmin);
 void imprimirOpciones(char opciones[][DIM_OPCION_MENU], int validos, int esAdmin);
 void imprimirSaltosDeLinea(int cantidad);
 void imprimirLineaSeparadora(char separador, int cantidad);
