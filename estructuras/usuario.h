@@ -19,7 +19,8 @@ typedef struct{
     int esAdmin;  // 1 = si  0 = no
     char genero;
     char fechaNacimiento[DIM_FECHA];
-    int pelisFavoritas[DIM_PELISFAVORITAS]; // Guarda ID de pelicula
+    int favoritos[DIM_PELISFAVORITAS]; // Guarda ID de pelicula
+    int vFavoritos;
     char dni[DIM_DNI];
     stDomicilio domicilio;
     int eliminado; // 0 si está activo - 1 si está eliminado

@@ -15,12 +15,247 @@ void ejecutarSubprograma(int subprograma, stControlador * controlador){
         case SP_INICIAR_SESION:
             controlador->usuarioLogueado = iniciarSesion(controlador->memoria);
             break;
+        case SP_CREAR_USUARIO:
+            agregarUsuario(controlador->memoria, cargarUsuario());
+            break;
         default:
             // Si llegamos aca nos olvidamos un subprograma o nos mandamos una cagada
             printf("ERROR! Subprograma %d invalido o indefinido!\n", subprograma);
             break;
     }
 }
+stUsuario cargarUsuario() {
+
+stUsuario aux;
+
+int emailValido = 0;
+int contraseniaValida = 0;
+
+int dia, mes, anio;
+
+char mail[DIM_USERNAME];
+char contrasenia[DIM_PASSWORD];
+char username[DIM_USERNAME];
+char fechaNacimiento[DIM_FECHA];
+char diaStr[3];
+char mesStr[3];
+char anioStr[3];
+char dni[DIM_DNI];
+
+char genero;
+
+char calle[DIM_CALLE];
+char ciudad[DIM_CIUDAD];
+char localidad[DIM_LOCALIDAD];
+char pais[DIM_PAIS];
+
+int codigoPostal;
+int altura;
+int leido = 0;
+
+/// INICIAMOS LOS VALIDOS DE PELIS FAVORITAS EN 0
+aux.vFavoritos = 0;
+
+/// INICIALIZA SU ESTADO COMO ACTIVO
+aux.eliminado = 0;
+
+    printf("Ingrese su email para registrarse (maximo %d caracteres): ", DIM_USERNAME - 1);
+    obtenerStringDeUsuario(mail, DIM_USERNAME);
+    emailValido = validarEmail(mail);
+
+    while(emailValido == 0){
+        printf("\nEl email ingresado es invalido! Intente nuevamente:\n");
+        obtenerStringDeUsuario(mail, DIM_USERNAME);
+        emailValido = validarEmail(mail);
+    }
+    strcpy(aux.email, mail);
+
+    system("pause");
+    system("cls");
+
+    printf("Ingrese su contrasenia (maximo %d caracteres): ", DIM_PASSWORD - 1);
+    obtenerStringDeUsuario(contrasenia, DIM_USERNAME);
+
+    contraseniaValida = validarContrasenia(contrasenia);
+    while(contraseniaValida == 0) {
+        printf("Contrasenia invalida, por favor prueba con otra: \n");
+        obtenerStringDeUsuario(contrasenia, DIM_USERNAME);
+        contraseniaValida = validarContrasenia(contrasenia);
+    }
+    strcpy(aux.password, contrasenia);
+
+    system("pause");
+    system("cls");
+
+    do {
+        printf("Ingrese un USERNAME (maximo %d caracteres): ", DIM_USERNAME - 1);
+        obtenerStringDeUsuario(username, DIM_USERNAME);
+
+        if (strlen(username) >= DIM_USERNAME - 1) {
+            printf("El username ingresado es invalido.Ingrese nuevamente (maximo %d caracteres): ", DIM_USERNAME - 1);
+        }
+
+    } while (strlen(username) >= DIM_USERNAME - 1);
+
+    strcpy(aux.username, username);
+
+    system("pause");
+    system("cls");
+
+    do {
+        printf("Ingrese su genero (M / F / X): ");
+        fflush(stdin);
+        scanf(" %c", &genero);
+
+        genero = toupper(genero);
+
+        if (genero != 'M' && genero != 'F' && genero != 'X') {
+            printf("Opcion invalida. Por favor, ingrese M, F o X.\n");
+
+        }
+    } while (genero != 'M' && genero != 'F' && genero != 'X');
+
+    aux.genero = genero;
+
+    system("pause");
+    system("cls");
+
+    do {
+    printf("Ingrese el dia de nacimiento: \n");
+    leido = scanf("%d",&dia);
+
+        if (leido != 1) {
+        printf("Dia invalido. Por favor, intente nuevamente: \n");
+        fflush(stdin);
+        }
+
+    }while(dia < 1 || dia > 31);
+
+    do {
+    printf("Ingrese el mes de nacimiento: \n");
+    leido = scanf("%d",&mes);
+
+        if (leido != 1) {
+        printf("Mes invalido. Por favor, intente nuevamente: \n");
+        fflush(stdin);
+        }
+
+    }while(mes < 1 || mes > 12);
+
+    do {
+    printf("Ingrese el anio de nacimiento: \n");
+    leido = scanf("%d", &anio);
+
+        if (leido != 1) {
+        printf("Anio invalido. Por favor, intente nuevamente: \n");
+        fflush(stdin);
+        }
+
+    }while (anio < 1900 || anio > 2023);
+
+    sprintf(diaStr, "%d", dia);
+    sprintf(mesStr, "%d", mes);
+    sprintf(anioStr, "%d", anio);
+
+    sprintf(aux.fechaNacimiento, "%s %s %s %s %s", diaStr, "/", mesStr, "/", anioStr);
+
+    system("pause");
+    system("cls");
+
+    do {
+
+    printf("Ingrese su DNI: \n");
+    obtenerStringDeUsuario(dni, DIM_DNI);
+
+    }while(strlen(dni) < 8);
+
+    strcpy(aux.dni, dni);
+
+    system("pause");
+    system("cls");
+
+    do {
+        printf("Ingrese su Domicilio, primero su calle: \n");
+        obtenerStringDeUsuario(calle, DIM_CALLE);
+
+    }while(strlen(calle) >= DIM_USERNAME - 1);
+
+    strcpy(aux.domicilio.calle, calle);
+
+    system("pause");
+    system("cls");
+
+    do {
+        printf("Ingrese su altura: \n");
+        leido = scanf("%d", &altura);
+
+        if (leido != 1) {
+        printf("Altura invalida. Por favor, intente nuevamente.\n");
+        fflush(stdin);
+        }
+
+    }while(leido != 1 );
+
+    aux.domicilio.altura = altura;
+
+    system("pause");
+    system("cls");
+
+    do {
+        printf("Ingrese su ciudad: \n");
+        obtenerStringDeUsuario(ciudad, DIM_CIUDAD);
+
+    }while(strlen(ciudad) >= DIM_CIUDAD - 1);
+
+    strcpy(aux.domicilio.ciudad, ciudad);
+
+    system("pause");
+    system("cls");
+
+    do {
+        printf("Ingrese su localidad: \n");
+        obtenerStringDeUsuario(localidad, DIM_LOCALIDAD);
+
+    }while(strlen(localidad) >= DIM_LOCALIDAD - 1);
+
+    strcpy(aux.domicilio.localidad, localidad);
+
+    system("pause");
+    system("cls");
+
+    do {
+        printf("Ingrese su CP: \n");
+        leido = scanf("%d", &codigoPostal);
+
+        if (leido != 1) {
+        printf("Codigo Postal invalido. Por favor, intente nuevamente.\n");
+        fflush(stdin);
+        }
+
+    }while(leido != 1 );
+
+    aux.domicilio.cp = codigoPostal;
+
+    system("pause");
+    system("cls");
+
+    do {
+        printf("Ingrese su pais: \n");
+        obtenerStringDeUsuario(pais, DIM_PAIS);
+
+    }while(strlen(pais) >= DIM_PAIS - 1);
+
+    strcpy(aux.domicilio.pais, pais);
+
+    system("pause");
+    system("cls");
+
+    return aux;
+
+}
+
+
+
 
 stUsuario * iniciarSesion(stMemoria * memoria){
     stUsuario * usuarioLogueado = NULL;
