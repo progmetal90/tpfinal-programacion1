@@ -70,3 +70,62 @@ int enRango(int valor, int min, int max){
 
     return estaEnRango;
 }
+
+int validarGenero(char genero) {
+    int esValido = 0;
+
+    genero = tolower(genero);
+
+    if (genero == 'm' || genero == 'f' || genero == 'x') {
+        esValido = 1;
+    }
+
+    return esValido;
+}
+
+int esBisiesto(int anio) {
+    int esBisiesto = 0;
+
+    if(anio % 4 == 0) {
+        esBisiesto = 1;
+    }
+
+    return esBisiesto;
+}
+
+int validarfecha(int dia, int mes, int anio) {
+    int fechaValida = 0;
+
+    if (mes < 1 || mes > 12) {
+        fechaValida = 0;
+    }
+
+    int bisiesto = esBisiesto(anio);
+
+
+    int diasPorMes[12][2] = {
+        {31, 31},
+        {28, 29},
+        {31, 31},
+        {30, 30},
+        {31, 31},
+        {30, 30},
+        {31, 31},
+        {31, 31},
+        {30, 30},
+        {31, 31},
+        {30, 30},
+        {31, 31}
+    };
+
+    if (dia >= 1 && dia <= diasPorMes[mes - 1][bisiesto]) {
+        fechaValida = 1;
+    }
+
+    return fechaValida;
+}
+
+
+
+
+

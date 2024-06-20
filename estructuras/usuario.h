@@ -8,7 +8,9 @@
 #define DIM_PELISFAVORITAS 50
 #define DIM_DNI 10
 
+#include <stdio.h>
 #include "domicilio.h"
+#include "../librerias/validacion.h"
 #include "fecha.h"
 
 typedef struct{
@@ -19,12 +21,14 @@ typedef struct{
     int esAdmin;  // 1 = si  0 = no
     char genero;
     char fechaNacimiento[DIM_FECHA];
-    int pelisFavoritas[DIM_PELISFAVORITAS]; // Guarda ID de pelicula
+    int favoritos[DIM_PELISFAVORITAS]; // Guarda ID de pelicula
+    int vFavoritos;
     char dni[DIM_DNI];
     stDomicilio domicilio;
     int eliminado; // 0 si está activo - 1 si está eliminado
 }stUsuario;
 
 void mostrarUsuario(stUsuario usuario);
+stUsuario cargarUsuario();
 
 #endif // USUARIO_H_INCLUDED

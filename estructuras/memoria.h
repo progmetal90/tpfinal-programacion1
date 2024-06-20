@@ -27,10 +27,16 @@ typedef struct{
 
 stMemoria inicializarMemoria();
 void guardarCambios(stMemoria * memoria);
-int obtenerCantidadElementos(char nombreArchivo[], int dimDatos);
 void agregarComentario(stMemoria * memoria, stComentario comentario);
 void agregarUsuario(stMemoria * memoria, stUsuario usuario);
 void agregarPelicula(stMemoria * memoria, stPelicula pelicula);
+stPelicula * obtenerPelicula(stMemoria * memoria, int id);
+stUsuario * obtenerUsuario(stMemoria * memoria, int id);
+stComentario * obtenerComentario(stMemoria * memoria, int id);
+void sobreescribirPelicula(stMemoria * memoria, stPelicula pelicula);
+void sobreescribirUsuario(stMemoria * memoria, stUsuario usuario);
+void sobreescribirComentario(stMemoria * memoria, stComentario comentario);
+int obtenerCantidadElementos(char nombreArchivo[], int dimDatos);
 void cargarArchivosEnMemoria(stMemoria * memoria);
 
 

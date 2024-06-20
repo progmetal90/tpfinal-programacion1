@@ -85,6 +85,51 @@ void agregarPelicula(stMemoria * memoria, stPelicula pelicula){
     memoria->vPeliculas++;
 }
 
+/// Obtener un dato
+stPelicula * obtenerPelicula(stMemoria * memoria, int id){
+    stPelicula * pelicula = NULL;
+
+    if(enRango(id, 0, memoria->vPeliculas) == 1){
+        pelicula = &memoria->peliculas[id];
+    }
+
+    return pelicula;
+}
+
+stUsuario * obtenerUsuario(stMemoria * memoria, int id){
+    stUsuario * usuario = NULL;
+
+    if(enRango(id, 0, memoria->vUsuarios) == 1){
+        usuario = &memoria->usuarios[id];
+    }
+
+    return usuario;
+}
+
+stComentario * obtenerComentario(stMemoria * memoria, int id){
+    stComentario * comentario = NULL;
+
+    if(enRango(id, 0, memoria->vComentarios) == 1){
+        comentario = &memoria->comentarios[id];
+    }
+
+    return comentario;
+}
+
+/// Sobreescribir dato
+
+void sobreescribirPelicula(stMemoria * memoria, stPelicula pelicula){
+    memoria->peliculas[pelicula.idPelicula] = pelicula;
+}
+
+void sobreescribirUsuario(stMemoria * memoria, stUsuario usuario){
+    memoria->usuarios[usuario.idUsuario] = usuario;
+}
+
+void sobreescribirComentario(stMemoria * memoria, stComentario comentario){
+    memoria->comentarios[comentario.idComentario] = comentario;
+}
+
 int obtenerCantidadElementos(char nombreArchivo[], int dimDatos){
     // Funcion generica para contar los elementos de un archivo
 
