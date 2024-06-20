@@ -17,5 +17,6 @@ void ejecutarSubprograma(int subprograma, stControlador * controlador);
 stUsuario * iniciarSesion(stMemoria * memoria);
 void obtenerStringDeUsuario(char * buffer, int dimBuffer);
 int existeEmail(char * email, stUsuario * usuarios, int vUsuarios);
+void spCrearUsuario(stMemoria * memoria);
 
 #endif // CONTROLADOR_H_INCLUDED

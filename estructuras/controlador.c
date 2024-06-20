@@ -16,13 +16,43 @@ void ejecutarSubprograma(int subprograma, stControlador * controlador){
             controlador->usuarioLogueado = iniciarSesion(controlador->memoria);
             break;
         case SP_CREAR_USUARIO:
-            agregarUsuario(controlador->memoria, cargarUsuario());
+            spCrearUsuario(controlador->memoria);
             break;
         default:
             // Si llegamos aca nos olvidamos un subprograma o nos mandamos una cagada
             printf("ERROR! Subprograma %d invalido o indefinido!\n", subprograma);
             break;
     }
+}
+
+void spCrearUsuario(stMemoria * memoria){
+
+    char mail[DIM_EMAIL];
+    int existe = -1;
+    int emailValido = 0;
+
+    do{
+        printf("Ingrese su email para registrarse (maximo %d caracteres): ", DIM_EMAIL - 1);
+        obtenerStringDeUsuario(mail, DIM_EMAIL);
+        emailValido = validarEmail(mail);
+
+    while(emailValido == 0){
+        printf("\nEl email ingresado es invalido! Intente nuevamente:\n");
+        obtenerStringDeUsuario(mail, DIM_EMAIL);
+        emailValido = validarEmail(mail);
+    }
+    existe = existeEmail(mail, memoria->usuarios, memoria->vUsuarios);
+
+        if(existe != -1) {
+            printf("Ya existe un usuario registrado con ese correo. \n");
+        }
+
+    }while(existe != -1); // No existe mail en la db
+
+    stUsuario aux = cargarUsuario(mail);
+
+    agregarUsuario(memoria, aux);
+
 }
 
 stUsuario * iniciarSesion(stMemoria * memoria){

@@ -14,20 +14,22 @@ void mostrarUsuario(stUsuario usuario){
     // TODO: mostrar peliculas favoritas en un menu distinto?
 }
 
-stUsuario cargarUsuario(){
+stUsuario cargarUsuario(char * mail){
+    const int DIM_ANIO = 5;
+    const int DIM_DIA = 3;
+    const int DIM_MES = 3;
+
     stUsuario aux;
 
-    int emailValido = 0;
     int contraseniaValida = 0;
 
     int dia, mes, anio;
 
-    char mail[DIM_EMAIL];
     char contrasenia[DIM_PASSWORD];
     char username[DIM_USERNAME];
-    char diaStr[3];
-    char mesStr[3];
-    char anioStr[5];
+    char diaStr[DIM_DIA];
+    char mesStr[DIM_MES];
+    char anioStr[DIM_ANIO];
     char dni[DIM_DNI];
 
     char genero;
@@ -53,19 +55,7 @@ stUsuario cargarUsuario(){
     // Inicializar id en -1. Se le asignara el ID correspondiente al cargar a memoria
     aux.idUsuario = -1;
 
-    printf("Ingrese su email para registrarse (maximo %d caracteres): ", DIM_EMAIL - 1);
-    obtenerStringDeUsuario(mail, DIM_EMAIL);
-    emailValido = validarEmail(mail);
-
-    while(emailValido == 0){
-        printf("\nEl email ingresado es invalido! Intente nuevamente:\n");
-        obtenerStringDeUsuario(mail, DIM_EMAIL);
-        emailValido = validarEmail(mail);
-    }
-
     strcpy(aux.email, mail);
-
-    system("cls");
 
     printf("Ingrese su contrasenia (maximo %d caracteres): ", DIM_PASSWORD - 1);
     obtenerStringDeUsuario(contrasenia, DIM_PASSWORD);
@@ -91,7 +81,6 @@ stUsuario cargarUsuario(){
     } while (strlen(username) >= DIM_USERNAME - 1);
 
     strcpy(aux.username, username);
-
     system("cls");
 
     do{
@@ -99,67 +88,39 @@ stUsuario cargarUsuario(){
         fflush(stdin);
         scanf("%c", &genero); // TODO: no usar scanf
 
-        genero = toupper(genero); // TODO: usar minusculas
-
-        // TODO: modularizar validacion de genero, mover a validacion.c
-        // deberia quedar: if(esGeneroValido(genero))
-        // Tambien estas haciendo lo mismo dos veces, en el if y en el while
-        // Usar una variable 0 o 1 para definir si es valido y reutilizarla
-        if (genero != 'M' && genero != 'F' && genero != 'X') {
+        if (validarGenero(genero) == 0) {
             printf("Opcion invalida. Por favor, ingrese M, F o X.\n");
         }
-    }while (genero != 'M' && genero != 'F' && genero != 'X');
+    }while (validarGenero(genero) != 1);
 
     aux.genero = genero;
 
     system("cls");
 
-    // TODO: para capturar dia/mes/anio usar tambien obtenerStringDeUsuario
-    // Validar si es un numero usando atoi
-    do{
-        printf("Ingrese el dia de nacimiento: \n");
-        leido = scanf("%d", &dia); // TODO: no usar scanf
-
-        if (leido != 1) {
-        printf("Dia invalido. Por favor, intente nuevamente: \n");
-        fflush(stdin);
-        }
-
-    }while(dia < 1 || dia > 31);
-    // TODO: cambiar logica de validacion de fecha
-    // Considerar los meses que tienen 28, 29, 30 o 31 dias
-
-    do{
-        printf("Ingrese el mes de nacimiento: \n");
-        leido = scanf("%d", &mes); // TODO: no usar scanf
-
-        if (leido != 1) {
-        printf("Mes invalido. Por favor, intente nuevamente: \n");
-        fflush(stdin);
-        }
-
-    }while(mes < 1 || mes > 12);
-
+    /// VALIDACION DE FECHA
+    int fechaValida = 0;
     do {
-        printf("Ingrese el anio de nacimiento: \n");
-        leido = scanf("%d", &anio);
+    printf("Ingrese el dia de nacimiento: ");
+    obtenerStringDeUsuario(diaStr, DIM_DIA);
+    dia = atoi(diaStr);
 
-        if (leido != 1) {
-        printf("Anio invalido. Por favor, intente nuevamente: \n");
-        fflush(stdin);
-        }
+    printf("Ingrese el mes de nacimiento: ");
+    obtenerStringDeUsuario(mesStr, DIM_MES);
+    mes = atoi(mesStr);
 
-    }while (anio < 1900 || anio > 2023);
+    printf("Ingrese el anio de nacimiento: ");
+    obtenerStringDeUsuario(anioStr, DIM_ANIO);
+    anio = atoi(anioStr);
 
-    // TODO: refactorear obtener fecha
-    // Cambiar los scanf por obtenerStringDeUsuario
-    // Si es posible, mover todo lo referido a fecha a fecha.c
-    sprintf(diaStr, "%d", dia);
-    sprintf(mesStr, "%d", mes);
-    sprintf(anioStr, "%d", anio);
+    fechaValida = validarfecha(dia,mes,anio);
+    if (fechaValida == 0) {
+        printf("\nFecha invalida.\n");
 
-    sprintf(aux.fechaNacimiento, "%s %s %s %s %s", diaStr, "/", mesStr, "/", anioStr);
+    }
 
+    }while(fechaValida != 1);
+
+    sprintf(aux.fechaNacimiento, FORMATO_FECHA, anio, mes, dia);
     system("pause");
     system("cls");
 
@@ -243,10 +204,9 @@ stUsuario cargarUsuario(){
     }while(strlen(pais) >= DIM_PAIS - 1);
 
     strcpy(aux.domicilio.pais, pais);
+    system("cls");
 
     printf("Usuario cargado con exito!\n");
-    mostrarUsuario(aux);
-    system("pause");
-    system("cls");
+
     return aux;
 }
