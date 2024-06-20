@@ -1,5 +1,6 @@
 #ifndef CONTROLADOR_H_INCLUDED
 #define CONTROLADOR_H_INCLUDED
+#define ANCHO_DE_CONSOLA 50
 
 #include <string.h>
 #include "../librerias/validacion.h"
@@ -18,5 +19,10 @@ stUsuario * iniciarSesion(stMemoria * memoria);
 void obtenerStringDeUsuario(char * buffer, int dimBuffer);
 int existeEmail(char * email, stUsuario * usuarios, int vUsuarios);
 void spCrearUsuario(stMemoria * memoria);
+void spAgregarPelicula (stMemoria * memoria);
+void spFiltrarPorTitulo(stMemoria * memoria);
+void spFiltrarPorCategoria(stMemoria * memoria);
+void spFiltrarPorDirector(stMemoria * memoria);
+
 
 #endif // CONTROLADOR_H_INCLUDED

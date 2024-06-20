@@ -1,5 +1,10 @@
 #ifndef PELICULA_H_INCLUDED
 #define PELICULA_H_INCLUDED
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+#include <conio.h>
+#include <ctype.h>
 
 #define DIM_TITULO_PELICULA 100
 #define DIM_DIRECTOR 50
@@ -15,5 +20,13 @@ typedef struct{
     float valoracion; // inicializar en 0 (sin valoracion)
     int eliminado; // 0 si esta activo - 1 si esta eliminado
 }stPelicula;
+
+stPelicula cargarPelicula (char titulo[]);
+void mostrarPelicula (stPelicula pelicula);
+int filtrarPeliculaTitulo (stPelicula pelicula, char dato[]);
+int filtrarPeliculaCategoria (stPelicula pelicula, char dato[]);
+int filtrarPeliculaDirector (stPelicula pelicula, char dato[]);
+
+stPelicula modificarInfoPelicula (stPelicula pelicula);
 
 #endif // PELICULA_H_INCLUDED

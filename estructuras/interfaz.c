@@ -66,7 +66,7 @@ stInterfaz inicializarInterfaz(){
                 },
                 .cantOpcionesAdmin = 0,
                 .menuObjetivoUsuario = {
-                    SP_FILTRAR_POR_NOMBRE,
+                    SP_FILTRAR_POR_TITULO,
                     SP_FILTRAR_POR_DIRECTOR,
                     SP_FILTRAR_POR_CATEGORIA,
                 },
@@ -86,7 +86,7 @@ stInterfaz inicializarInterfaz(){
                 },
                 .cantOpcionesAdmin = 0,
                 .menuObjetivoUsuario = {
-                    SP_FILTRAR_POR_NOMBRE,
+                    SP_FILTRAR_POR_TITULO,
                     SP_FILTRAR_POR_DIRECTOR,
                     SP_FILTRAR_POR_CATEGORIA,
                 },

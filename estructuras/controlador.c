@@ -18,6 +18,18 @@ void ejecutarSubprograma(int subprograma, stControlador * controlador){
         case SP_CREAR_USUARIO:
             spCrearUsuario(controlador->memoria);
             break;
+        case SP_AGREGAR_PELICULA:
+            spAgregarPelicula(controlador->memoria);
+            break;
+        case SP_FILTRAR_POR_TITULO:
+            spFiltrarPorTitulo(controlador->memoria);
+            break;
+        case SP_FILTRAR_POR_CATEGORIA:
+            spFiltrarPorCategoria(controlador->memoria);
+            break;
+        case SP_FILTRAR_POR_DIRECTOR:
+            spFiltrarPorDirector(controlador->memoria);
+            break;
         default:
             // Si llegamos aca nos olvidamos un subprograma o nos mandamos una cagada
             printf("ERROR! Subprograma %d invalido o indefinido!\n", subprograma);
@@ -140,4 +152,125 @@ void obtenerOpcion(int * opcion){
     // Un combo de gets() y atoi por ahi es mas versatil
     // Se podria recibir tanto strings como numeros, pero tambien complicaria las cosas
     scanf("%d", opcion);
+}
+
+void spAgregarPelicula (stMemoria * memoria){
+
+    system("cls");
+
+    stPelicula pelicula;
+    char titulo[DIM_TITULO_PELICULA];
+    int esIgual;
+    int i;
+    char control = 0;
+
+    //Pedir titulo
+    do{
+        i = 0;
+        esIgual = -1;
+
+        printf("Titulo: ");
+        obtenerStringDeUsuario(titulo, DIM_TITULO_PELICULA);
+
+        //Verificar que ese titulo no exista en memoria
+        while(i < memoria->vPeliculas && esIgual == -1){
+            pelicula = memoria->peliculas[i];
+            esIgual = filtrarPeliculaTitulo(pelicula, titulo);
+
+            i++;
+        }
+        //Si existe se pregunta si quiere salir o seguir cargando
+        if(esIgual == 1){
+            printf("EL TITULO INGRESADO YA EXISTE\n");
+            printf("para salir presione esc");
+            fflush(stdin);
+            control = getch();
+
+            system("cls");
+        }else{
+            //Una vez que se cargo un titulo que no existe se sigue con la carga de los demas datos
+            pelicula = cargarPelicula(titulo);
+
+            printf("PELICULA CARGADA CON EXITO!\n");
+
+            agregarPelicula(memoria, pelicula);
+
+            system("pause");
+        }
+    }while(esIgual == 1 && control != 27);
+}
+
+void spFiltrarPorTitulo(stMemoria * memoria){
+
+    // Pedirle al usuario el nombre a buscar
+    char dato[DIM_TITULO_PELICULA];
+
+    printf("TITULO DE LA PELICULA A BUSCAR: ");
+    obtenerStringDeUsuario(dato, DIM_TITULO_PELICULA);
+
+    // Buscar en el arreglo de peliculas
+    for(int i = 0; i < memoria->vPeliculas; i++){
+        int esIgual = filtrarPeliculaTitulo(memoria->peliculas[i], dato);
+
+        //Si el titulo esa pelicula es igual a lo que se busca
+        if(esIgual == 1){
+            mostrarPelicula(memoria->peliculas[i]);
+
+            imprimirSaltosDeLinea(2);
+            imprimirLineaSeparadora('-', ANCHO_DE_CONSOLA);
+        }
+    }
+
+
+    system("pause");
+}
+
+void spFiltrarPorDirector(stMemoria * memoria){
+
+    // Pedirle al usuario el nombre a buscar
+    char dato[DIM_DIRECTOR];
+
+    printf("DIRECTOR DE LA PELICULA A BUSCAR: ");
+    obtenerStringDeUsuario(dato, DIM_DIRECTOR);
+
+    // Buscar en el arreglo de peliculas
+    for(int i = 0; i < memoria->vPeliculas; i++){
+        int esIgual = filtrarPeliculaDirector(memoria->peliculas[i], dato);
+
+        //Si el titulo esa pelicula es igual a lo que se busca
+        if(esIgual == 1){
+            mostrarPelicula(memoria->peliculas[i]);
+
+            imprimirSaltosDeLinea(2);
+            imprimirLineaSeparadora('-', ANCHO_DE_CONSOLA);
+        }
+    }
+
+
+    system("pause");
+}
+
+void spFiltrarPorCategoria(stMemoria * memoria){
+
+    // Pedirle al usuario el nombre a buscar
+    char dato[DIM_CATEGORIA];
+
+    printf("TITULO DE LA PELICULA A BUSCAR: ");
+    obtenerStringDeUsuario(dato, DIM_CATEGORIA);
+
+    // Buscar en el arreglo de peliculas
+    for(int i = 0; i < memoria->vPeliculas; i++){
+        int esIgual = filtrarPeliculaCategoria(memoria->peliculas[i], dato);
+
+        //Si el titulo esa pelicula es igual a lo que se busca
+        if(esIgual == 1){
+            mostrarPelicula(memoria->peliculas[i]);
+
+            imprimirSaltosDeLinea(2);
+            imprimirLineaSeparadora('-', ANCHO_DE_CONSOLA);
+        }
+    }
+
+
+    system("pause");
 }
