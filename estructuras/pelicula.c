@@ -1,76 +1,26 @@
 #include "pelicula.h"
-#include "../librerias/mock.h"
-#define DIM_PELICULAS 100
-#define DIM_TITULOS 10
-#define DIM_DIRECTORES 10
-#define DIM_ESTUDIOS 10
-#define DIM_CATEGORIAS 5
-#define REALLOC_MULTIPLICADOR 1.5
 
-stPelicula * inicAPeliculas(stPelicula * p){
+stPelicula cargarPelicula (char titulo[]){
 
-    p = (stPelicula *) malloc(sizeof(stPelicula) * 100);
-return p;
+    stPelicula pelicula;
+    //TODO: ver que no se repita titulo
+
+    strcpy(pelicula.titulo, titulo);
+
+    printf("Categoria: ");
+    obtenerStringDeUsuario(&pelicula.categoria, DIM_CATEGORIA);
+
+    printf("Director: ");
+    obtenerStringDeUsuario(&pelicula.director, DIM_DIRECTOR);
+
+    printf("Estudio: ");
+    obtenerStringDeUsuario(&pelicula.estudio, DIM_ESTUDIO);
+
+    pelicula.valoracion = 0;
+
+    return pelicula;
 }
 
-
-int cargarPelicula (stPelicula *pelicula, int i){
-
-    char control = 0;
-    int cant = DIM_PELICULAS;
-
-    do{
-        system("cls");
-        if(i >= cant){
-                cant *= REALLOC_MULTIPLICADOR;
-                pelicula = (stPelicula*)realloc(pelicula, sizeof(stPelicula) * cant);
-        }else{
-            printf("Titulo: ");
-            fflush(stdin);
-            gets(pelicula[i].titulo);
-            system("cls");
-
-            printf("Categoria: ");
-            fflush(stdin);
-            gets(pelicula[i].categoria);
-            system("cls");
-
-            printf("Director: ");
-            fflush(stdin);
-            gets(pelicula[i].director);
-            system("cls");
-
-            printf("Estudio: ");
-            fflush(stdin);
-            gets(pelicula[i].estudio);
-            system("cls");
-
-            pelicula[i].idPelicula = i+1;
-
-            pelicula[i].valoracion = 0;
-
-            i++;
-            printf("Para dejar de cargar presione esc ...");
-            fflush(stdin);
-            control = getch();
-        }
-    }while(control != 27);
-
-return i;
-}
-
-int cargarPeliculasRand (stPelicula pelicula[], int cant, int inicio){
-
-    int i = inicio;
-
-    do{
-        pelicula[i] = cargarPeliculaRandom();
-        i++;
-
-    }while(i < inicio + cant);
-
-return inicio + cant;
-}
 
 void mostrarPelicula (stPelicula pelicula){
 
@@ -78,90 +28,58 @@ void mostrarPelicula (stPelicula pelicula){
     printf("Categoria: %s\n", pelicula.categoria);
     printf("Director: %s\n", pelicula.director);
     printf("Estudio: %s\n", pelicula.estudio);
-    printf("Valoracion: %f.2\n", pelicula.valoracion);
+    printf("Valoracion: %.2f\n", pelicula.valoracion);
     printf("ID: %d", pelicula.idPelicula);
 }
 
-void mostrarPeliculas (stPelicula pelicula[], int v){
-    system("cls");
-    for(int i = 0; i < v; i++){
-        mostrarPelicula(pelicula[i]);
-        printf("\n---------------------------------------------------------\n");
-    }
-}
+int filtrarPeliculaTitulo (stPelicula pelicula, char dato[]){
 
-int buscarPeliculaTitulo (stPelicula pelicula, char dato[], int v){
-
-    int idPelicula = -1;
+    int esIgual = -1;
+    char aux[DIM_TITULO_PELICULA];
+    strcpy(aux, pelicula.titulo);
 
     //Convierte las strings a minusculas para comparar.
     strlwr(dato);
-    strlwr(pelicula.titulo);
+    strlwr(aux);
 
     //Compara que la busqueda este contenida en el titulo.
-    if(strstr(pelicula.titulo, dato)){
-        idPelicula = pelicula.idPelicula;
+    if(strstr(aux, dato)){
+        esIgual = 1;
     }
 
-return idPelicula;
+return esIgual;
 }
 
-int buscarPeliculaCategoria (stPelicula pelicula, char dato[], int v){
+int filtrarPeliculaCategoria (stPelicula pelicula, char dato[]){
 
-    int bandera = -1;
+    int esIgual = -1;
+    char aux[DIM_CATEGORIA];
+    strcpy(aux, pelicula.categoria);
 
     strlwr(dato);
-    strlwr(pelicula.categoria);
+    strlwr(aux);
 
-    if(strstr(pelicula.categoria, dato)){
-        bandera = 1;
+    if(strstr(aux, dato)){
+        esIgual = 1;
     }
 
-return bandera;
+return esIgual;
 }
 
-int buscarPeliculaDirector (stPelicula pelicula, char dato[], int v){
+int filtrarPeliculaDirector (stPelicula pelicula, char dato[]){
 
-    int bandera = -1;
+    int esIgual = -1;
+    char aux[DIM_DIRECTOR];
+    strcpy(aux, pelicula.director);
 
     strlwr(dato);
-    strlwr(pelicula.director);
+    strlwr(aux);
 
-    if(strstr(pelicula.director, dato)){
-        bandera = 1;
+    if(strstr(aux, dato)){
+        esIgual = 1;
     }
 
-return bandera;
-}
-
-void mostrarPeliculasPorCategoria (stPelicula pelicula[], char dato[], int v){
-
-    for(int i = 0; i < v; i++){
-        if(buscarPeliculaCategoria(pelicula[i], dato, v) != -1){
-            printf("\n---------------------------------------------------------\n");
-            mostrarPelicula(pelicula[i]);
-        }
-    }
-}
-
-void mostrarPeliculasPorDirector (stPelicula pelicula[], char dato[], int v){
-
-    for(int i = 0; i < v; i++){
-        if(buscarPeliculaDirector(pelicula[i], dato, v) != -1){
-            printf("\n---------------------------------------------------------\n");
-            mostrarPelicula(pelicula[i]);
-        }
-    }
-}
-
-void mostrarPeliculasPorTitulo (stPelicula pelicula[], char dato[], int v){
-
-    for(int i = 0; i < v; i++){
-        if(buscarPeliculaTitulo(pelicula[i], dato, v) != -1){
-            printf("\n---------------------------------------------------------\n");
-            mostrarPelicula(pelicula[i]);
-        }
-    }
+return esIgual;
 }
 
 stPelicula modificarInfoPelicula (stPelicula pelicula){
