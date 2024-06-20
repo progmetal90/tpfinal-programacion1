@@ -3,18 +3,20 @@
 const char ARROBA = '@';
 const char PUNTO_COM[] = ".com";
 
-
 int validarEmail(char email[]){
     // Comprueba que el email proporcionado sea valido
     // Necesita de un solo arroba, y un solo .com.
 
+    // Pasar mail a minuscula
+    email = strlwr(email);
+
     int valido = 0;
     // Comprobar que el mail tenga un ".com"
-    char *substring = strstr(email, PUNTO_COM);
+    char * substring = strstr(email, PUNTO_COM);
 
     if(substring != NULL){
         /// Compara los 2 strings para que no se repitan el ".com" y el '@'
-        if(contarCaracterEnString(email, ARROBA) == 1 && strcmp(substring, PUNTO_COM) == 0){
+        if(contarCaracterEnString(email, ARROBA) == 1 && strcmpi(substring, PUNTO_COM) == 0){
             valido = 1;
         }
     }
@@ -31,6 +33,7 @@ int contarCaracterEnString(char string[], char caracter){
         if(string[i] == ARROBA){
             caracterContado++;}
     }
+
     return caracterContado;
 }
 
@@ -61,7 +64,7 @@ int validarContrasenia(char contrasenia[]){
 int enRango(int valor, int min, int max){
     int estaEnRango = 0;
 
-    if(valor >= min && valor <= max){ // Incluyente
+    if(valor >= min && valor < max){ // Incluye minimo, excluye maximo
         estaEnRango = 1;
     }
 

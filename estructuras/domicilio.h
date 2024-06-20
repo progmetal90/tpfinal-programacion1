@@ -1,9 +1,9 @@
 #ifndef DOMICILIO_H_INCLUDED
 #define DOMICILIO_H_INCLUDED
 
-#define DIM_CALLE 50
+#define DIM_CALLE 100
 #define DIM_CIUDAD 100
-#define DIM_LOCALIDAD 50
+#define DIM_LOCALIDAD 100
 #define DIM_PAIS 100
 
 #include <string.h>

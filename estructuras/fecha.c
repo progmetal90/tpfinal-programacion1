@@ -1,30 +1,13 @@
-#include <stdlib.h>
-#include <string.h>
 #include "fecha.h"
 
-const char SEPARADOR_FECHA[] = "-";
+void obtenerFechaActual(char * buffer) {
 
-void fechaAString(stFecha fecha, char * buffer){
-    // Produce una string en formato AAAA-MM-DD
+    time_t tiempo_actual;
+    struct tm* tiempo_local;
 
-    char aux[5];
+    tiempo_actual = time(NULL);
 
-    // Transformar anio en string
-    itoa(fecha.anio, aux, 10);
+    tiempo_local = localtime(&tiempo_actual);
 
-    // Encadenarlo en el buffer con un separador
-    buffer = strcat(buffer, aux);
-    buffer = strcat(buffer, SEPARADOR_FECHA);
-
-
-    // Repito con mes
-    itoa(fecha.mes, aux, 10);
-
-    buffer = strcat(buffer, aux);
-    buffer = strcat(buffer, SEPARADOR_FECHA);
-
-    // Repito con dia
-    itoa(fecha.dia, aux, 10);
-
-    buffer = strcat(buffer, aux);
+    strftime(buffer, DIM_FECHA, FORMATO_FECHA , tiempo_local);
 }

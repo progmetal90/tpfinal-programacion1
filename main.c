@@ -1,26 +1,32 @@
 #include <stdio.h>
 #include <stdlib.h>
-#include <time.h>
-#include "librerias/mock.h"
-#include "estructuras/usuario.h"
-#include "estructuras/pelicula.h"
-#include "estructuras/fecha.h"
 #include "estructuras/interfaz.h"
 
 int main()
 {
     srand(time(NULL));
 
-//    stMemoria memoria = inicializarMemoria(); // Cargo archivos a memoria
-//    stControlador controlador = inicializarControlador(&memoria);
+    stMemoria memoria = inicializarMemoria(); // Cargo archivos a memoria
+    stControlador controlador = inicializarControlador(&memoria);
 
-    // TODO: cargar archivos a memoria
+//    stUsuario admin = cargarUsuarioRandom();
+//    admin.esAdmin = 1;
+//    strcpy(admin.username, "administrador");
+//    strcpy(admin.email, "admin@gmail.com");
+//    strcpy(admin.password, "Abc123");
+//
+//    agregarUsuario(&memoria, admin);
+//
+//    // Provisorio: cargar 10 de cada estructura a memoria
+//    for(int i = 0; i < 50; i++){
+//        agregarPelicula(&memoria, cargarPeliculaRandom());
+//    }
 
     stInterfaz interfaz = inicializarInterfaz();
-    ejecutarInterfaz(interfaz); // TODO: pasar memoria a interfaz
+    ejecutarInterfaz(interfaz, &controlador);
 
     // TODO: guardar memoria en archivos
-//    memoria.guardar();
+    guardarCambios(&memoria);
 
     return 0;
 }

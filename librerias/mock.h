@@ -5,13 +5,16 @@
 #ifndef MOCK_H_INCLUDED
 #define MOCK_H_INCLUDED
 
+#include <stdio.h>
+#include <string.h>
+
 #include "../estructuras/usuario.h"
 #include "../estructuras/comentario.h"
 #include "../estructuras/pelicula.h"
 
 void cargarCalleRandom(char calle[]);
 void cargarEmailRandom(char email[]);
-stFecha cargarFechaRandom();
+void cargarFechaRandom(char * fecha);
 stUsuario cargarUsuarioRandom();
 stDomicilio cargarDomicilioRandom();
 void cargarCiudadRandom(char ciudad[]);
