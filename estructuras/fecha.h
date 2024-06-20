@@ -6,7 +6,7 @@
 #include <stdlib.h>
 
 #define DIM_FECHA 20
-#define FORMATO_FECHA "%Y/%m/%d"
+#define FORMATO_FECHA "%04d-%02d-%02d"
 
 void obtenerFechaActual(char * buffer);
 
