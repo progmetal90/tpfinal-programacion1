@@ -22,7 +22,7 @@ stUsuario cargarUsuario(){
 
     int dia, mes, anio;
 
-    char mail[DIM_USERNAME];
+    char mail[DIM_EMAIL];
     char contrasenia[DIM_PASSWORD];
     char username[DIM_USERNAME];
     char diaStr[3];
@@ -53,13 +53,13 @@ stUsuario cargarUsuario(){
     // Inicializar id en -1. Se le asignara el ID correspondiente al cargar a memoria
     aux.idUsuario = -1;
 
-    printf("Ingrese su email para registrarse (maximo %d caracteres): ", DIM_USERNAME - 1);
-    obtenerStringDeUsuario(mail, DIM_USERNAME);
+    printf("Ingrese su email para registrarse (maximo %d caracteres): ", DIM_EMAIL - 1);
+    obtenerStringDeUsuario(mail, DIM_EMAIL);
     emailValido = validarEmail(mail);
 
     while(emailValido == 0){
         printf("\nEl email ingresado es invalido! Intente nuevamente:\n");
-        obtenerStringDeUsuario(mail, DIM_USERNAME);
+        obtenerStringDeUsuario(mail, DIM_EMAIL);
         emailValido = validarEmail(mail);
     }
 
@@ -68,12 +68,12 @@ stUsuario cargarUsuario(){
     system("cls");
 
     printf("Ingrese su contrasenia (maximo %d caracteres): ", DIM_PASSWORD - 1);
-    obtenerStringDeUsuario(contrasenia, DIM_USERNAME);
+    obtenerStringDeUsuario(contrasenia, DIM_PASSWORD);
 
     contraseniaValida = validarContrasenia(contrasenia);
     while(contraseniaValida == 0) {
         printf("Contrasenia invalida, por favor prueba con otra: \n");
-        obtenerStringDeUsuario(contrasenia, DIM_USERNAME);
+        obtenerStringDeUsuario(contrasenia, DIM_PASSWORD);
         contraseniaValida = validarContrasenia(contrasenia);
     }
     strcpy(aux.password, contrasenia);
@@ -114,6 +114,8 @@ stUsuario cargarUsuario(){
 
     system("cls");
 
+    // TODO: para capturar dia/mes/anio usar tambien obtenerStringDeUsuario
+    // Validar si es un numero usando atoi
     do{
         printf("Ingrese el dia de nacimiento: \n");
         leido = scanf("%d", &dia); // TODO: no usar scanf
@@ -166,7 +168,9 @@ stUsuario cargarUsuario(){
     printf("Ingrese su DNI: \n");
     obtenerStringDeUsuario(dni, DIM_DNI);
 
-    }while(strlen(dni) < 8);
+    }while(strlen(dni) < 7); // (provisorio) Valida DNIs a partir de 1 millon
+    // TODO: validar un DNI por el tamanio de string no es lo ideal
+    // Se podria usar atoi para obtener un entero y validar un rango de DNIs
 
     strcpy(aux.dni, dni);
 
@@ -176,7 +180,7 @@ stUsuario cargarUsuario(){
         printf("Ingrese su Domicilio, primero su calle: \n");
         obtenerStringDeUsuario(calle, DIM_CALLE);
 
-    }while(strlen(calle) >= DIM_USERNAME - 1);
+    }while(strlen(calle) >= DIM_CALLE - 1);
 
     strcpy(aux.domicilio.calle, calle);
 
