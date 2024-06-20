@@ -8,7 +8,9 @@
 #define DIM_PELISFAVORITAS 50
 #define DIM_DNI 10
 
+#include <stdio.h>
 #include "domicilio.h"
+#include "../librerias/validacion.h"
 #include "fecha.h"
 
 typedef struct{
@@ -27,5 +29,6 @@ typedef struct{
 }stUsuario;
 
 void mostrarUsuario(stUsuario usuario);
+stUsuario cargarUsuario();
 
 #endif // USUARIO_H_INCLUDED
