@@ -18,6 +18,7 @@ void ejecutarSubprograma(int subprograma, stControlador * controlador){
         default:
             // Si llegamos aca nos olvidamos un subprograma o nos mandamos una cagada
             printf("ERROR! Subprograma %d invalido o indefinido!\n", subprograma);
+            system("pause");
             break;
     }
 }
