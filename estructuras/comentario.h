@@ -6,6 +6,7 @@
 
 #include <string.h>
 #include "fecha.h"
+#include "../librerias/validacion.h"
 
 typedef struct {
     int idComentario;  // unico, autoincremental
@@ -19,5 +20,6 @@ typedef struct {
 }stComentario;
 
 void mostrarComentario(stComentario comentario);
+stComentario cargarComentario(int idUsuario, int idPelicula);
 
 #endif // COMENTARIO_H_INCLUDED
