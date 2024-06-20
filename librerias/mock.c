@@ -235,8 +235,6 @@ void cargarFechaRandom(char * fecha){
     itoa(dia, aux2, 10);
     strcat(aux, aux2);
 
-    printf("%s\n", aux);
-
     strcpy(fecha, aux);
 }
 
