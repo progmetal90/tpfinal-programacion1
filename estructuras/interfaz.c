@@ -207,11 +207,11 @@ void ejecutarInterfaz(stInterfaz interfaz, stControlador * controlador){
             // Opcion ingresada es valida
             if(enRango(opcion, ADMIN_MENU_OFFSET, ADMIN_MENU_OFFSET + MAX_OPCIONES_MENU) && esAdmin == 1){
                 // Menu destino admin
-                idProximoMenu = interfaz.menus[interfaz.posHistorial].menuObjetivoAdmin[opcion - ADMIN_MENU_OFFSET];
+                idProximoMenu = menuActual.menuObjetivoAdmin[opcion - ADMIN_MENU_OFFSET];
             }
             else if(enRango(opcion, USUARIO_MENU_OFFSET, USUARIO_MENU_OFFSET + MAX_OPCIONES_MENU)){
                 // Menu destino usuario
-                idProximoMenu = interfaz.menus[interfaz.posHistorial].menuObjetivoUsuario[opcion - USUARIO_MENU_OFFSET];
+                idProximoMenu = menuActual.menuObjetivoUsuario[opcion - USUARIO_MENU_OFFSET];
             }
             else{
                 // Destino invalido, mantenerse en el menu actual
