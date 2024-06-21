@@ -34,9 +34,9 @@ int ejecutarSubprograma(int subprograma, stControlador * controlador){
             spFiltrarPorDirector(controlador->memoria);
             idProximoMenu = SM_INFO_PELICULA;
             break;
-        case SP_AGREGAR_COMENTARIO:
-            spAgregarComentario(controlador->memoria, controlador->usuarioLogueado);
-            break;
+//        case SP_AGREGAR_COMENTARIO:
+//            spAgregarComentario(controlador->memoria, controlador->usuarioLogueado->idUsuario);
+//            break;
         default:
             // Si llegamos aca nos olvidamos un subprograma o nos mandamos una cagada
             printf("ERROR! Subprograma %d invalido o indefinido!\n", subprograma);
@@ -47,9 +47,33 @@ int ejecutarSubprograma(int subprograma, stControlador * controlador){
     return idProximoMenu;
 }
 
-void spAgregarComentario(stMemoria * memoria, stUsuario * usuarioLogueado){
-    // TODO: finalizar interfaz para recibir parametros
-    //cargarComentario(usuarioLogueado->idUsuario, 0);
+void spAgregarComentario(stMemoria * memoria, int idUsuario){
+    int idPelicula;
+    char nombrePelicula[DIM_TITULO_PELICULA];
+    char opcion = 0;
+
+    do{
+        printf("Ingrese el nombre de la pelicula para agregar un comentario: ");
+        obtenerStringDeUsuario(nombrePelicula, DIM_TITULO_PELICULA);
+
+        idPelicula = existePelicula(nombrePelicula, memoria->peliculas, memoria->vPeliculas);
+
+        if(idPelicula == -1){
+            printf("La pelicula ingresada no existe. ");
+            printf("Intente nuevamente o presione ESC para salir.\n\n");
+            fflush(stdin);
+            opcion = getch();
+        }
+    }while(idPelicula == -1 || opcion != 27);
+
+    system("cls");
+
+    if(idPelicula != -1){
+        cargarComentario(idUsuario, idPelicula);
+
+        printf("Comentario cargado con exito!");
+        system("cls");
+    }
 }
 
 void spCrearUsuario(stMemoria * memoria){
@@ -168,33 +192,41 @@ void obtenerOpcion(int * opcion){
     scanf("%d", opcion);
 }
 
-void spAgregarPelicula (stMemoria * memoria){
+int existePelicula(char * nombrePelicula, stPelicula * peliculas, int validos){
+    int existe;
+    int i;
+    stPelicula pelicula;
 
+    //Verificar que ese titulo no exista en memoria
+    for(i = 0; i < validos && existe != -1; i++){
+        pelicula = peliculas[i];
+        existe = filtrarPeliculaTitulo(pelicula, nombrePelicula);
+    }
+
+    if(existe != -1){ // TODO: devolver 0 como falso y 1 como verdadero
+        existe = i; // Devuelve id de pelicula, o -1 si no existe
+    }
+
+    return existe;
+}
+
+void spAgregarPelicula(stMemoria * memoria){
     system("cls");
 
     stPelicula pelicula;
     char titulo[DIM_TITULO_PELICULA];
     int esIgual;
-    int i;
     char control = 0;
 
     //Pedir titulo
     do{
-        i = 0;
-        esIgual = -1;
-
         printf("Titulo: ");
         obtenerStringDeUsuario(titulo, DIM_TITULO_PELICULA);
 
-        //Verificar que ese titulo no exista en memoria
-        while(i < memoria->vPeliculas && esIgual == -1){
-            pelicula = memoria->peliculas[i];
-            esIgual = filtrarPeliculaTitulo(pelicula, titulo);
+        esIgual = existePelicula(titulo, memoria->peliculas, memoria->vPeliculas);
 
-            i++;
-        }
         //Si existe se pregunta si quiere salir o seguir cargando
-        if(esIgual == 1){
+        if(esIgual != -1){
             printf("EL TITULO INGRESADO YA EXISTE\n");
             printf("para salir presione esc");
             fflush(stdin);
@@ -205,13 +237,13 @@ void spAgregarPelicula (stMemoria * memoria){
             //Una vez que se cargo un titulo que no existe se sigue con la carga de los demas datos
             pelicula = cargarPelicula(titulo);
 
-            printf("PELICULA CARGADA CON EXITO!\n");
-
             agregarPelicula(memoria, pelicula);
+
+            printf("PELICULA CARGADA CON EXITO!\n");
 
             system("pause");
         }
-    }while(esIgual == 1 && control != 27);
+    }while(esIgual != -1 && control != 27);
 }
 
 void spFiltrarPorTitulo(stMemoria * memoria){
