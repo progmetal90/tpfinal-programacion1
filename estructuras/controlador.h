@@ -7,6 +7,7 @@
 #include "memoria.h"
 #include "../librerias/mock.h"
 #include "../librerias/subprogramas.h"
+#include "../librerias/submenus.h"
 
 typedef struct{
     stMemoria * memoria;
@@ -14,7 +15,7 @@ typedef struct{
 }stControlador;
 
 stControlador inicializarControlador(stMemoria * memoria);
-void ejecutarSubprograma(int subprograma, stControlador * controlador);
+int ejecutarSubprograma(int subprograma, stControlador * controlador);
 stUsuario * iniciarSesion(stMemoria * memoria);
 void obtenerStringDeUsuario(char * buffer, int dimBuffer);
 int existeEmail(char * email, stUsuario * usuarios, int vUsuarios);
@@ -23,6 +24,6 @@ void spAgregarPelicula (stMemoria * memoria);
 void spFiltrarPorTitulo(stMemoria * memoria);
 void spFiltrarPorCategoria(stMemoria * memoria);
 void spFiltrarPorDirector(stMemoria * memoria);
-
+void spAgregarComentario(stMemoria * memoria, stUsuario * usuarioLogueado);
 
 #endif // CONTROLADOR_H_INCLUDED

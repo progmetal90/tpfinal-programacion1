@@ -9,7 +9,8 @@ stControlador inicializarControlador(stMemoria * memoria){
     return controlador;
 }
 
-void ejecutarSubprograma(int subprograma, stControlador * controlador){
+int ejecutarSubprograma(int subprograma, stControlador * controlador){
+    int idProximoMenu = subprograma;
     system("cls");
     switch(subprograma){
         case SP_INICIAR_SESION:
@@ -23,12 +24,18 @@ void ejecutarSubprograma(int subprograma, stControlador * controlador){
             break;
         case SP_FILTRAR_POR_TITULO:
             spFiltrarPorTitulo(controlador->memoria);
+            idProximoMenu = SM_INFO_PELICULA;
             break;
         case SP_FILTRAR_POR_CATEGORIA:
             spFiltrarPorCategoria(controlador->memoria);
+            idProximoMenu = SM_INFO_PELICULA;
             break;
         case SP_FILTRAR_POR_DIRECTOR:
             spFiltrarPorDirector(controlador->memoria);
+            idProximoMenu = SM_INFO_PELICULA;
+            break;
+        case SP_AGREGAR_COMENTARIO:
+            spAgregarComentario(controlador->memoria, controlador->usuarioLogueado);
             break;
         default:
             // Si llegamos aca nos olvidamos un subprograma o nos mandamos una cagada
@@ -36,6 +43,13 @@ void ejecutarSubprograma(int subprograma, stControlador * controlador){
             system("pause");
             break;
     }
+
+    return idProximoMenu;
+}
+
+void spAgregarComentario(stMemoria * memoria, stUsuario * usuarioLogueado){
+    // TODO: finalizar interfaz para recibir parametros
+    //cargarComentario(usuarioLogueado->idUsuario, 0);
 }
 
 void spCrearUsuario(stMemoria * memoria){
@@ -223,6 +237,7 @@ void spFiltrarPorTitulo(stMemoria * memoria){
 
 
     system("pause");
+    puts("");
 }
 
 void spFiltrarPorDirector(stMemoria * memoria){

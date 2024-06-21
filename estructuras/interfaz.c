@@ -9,6 +9,7 @@ stInterfaz inicializarInterfaz(){
         {
             {
                 .idMenu = SM_LOGIN,
+                .limpiarConsola = 1,
                 .titulo = "LOGIN",
                 .opcionesUsuario = {
                     "Iniciar sesion",
@@ -27,6 +28,7 @@ stInterfaz inicializarInterfaz(){
             },
             {
                 .idMenu = SM_MENU_PRINCIPAL,
+                .limpiarConsola = 1,
                 .titulo = "MENU PRINCIPAL",
                 .opcionesUsuario = {
                     "Buscar pelicula",
@@ -39,8 +41,9 @@ stInterfaz inicializarInterfaz(){
                     "Ver usuarios",
                     "Eliminar usuario",
                     "Eliminar pelicula",
+                    "Submenu prueba",
                 },
-                .cantOpcionesAdmin = 3,
+                .cantOpcionesAdmin = 4,
                 .menuObjetivoUsuario = {
                     SM_BUSCAR_PELICULA,
                     SP_AGREGAR_PELICULA,
@@ -51,10 +54,12 @@ stInterfaz inicializarInterfaz(){
                     SP_VER_USUARIOS,
                     SM_BAJA_USUARIO,
                     SM_BAJA_PELICULA,
+                    SP_AGREGAR_COMENTARIO,
                 }
             },
             {
                 .idMenu = SM_BUSCAR_PELICULA,
+                .limpiarConsola = 1,
                 .titulo = "BUSCAR PELICULA",
                 .opcionesUsuario = {
                     "Filtrar por NOMBRE",
@@ -75,6 +80,7 @@ stInterfaz inicializarInterfaz(){
             },
             {
                 .idMenu = SM_FAVORITOS,
+                .limpiarConsola = 1,
                 .titulo = "FAVORITOS",
                 .opcionesUsuario = {
                     "Mostrar favoritos",
@@ -94,7 +100,29 @@ stInterfaz inicializarInterfaz(){
                 }
             },
             {
+                .idMenu = SM_INFO_PELICULA,
+                .limpiarConsola = 0,
+                .titulo = "OPCIONES DE PELICULA",
+                .opcionesUsuario = {
+                    "Modificar pelicula",
+                    "Ver comentarios",
+                    "Agregar comentario",
+                },
+                .cantOpcionesUsuario = 3,
+                .opcionesAdmin = {
+                },
+                .cantOpcionesAdmin = 0,
+                .menuObjetivoUsuario = {
+                    SP_MODIFICAR_INFO_PELICULA,
+                    SM_MOSTRAR_COMENTARIOS, // TODO: convertir a subprograma
+                    SP_AGREGAR_COMENTARIO,
+                },
+                .menuObjetivoAdmin = {
+                }
+            },
+            {
                 .idMenu = SM_BAJA_USUARIO,
+                .limpiarConsola = 1,
                 .titulo = "ADMINISTRAR USUARIO",
                 .opcionesUsuario = {
                     "Dar de baja",
@@ -113,6 +141,7 @@ stInterfaz inicializarInterfaz(){
             },
             {
                 .idMenu = SM_BAJA_PELICULA,
+                .limpiarConsola = 1,
                 .titulo = "ADMINISTRAR PELICULA",
                 .opcionesUsuario = {
                     "Dar de baja",
@@ -144,25 +173,21 @@ void ejecutarInterfaz(stInterfaz interfaz, stControlador * controlador){
 
     // Posicion menor a 0 indica que salimos del login (cerrar programa)
     while(interfaz.posHistorial >= 0){
-        system("cls");
-
         if(interfaz.posHistorial == 0 && controlador->usuarioLogueado){
             // Si se inicio sesion correctamente, navegar hacia el menu principal
             interfaz.posHistorial++;
             interfaz.historial[1] = SM_MENU_PRINCIPAL;
-        }
 
-        if(controlador->usuarioLogueado){
-            if(controlador->usuarioLogueado->esAdmin == 1){
-                esAdmin = 1;
-            }
-            else{
-                esAdmin = 0;
-            }
+            esAdmin = controlador->usuarioLogueado->esAdmin;
         }
 
         idMenuActual = interfaz.historial[interfaz.posHistorial];
         menuActual = obtenerMenu(interfaz.menus, idMenuActual);
+
+        if(menuActual.limpiarConsola == 1){
+            system("cls");
+        }
+
         mostrarMenu(menuActual, esAdmin);
 
         printf("\nIngrese una opcion: ");
@@ -172,18 +197,14 @@ void ejecutarInterfaz(stInterfaz interfaz, stControlador * controlador){
             // Volver atras en el menu
             interfaz.posHistorial--;
 
-            if(controlador->usuarioLogueado){
-                if(interfaz.posHistorial == 0 && confirmarSalida("Desea cerrar sesion?") == 1){
-                    // Cierra sesion y vuelve al login
-                    controlador->usuarioLogueado = NULL;
+            if(controlador->usuarioLogueado && interfaz.posHistorial == 0 && confirmarSalida("Desea cerrar sesion?")){
+                // Preguntar al usuario si quiere cerrar sesion
+                // Cierra sesion y vuelve al login
+                controlador->usuarioLogueado = NULL;
                 }
-                else{
-                    // Regresa al menu principal
-                    interfaz.posHistorial = 1;
-                }
-            }
         }
         else if (validarOpcion(opcion, menuActual.cantOpcionesUsuario, menuActual.cantOpcionesAdmin)){
+            // Opcion ingresada es valida
             if(enRango(opcion, ADMIN_MENU_OFFSET, ADMIN_MENU_OFFSET + MAX_OPCIONES_MENU) && esAdmin == 1){
                 // Menu destino admin
                 idProximoMenu = interfaz.menus[interfaz.posHistorial].menuObjetivoAdmin[opcion - ADMIN_MENU_OFFSET];
@@ -201,7 +222,11 @@ void ejecutarInterfaz(stInterfaz interfaz, stControlador * controlador){
                 // Es un subprograma, ejecutar por switch
                 // No cambiar historial
                 // Posiblemente en una libreria aparte (controlador)
-                ejecutarSubprograma(idProximoMenu, controlador);
+                idProximoMenu = ejecutarSubprograma(idProximoMenu, controlador);
+                if(idProximoMenu < 1000){
+                    interfaz.posHistorial++;
+                    interfaz.historial[interfaz.posHistorial] = idProximoMenu;
+                }
             }
             else if(idProximoMenu != idMenuActual){
                 // Navegar hacia el proximo menu

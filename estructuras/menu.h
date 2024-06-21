@@ -15,6 +15,7 @@
 
 typedef struct{
     int idMenu;
+    int limpiarConsola;
     char titulo[DIM_TITULO_MENU];
     char opcionesUsuario[MAX_OPCIONES_MENU][DIM_OPCION_MENU];
     int cantOpcionesUsuario; // Validos
