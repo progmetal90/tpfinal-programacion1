@@ -26,5 +26,7 @@ void spFiltrarPorTitulo(stMemoria * memoria);
 void spFiltrarPorCategoria(stMemoria * memoria);
 void spFiltrarPorDirector(stMemoria * memoria);
 void spAgregarComentario(stMemoria * memoria, int idUsuario);
+void spModificarInfoPelicula (stMemoria * memoria);
+int buscarSiExisteIdPelicula (stMemoria * memoria, int idPelicula);
 
 #endif // CONTROLADOR_H_INCLUDED

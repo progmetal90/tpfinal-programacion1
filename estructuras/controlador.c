@@ -34,9 +34,12 @@ int ejecutarSubprograma(int subprograma, stControlador * controlador){
             spFiltrarPorDirector(controlador->memoria);
             idProximoMenu = SM_INFO_PELICULA;
             break;
-//        case SP_AGREGAR_COMENTARIO:
-//            spAgregarComentario(controlador->memoria, controlador->usuarioLogueado->idUsuario);
-//            break;
+        case SP_AGREGAR_COMENTARIO:
+            spAgregarComentario(controlador->memoria, controlador->usuarioLogueado->idUsuario);
+            break;
+        case SP_MODIFICAR_INFO_PELICULA:
+            spModificarInfoPelicula(controlador->memoria);
+            break;
         default:
             // Si llegamos aca nos olvidamos un subprograma o nos mandamos una cagada
             printf("ERROR! Subprograma %d invalido o indefinido!\n", subprograma);
@@ -226,7 +229,7 @@ void spAgregarPelicula(stMemoria * memoria){
         esIgual = existePelicula(titulo, memoria->peliculas, memoria->vPeliculas);
 
         //Si existe se pregunta si quiere salir o seguir cargando
-        if(esIgual != -1){
+        if(esIgual == 1){
             printf("EL TITULO INGRESADO YA EXISTE\n");
             printf("para salir presione esc");
             fflush(stdin);
@@ -243,7 +246,7 @@ void spAgregarPelicula(stMemoria * memoria){
 
             system("pause");
         }
-    }while(esIgual != -1 && control != 27);
+    }while(esIgual == 1 && control != 27);
 }
 
 void spFiltrarPorTitulo(stMemoria * memoria){
@@ -314,10 +317,50 @@ void spFiltrarPorCategoria(stMemoria * memoria){
             mostrarPelicula(memoria->peliculas[i]);
 
             imprimirSaltosDeLinea(2);
-            imprimirLineaSeparadora('-', ANCHO_DE_CONSOLA);
+            imprimirLineaSeparadora('=', ANCHO_DE_CONSOLA);
         }
     }
 
 
     system("pause");
+}
+
+void spModificarInfoPelicula (stMemoria * memoria){
+
+    char tituloPelicula[DIM_TITULO_PELICULA];
+    int existe;
+    int i = 0;
+    stPelicula pelicula;
+
+    //Se pide el titulo a buscar
+    printf("INGRESE EL TITULO DE LA PELICULA QUE DESEA MODIFICAR:");
+    obtenerStringDeUsuario(tituloPelicula, DIM_TITULO_PELICULA);
+
+    //Se verifica su existencia
+    while(existe != 1&& i < memoria->vPeliculas){
+        existe = filtrarPeliculaTitulo(memoria->peliculas[i], tituloPelicula);
+        i++;
+    }
+
+    //Si existe se copia a la variable pelicula y se llama a la funcion para modificar
+    if(existe == 1){
+        pelicula = memoria->peliculas[i-1];
+        pelicula = modificarInfoPelicula(pelicula);
+
+        sobreescribirPelicula(memoria, pelicula);
+
+        printf("\nSE MODIFICO CON EXITO!\n");
+
+        //Se muestra despues de modificaciones
+        imprimirLineaSeparadora('=', ANCHO_DE_CONSOLA);
+        mostrarPelicula(pelicula);
+        imprimirSaltosDeLinea(2);
+        imprimirLineaSeparadora('=', ANCHO_DE_CONSOLA);
+        imprimirSaltosDeLinea(2);
+    }else{
+        //Si no existe se devuelve al menu anterior
+        printf("EL TITULO INGRESADO NO EXISTE\n");
+        system("pause");
+        system("cls");
+    }
 }
