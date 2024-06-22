@@ -34,7 +34,7 @@ void mostrarPelicula (stPelicula pelicula){
 
 int filtrarPeliculaTitulo (stPelicula pelicula, char dato[]){
 
-    int esIgual = -1;
+    int esIgual = 0;
     char aux[DIM_TITULO_PELICULA];
     strcpy(aux, pelicula.titulo);
 
@@ -47,12 +47,12 @@ int filtrarPeliculaTitulo (stPelicula pelicula, char dato[]){
         esIgual = 1;
     }
 
-return esIgual;
+    return esIgual;
 }
 
 int filtrarPeliculaCategoria (stPelicula pelicula, char dato[]){
 
-    int esIgual = -1;
+    int esIgual = 0;
     char aux[DIM_CATEGORIA];
     strcpy(aux, pelicula.categoria);
 
@@ -63,12 +63,12 @@ int filtrarPeliculaCategoria (stPelicula pelicula, char dato[]){
         esIgual = 1;
     }
 
-return esIgual;
+    return esIgual;
 }
 
 int filtrarPeliculaDirector (stPelicula pelicula, char dato[]){
 
-    int esIgual = -1;
+    int esIgual = 0;
     char aux[DIM_DIRECTOR];
     strcpy(aux, pelicula.director);
 
@@ -79,7 +79,7 @@ int filtrarPeliculaDirector (stPelicula pelicula, char dato[]){
         esIgual = 1;
     }
 
-return esIgual;
+    return esIgual;
 }
 
 stPelicula modificarInfoPelicula (stPelicula pelicula){
@@ -89,7 +89,16 @@ stPelicula modificarInfoPelicula (stPelicula pelicula){
 
     do{
         system("cls");
-        printf("SELECCIONE EL CAMPO QUE DESEA CAMBIAR...\n");
+
+        printf("PELICULA ENCONTRADA!");
+        imprimirSaltosDeLinea(1);
+        imprimirLineaSeparadora('=', ANCHO_DE_CONSOLA);
+        mostrarPelicula(pelicula);
+        imprimirSaltosDeLinea(1);
+        imprimirLineaSeparadora('=', ANCHO_DE_CONSOLA);
+        imprimirSaltosDeLinea(1);
+
+        printf("SELECCIONE EL CAMPO QUE DESEA CAMBIAR:\n");
         printf("1- TITULO.\n");
         printf("2- CATEGORIA.\n");
         printf("3- DIRECTOR.\n");
@@ -105,9 +114,7 @@ stPelicula modificarInfoPelicula (stPelicula pelicula){
 
                 printf("TITULO: %s\n", pelicula.titulo);
                 printf("NUEVO TITULO: ");
-                fflush(stdin);
-                gets(pelicula.titulo);
-
+                obtenerStringDeUsuario(pelicula.titulo, DIM_TITULO_PELICULA);
                 break;
 
             case 2:
@@ -116,9 +123,7 @@ stPelicula modificarInfoPelicula (stPelicula pelicula){
 
                 printf("CATEGORIA: %s\n", pelicula.categoria);
                 printf("NUEVA CATEGORIA: ");
-                fflush(stdin);
-                gets(pelicula.categoria);
-
+                obtenerStringDeUsuario(pelicula.categoria, DIM_CATEGORIA);
                 break;
 
             case 3:
@@ -127,9 +132,7 @@ stPelicula modificarInfoPelicula (stPelicula pelicula){
 
                 printf("DIRECTOR: %s\n", pelicula.director);
                 printf("NUEVO DIRECTOR: ");
-                fflush(stdin);
-                gets(pelicula.director);
-
+                obtenerStringDeUsuario(pelicula.director, DIM_DIRECTOR);
                 break;
 
             case 4:
@@ -138,9 +141,7 @@ stPelicula modificarInfoPelicula (stPelicula pelicula){
 
                 printf("ESTUDIO: %s\n", pelicula.estudio);
                 printf("NUEVO ESTUDIO: ");
-                fflush(stdin);
-                gets(pelicula.estudio);
-
+                obtenerStringDeUsuario(pelicula.estudio, DIM_ESTUDIO);
                 break;
 
             default:
@@ -152,5 +153,5 @@ stPelicula modificarInfoPelicula (stPelicula pelicula){
         scanf("%c", &control);
     }while(control == 's' || control == 'S');
 
-return pelicula;
+    return pelicula;
 }

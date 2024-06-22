@@ -19,6 +19,7 @@ int ejecutarSubprograma(int subprograma, stControlador * controlador);
 stUsuario * iniciarSesion(stMemoria * memoria);
 void obtenerStringDeUsuario(char * buffer, int dimBuffer);
 int existeEmail(char * email, stUsuario * usuarios, int vUsuarios);
+int existePelicula(char * nombrePelicula, stPelicula * peliculas, int validos);
 void spCrearUsuario(stMemoria * memoria);
 void spModificarUsuario(stMemoria * memoria, stUsuario * usuario);
 void spAgregarPelicula (stMemoria * memoria);
@@ -28,5 +29,8 @@ void spFiltrarPorDirector(stMemoria * memoria);
 void spAgregarComentario(stMemoria * memoria, stUsuario * usuarioLogueado);
 void spVerUsuarios(stMemoria * memoria);
 void spEliminarUsuario(stMemoria * memoria);
+void spAgregarComentario(stMemoria * memoria, int idUsuario);
+void spModificarInfoPelicula (stMemoria * memoria);
+int buscarSiExisteIdPelicula (stMemoria * memoria, int idPelicula);
 
 #endif // CONTROLADOR_H_INCLUDED

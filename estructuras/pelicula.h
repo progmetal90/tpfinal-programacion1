@@ -6,6 +6,7 @@
 #include <conio.h>
 #include <ctype.h>
 
+#define ANCHO_DE_CONSOLA 50
 #define DIM_TITULO_PELICULA 100
 #define DIM_DIRECTOR 50
 #define DIM_ESTUDIO 50
@@ -26,7 +27,6 @@ void mostrarPelicula (stPelicula pelicula);
 int filtrarPeliculaTitulo (stPelicula pelicula, char dato[]);
 int filtrarPeliculaCategoria (stPelicula pelicula, char dato[]);
 int filtrarPeliculaDirector (stPelicula pelicula, char dato[]);
-
 stPelicula modificarInfoPelicula (stPelicula pelicula);
 
 #endif // PELICULA_H_INCLUDED
