@@ -392,7 +392,7 @@ stUsuario * iniciarSesion(stMemoria * memoria){
 }
 
 int existeEmail(char * email, stUsuario * usuarios, int vUsuarios){
-    int existeMail = 0; // 0 si no existe, sino devuelve la posicion/id del usuario
+    int existeMail = -1; // 0 si no existe, sino devuelve la posicion/id del usuario
 
     for(int i = 0; i < vUsuarios && existeMail == 0; i++){
         if(strcmpi(usuarios[i].email, email) == 0){
