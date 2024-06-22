@@ -25,5 +25,6 @@ void obtenerOpcion(int * opcion);
 int validarOpcion(int opcion, int validosUsuario, int validosAdmin);
 int confirmarSalida(char mensaje[]);
 stMenu obtenerMenu(stMenu * menus, int idMenu);
+void mostrarLogo();
 
 #endif // INTERFAZ_H_INCLUDED
