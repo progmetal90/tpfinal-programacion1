@@ -6,8 +6,10 @@
 #include "comentario.h"
 #include "usuario.h"
 #include "pelicula.h"
+#include "../librerias/consola.h"
 
-#define INCREMENTO_DINAMICO 100
+#define INCREMENTO_FIJO 100
+#define MULTIPLICADOR_REALLOC 1.5
 
 #define NOM_ARCHIVO_USUARIOS "usuarios.dat"
 #define NOM_ARCHIVO_PELICULAS "peliculas.dat"
@@ -26,6 +28,7 @@ typedef struct{
 }stMemoria;
 
 stMemoria inicializarMemoria();
+int validarMemoria(stMemoria * memoria);
 void guardarCambios(stMemoria * memoria);
 void agregarComentario(stMemoria * memoria, stComentario comentario);
 void agregarUsuario(stMemoria * memoria, stUsuario usuario);

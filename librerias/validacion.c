@@ -128,7 +128,23 @@ int validarfecha(int dia, int mes, int anio) {
     return fechaValida;
 }
 
+int esNumeroValido(char * buffer){
+    int esValido = 1;
+    int finString = 0;
+    const int ASCII_NUM_INICIO = 48;
+    const int ASCII_NUM_FIN = 58;
 
+    for(int i = 0; esValido && !finString; i++){
+        int digito = buffer[i];
 
+        if(digito == 0){
+            finString = 1;
+        }
+        else if(!enRango(digito, ASCII_NUM_INICIO, ASCII_NUM_FIN)){
+            printf("%d ", buffer[i]);
+            esValido = 0;
+        }
+    }
 
-
+    return esValido;
+}

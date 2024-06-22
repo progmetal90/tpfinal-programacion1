@@ -9,9 +9,9 @@ stMemoria inicializarMemoria(){
     memoria.vPeliculas = obtenerCantidadElementos(NOM_ARCHIVO_PELICULAS, sizeof(stPelicula));
 
     // Reservar memoria
-    memoria.dimComentarios = memoria.vComentarios + INCREMENTO_DINAMICO;
-    memoria.dimUsuarios = memoria.vUsuarios + INCREMENTO_DINAMICO;
-    memoria.dimPeliculas = memoria.vPeliculas + INCREMENTO_DINAMICO;
+    memoria.dimComentarios = memoria.vComentarios + INCREMENTO_FIJO;
+    memoria.dimUsuarios = memoria.vUsuarios + INCREMENTO_FIJO;
+    memoria.dimPeliculas = memoria.vPeliculas + INCREMENTO_FIJO;
 
     memoria.comentarios = (stComentario *)malloc(sizeof(stComentario) * memoria.dimComentarios);
     memoria.usuarios = (stUsuario *)malloc(sizeof(stUsuario) * memoria.dimUsuarios);
@@ -20,6 +20,10 @@ stMemoria inicializarMemoria(){
     cargarArchivosEnMemoria(&memoria);
 
     return memoria;
+}
+
+int validarMemoria(stMemoria * memoria){
+    return (memoria->comentarios && memoria->usuarios && memoria->peliculas);
 }
 
 void cargarArchivosEnMemoria(stMemoria * memoria){
@@ -54,35 +58,60 @@ void cargarArchivosEnMemoria(stMemoria * memoria){
 */
 void agregarComentario(stMemoria * memoria, stComentario comentario){
     if(memoria->vComentarios >= memoria->dimComentarios){
-        memoria->dimComentarios += INCREMENTO_DINAMICO;
+        memoria->dimComentarios *= MULTIPLICADOR_REALLOC;
         memoria->comentarios = (stComentario *)realloc(memoria->comentarios, sizeof(stComentario) * memoria->dimComentarios);
     }
 
-    comentario.idComentario = memoria->vComentarios;
-    memoria->comentarios[memoria->vComentarios] = comentario;
-    memoria->vComentarios++;
+    if(memoria->comentarios){
+        comentario.idComentario = memoria->vComentarios;
+        memoria->comentarios[memoria->vComentarios] = comentario;
+        memoria->vComentarios++;
+    }
+    else{
+        printf(COLOR_ROJO);
+        printf("Fallo redimensionando memoria! No se ha guardado el comentario.\n");
+        system("pause");
+        printf(COLOR_RESET);
+    }
 }
 
 void agregarUsuario(stMemoria * memoria, stUsuario usuario){
     if(memoria->vUsuarios >= memoria->dimUsuarios){
-        memoria->dimUsuarios += INCREMENTO_DINAMICO;
+        memoria->dimUsuarios *= MULTIPLICADOR_REALLOC;
         memoria->usuarios = (stUsuario *)realloc(memoria->usuarios, sizeof(stUsuario) * memoria->dimUsuarios);
     }
 
-    usuario.idUsuario = memoria->vUsuarios;
-    memoria->usuarios[memoria->vUsuarios] = usuario;
-    memoria->vUsuarios++;
+    if(memoria->usuarios){
+        usuario.idUsuario = memoria->vUsuarios;
+        memoria->usuarios[memoria->vUsuarios] = usuario;
+        memoria->vUsuarios++;
+    }
+    else{
+        printf(COLOR_ROJO);
+        printf("Fallo redimensionando memoria! No se ha guardado el usuario.\n");
+        system("pause");
+        printf(COLOR_RESET);
+    }
+
 }
 
 void agregarPelicula(stMemoria * memoria, stPelicula pelicula){
     if(memoria->vPeliculas >= memoria->dimPeliculas){
-        memoria->dimPeliculas += INCREMENTO_DINAMICO;
+        memoria->dimPeliculas *= MULTIPLICADOR_REALLOC;
         memoria->peliculas = (stPelicula *)realloc(memoria->peliculas, sizeof(stPelicula) * memoria->dimPeliculas);
     }
 
-    pelicula.idPelicula = memoria->vPeliculas;
-    memoria->peliculas[memoria->vPeliculas] = pelicula;
-    memoria->vPeliculas++;
+    if(memoria->peliculas){
+        pelicula.idPelicula = memoria->vPeliculas;
+        memoria->peliculas[memoria->vPeliculas] = pelicula;
+        memoria->vPeliculas++;
+    }
+    else{
+        printf(COLOR_ROJO);
+        printf("Fallo redimensionando memoria! No se ha guardado la pelicula.\n");
+        system("pause");
+        printf(COLOR_RESET);
+    }
 }
 
 /// Obtener un dato
@@ -158,16 +187,25 @@ void guardarCambios(stMemoria * memoria){
 
         fclose(archiComentarios);
     }
+    else{
+        printf("Error guardando comentarios en disco!\n");
+    }
 
     if(archiUsuarios){
         fwrite(memoria->usuarios, sizeof(stUsuario), memoria->vUsuarios, archiUsuarios);
 
         fclose(archiUsuarios);
     }
+    else{
+        printf("Error guardando usuarios en disco!\n");
+    }
 
     if(archiPeliculas){
         fwrite(memoria->peliculas, sizeof(stPelicula), memoria->vPeliculas, archiPeliculas);
 
         fclose(archiPeliculas);
+    }
+    else{
+        printf("Error guardando comentarios en disco!\n");
     }
 }

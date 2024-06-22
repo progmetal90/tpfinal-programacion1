@@ -9,6 +9,7 @@
 #include "../librerias/subprogramas.h"
 #include "../librerias/submenus.h"
 #include "../librerias/consola.h"
+#include "../librerias/entrada_usuario.h"
 
 typedef struct{
     stMemoria * memoria;
@@ -18,7 +19,6 @@ typedef struct{
 stControlador inicializarControlador(stMemoria * memoria);
 int ejecutarSubprograma(int subprograma, stControlador * controlador);
 stUsuario * iniciarSesion(stMemoria * memoria);
-void obtenerStringDeUsuario(char * buffer, int dimBuffer);
 int existeEmail(char * email, stUsuario * usuarios, int vUsuarios);
 int existePelicula(char * nombrePelicula, stPelicula * peliculas, int validos);
 void spCrearUsuario(stMemoria * memoria);

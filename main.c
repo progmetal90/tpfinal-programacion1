@@ -22,11 +22,19 @@ int main()
 //        agregarPelicula(&memoria, cargarPeliculaRandom());
 //    }
 
-    stInterfaz interfaz = inicializarInterfaz();
-    ejecutarInterfaz(interfaz, &controlador);
+    int memoriaValida = validarMemoria(&memoria);
 
-    // TODO: guardar memoria en archivos
-    guardarCambios(&memoria);
+    if(memoriaValida){
+        stInterfaz interfaz = inicializarInterfaz();
+        ejecutarInterfaz(interfaz, &controlador);
+
+        // TODO: guardar memoria en archivos
+        guardarCambios(&memoria);
+    }
+    else{
+        printf("No se pudo alojar suficiente memoria! Saliendo del programa...");
+        system("pause");
+    }
 
     return 0;
 }

@@ -397,32 +397,6 @@ int existeEmail(char * email, stUsuario * usuarios, int vUsuarios){
     return existeMail;
 }
 
-void obtenerStringDeUsuario(char * buffer, int dimBuffer){
-    fflush(stdin);
-    fgets(buffer, dimBuffer, stdin);
-
-    // TODO: esto es una chanchada para quitar el salto de linea de fgets
-    // Preguntar como mejorar esto
-
-    int encontrado = 0;
-    for(int i = dimBuffer; i >= 0 && encontrado == 0; i--){
-        if(buffer[i] == 10){
-            buffer[i] = 0;
-            encontrado = 1;
-        }
-    }
-}
-
-void obtenerOpcion(int * opcion){
-    // TODO: sanitizar input
-    // Esta entrada de momento solo puede recibir numeros. Cosas MALAS pasaran si recibe cualquier otra cosa.
-
-    // Considerar si scanf es suficiente o si es necesario usar otra forma para capturar input.
-    // Un combo de gets() y atoi por ahi es mas versatil
-    // Se podria recibir tanto strings como numeros, pero tambien complicaria las cosas
-    scanf("%d", opcion);
-}
-
 int existePelicula(char * nombrePelicula, stPelicula * peliculas, int validos){
     int existe = 0;
     int i;

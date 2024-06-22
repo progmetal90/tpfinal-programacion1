@@ -8,6 +8,7 @@
 #include <string.h>
 #include "fecha.h"
 #include "../librerias/validacion.h"
+#include "../librerias/consola.h"
 
 typedef struct {
     int idComentario;  // unico, autoincremental

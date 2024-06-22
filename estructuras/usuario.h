@@ -12,6 +12,7 @@
 #include "domicilio.h"
 #include "../librerias/validacion.h"
 #include "fecha.h"
+#include "../librerias/consola.h"
 
 typedef struct{
     int idUsuario;

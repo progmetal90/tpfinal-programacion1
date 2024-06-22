@@ -71,6 +71,10 @@
 			<Option compilerVar="CC" />
 		</Unit>
 		<Unit filename="librerias/consola.h" />
+		<Unit filename="librerias/entrada_usuario.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="librerias/entrada_usuario.h" />
 		<Unit filename="librerias/mock.c">
 			<Option compilerVar="CC" />
 		</Unit>

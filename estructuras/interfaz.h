@@ -6,7 +6,7 @@
 #include <conio.h>
 #include "menu.h"
 #include "controlador.h"
-#include "../librerias/validacion.h"
+#include "../librerias/entrada_usuario.h"
 
 #define ID_MENU_INVALIDO 9999
 #define DIM_ARR_MENU 200 // TODO: 200 es de prueba, reducir mas adelante
@@ -21,7 +21,6 @@ typedef struct{
 stInterfaz inicializarInterfaz();
 void ejecutarInterfaz(stInterfaz interfaz, stControlador * controlador);
 int obtenerIdProximoMenu(stMenu menu, int opcion);
-void obtenerOpcion(int * opcion);
 int validarOpcion(int opcion, int validosUsuario, int validosAdmin);
 int confirmarSalida(char mensaje[]);
 stMenu obtenerMenu(stMenu * menus, int idMenu);

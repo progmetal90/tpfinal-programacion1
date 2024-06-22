@@ -5,6 +5,7 @@
 #include <string.h>
 #include <conio.h>
 #include <ctype.h>
+#include "../librerias/consola.h"
 
 #define ANCHO_DE_CONSOLA 50
 #define DIM_TITULO_PELICULA 100

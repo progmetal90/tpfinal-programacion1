@@ -18,6 +18,7 @@ int contarCaracterEnString(char string[], char caracter);
 int enRango(int valor, int min, int max);
 int validarGenero(char genero);
 int validarfecha(int dia, int mes, int anio);
+int esNumeroValido(char * buffer);
 
 
 #endif // AUTENTIFICACION_H_INCLUDED
