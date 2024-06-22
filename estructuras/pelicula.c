@@ -29,7 +29,7 @@ void mostrarPelicula (stPelicula pelicula){
     printf("Director: %s\n", pelicula.director);
     printf("Estudio: %s\n", pelicula.estudio);
     printf("Valoracion: %.2f\n", pelicula.valoracion);
-    printf("ID: %d", pelicula.idPelicula);
+    printf("ID: %d\n", pelicula.idPelicula);
 }
 
 int filtrarPeliculaTitulo (stPelicula pelicula, char dato[]){
