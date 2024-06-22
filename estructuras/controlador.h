@@ -26,11 +26,14 @@ void spAgregarPelicula (stMemoria * memoria);
 void spFiltrarPorTitulo(stMemoria * memoria);
 void spFiltrarPorCategoria(stMemoria * memoria);
 void spFiltrarPorDirector(stMemoria * memoria);
-void spAgregarComentario(stMemoria * memoria, stUsuario * usuarioLogueado);
 void spVerUsuarios(stMemoria * memoria);
 void spEliminarUsuario(stMemoria * memoria);
 void spAgregarComentario(stMemoria * memoria, int idUsuario);
 void spModificarInfoPelicula (stMemoria * memoria);
 int buscarSiExisteIdPelicula (stMemoria * memoria, int idPelicula);
+void spMostrarComentarios(stMemoria * memoria);
+void spQuitarComentario(stMemoria * memoria, int idUsuario);
+int obtenerIdComentarioDeUsuario(stComentario * comentarios, int validos, int idPelicula, int idUsuario);
+void eliminarComentariosDePelicula(stComentario * comentarios, int validos, int idPelicula);
 
 #endif // CONTROLADOR_H_INCLUDED

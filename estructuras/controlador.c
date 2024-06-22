@@ -49,6 +49,13 @@ int ejecutarSubprograma(int subprograma, stControlador * controlador){
         case SP_MODIFICAR_INFO_PELICULA:
             spModificarInfoPelicula(controlador->memoria);
             break;
+        case SP_MOSTRAR_COMENTARIOS:
+            spMostrarComentarios(controlador->memoria);
+            idProximoMenu = SM_INFO_COMENTARIOS;
+            break;
+        case SP_QUITAR_COMENTARIO:
+            spQuitarComentario(controlador->memoria, controlador->usuarioLogueado->idUsuario);
+            break;
         default:
             // Si llegamos aca nos olvidamos un subprograma o nos mandamos una cagada
             printf("ERROR! Subprograma %d invalido o indefinido!\n", subprograma);
@@ -59,13 +66,39 @@ int ejecutarSubprograma(int subprograma, stControlador * controlador){
     return idProximoMenu;
 }
 
-void spAgregarComentario(stMemoria * memoria, int idUsuario){
+void eliminarComentariosDePelicula(stComentario * comentarios, int validos, int idPelicula){
+    for(int i = 0; i < validos; i++){
+        if(comentarios[i].idPelicula == idPelicula){
+            comentarios[i].eliminado = 1;
+        }
+    }
+}
+
+int obtenerIdComentarioDeUsuario(stComentario * comentarios, int validos, int idPelicula, int idUsuario){
+    int id = -1;
+    // Devuelve -1 si el usuario no posee comentario en la pelicula
+    // Si existe, devuelve la id del comentario.
+
+    for(int i = 0; i < validos && id == -1; i++){
+        stComentario comentario = comentarios[i];
+        if(comentario.idUsuario == idUsuario && comentario.idPelicula == idPelicula){
+            id = comentario.idComentario;
+        }
+    }
+
+    return id;
+}
+
+void spQuitarComentario(stMemoria * memoria, int idUsuario){
     int idPelicula;
     char nombrePelicula[DIM_TITULO_PELICULA];
     char opcion = 0;
+    stPelicula * aux;
+    int idComentario;
 
     do{
-        printf("Ingrese el nombre de la pelicula para agregar un comentario: ");
+        system("cls");
+        printf("Ingrese el nombre de la pelicula para quitar un comentario: ");
         obtenerStringDeUsuario(nombrePelicula, DIM_TITULO_PELICULA);
 
         idPelicula = existePelicula(nombrePelicula, memoria->peliculas, memoria->vPeliculas);
@@ -76,12 +109,132 @@ void spAgregarComentario(stMemoria * memoria, int idUsuario){
             fflush(stdin);
             opcion = getch();
         }
-    }while(idPelicula == -1 || opcion != 27);
+        else{
+            idComentario = -1;
+            aux = obtenerPelicula(memoria, idPelicula);
+            // Comprobar que el usuario tenga un comentario en esa pelicula
+            idComentario = obtenerIdComentarioDeUsuario(memoria->comentarios, memoria->vComentarios, idPelicula, idUsuario);
+
+            if(idComentario == -1 || memoria->comentarios[idComentario].eliminado == 1){
+                printf("Usted no tiene comentarios en la pelicula '%s'.\n", aux->titulo);
+                printf("Presione ESC para salir o una tecla cualquiera para intentar otra vez.\n");
+                fflush(stdin);
+                opcion = getch();
+            }
+            else{
+                printf("Quiere eliminar su comentario de la pelicula '%s'?\n", aux->titulo);
+                printf("Presione ENTER para confirmar o ESC para cancelar.");
+                fflush(stdin);
+                opcion = getch();
+                if(opcion == 13){
+                    memoria->comentarios[idComentario].eliminado = 1;
+                    printf("\nComentario eliminado exitosamente!\n");
+                    system("pause");
+                }
+                opcion = 27; // Salir
+            }
+        }
+    }while((idPelicula == -1 || idComentario == -1) && opcion != 27);
+}
+
+void spMostrarComentarios(stMemoria * memoria){
+    int idPelicula;
+    char nombrePelicula[DIM_TITULO_PELICULA];
+    char opcion = 0;
+    stPelicula * aux;
+
+    do{
+        system("cls");
+        printf("Ingrese el nombre de la pelicula para ver los comentario: ");
+        obtenerStringDeUsuario(nombrePelicula, DIM_TITULO_PELICULA);
+
+        idPelicula = existePelicula(nombrePelicula, memoria->peliculas, memoria->vPeliculas);
+
+        if(idPelicula == -1){
+            printf("La pelicula ingresada no existe. ");
+            printf("Intente nuevamente o presione ESC para salir.\n\n");
+            fflush(stdin);
+            opcion = getch();
+        }
+        else{
+            aux = obtenerPelicula(memoria, idPelicula);
+            printf("Quiere ver los comentarios de la pelicula '%s'?\n", aux->titulo);
+            printf("Presione ENTER para confirmar, ESC para salir u otra tecla para reintentar.");
+            fflush(stdin);
+            opcion = getch();
+            if(opcion != 13){
+                idPelicula = -1;
+            }
+        }
+    }while(idPelicula == -1 && opcion != 27 && opcion != 13);
 
     system("cls");
 
     if(idPelicula != -1){
-        cargarComentario(idUsuario, idPelicula);
+        // Mostrar comentarios
+        int comentariosMostrados = 0;
+        char tituloBusqueda[] = "Comentarios de pelicula: ";
+        printf("%s%s\n", tituloBusqueda, aux->titulo);
+        imprimirLineaSeparadora('-', strlen(tituloBusqueda) + strlen(aux->titulo));
+        imprimirSaltosDeLinea(1);
+
+        for(int i = 0; i < memoria->vComentarios; i++){
+            stComentario comentario = memoria->comentarios[i];
+            if(comentario.eliminado != 1){
+                mostrarComentario(comentario);
+                imprimirSaltosDeLinea(1);
+                imprimirLineaSeparadora('-', ANCHO_DE_CONSOLA);
+                imprimirSaltosDeLinea(1);
+                comentariosMostrados++;
+            }
+        }
+
+        if(comentariosMostrados == 0){
+            printf("No se encontraron comentarios.\n\n");
+        }
+    }
+}
+
+void spAgregarComentario(stMemoria * memoria, int idUsuario){
+    int idPelicula;
+    char nombrePelicula[DIM_TITULO_PELICULA];
+    char opcion = 0;
+    stComentario comentario;
+
+    do{
+        system("cls");
+        printf("Ingrese el nombre de la pelicula para agregar un comentario: ");
+        obtenerStringDeUsuario(nombrePelicula, DIM_TITULO_PELICULA);
+
+        idPelicula = existePelicula(nombrePelicula, memoria->peliculas, memoria->vPeliculas);
+
+        if(idPelicula == -1){
+            printf("La pelicula ingresada no existe. ");
+            printf("Intente nuevamente o presione ESC para salir.");
+            fflush(stdin);
+            opcion = getch();
+            if(opcion != 27){
+                opcion = 0;
+            }
+        }
+        else{
+            stPelicula * aux = obtenerPelicula(memoria, idPelicula);
+            printf("Quiere comentar la pelicula '%s'?\n", aux->titulo);
+            printf("Presione ENTER para confirmar, ESC para salir u otra tecla para reintentar.");
+            fflush(stdin);
+            opcion = getch();
+            if(opcion != 13){
+                idPelicula = -1;
+            }
+        }
+    }while(idPelicula == -1 && opcion != 27 && opcion != 13);
+
+    system("cls");
+
+    if(idPelicula != -1){
+        comentario = cargarComentario(idUsuario, idPelicula);
+
+        agregarComentario(memoria, comentario);
 
         printf("Comentario cargado con exito!");
         system("cls");
@@ -272,18 +425,21 @@ void obtenerOpcion(int * opcion){
 }
 
 int existePelicula(char * nombrePelicula, stPelicula * peliculas, int validos){
-    int existe;
+    int existe = 0;
     int i;
     stPelicula pelicula;
 
     //Verificar que ese titulo no exista en memoria
-    for(i = 0; i < validos && existe != -1; i++){
+    for(i = 0; i < validos && existe == 0; i++){
         pelicula = peliculas[i];
         existe = filtrarPeliculaTitulo(pelicula, nombrePelicula);
     }
 
-    if(existe != -1){ // TODO: devolver 0 como falso y 1 como verdadero
-        existe = i; // Devuelve id de pelicula, o -1 si no existe
+    if(existe){
+        existe = i - 1; // Devuelve id de pelicula, o -1 si no existe
+    }
+    else{
+        existe = -1;
     }
 
     return existe;

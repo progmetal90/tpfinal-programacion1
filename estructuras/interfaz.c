@@ -105,19 +105,42 @@ stInterfaz inicializarInterfaz(){
                 .titulo = "OPCIONES DE PELICULA",
                 .opcionesUsuario = {
                     "Modificar pelicula",
-                    "Ver comentarios",
-                    "Agregar comentario",
+                    "Opciones de comentarios"
                 },
-                .cantOpcionesUsuario = 3,
+                .cantOpcionesUsuario = 2,
                 .opcionesAdmin = {
                 },
                 .cantOpcionesAdmin = 0,
                 .menuObjetivoUsuario = {
                     SP_MODIFICAR_INFO_PELICULA,
-                    SM_MOSTRAR_COMENTARIOS, // TODO: convertir a subprograma
-                    SP_AGREGAR_COMENTARIO,
+                    SM_INFO_COMENTARIOS,
                 },
                 .menuObjetivoAdmin = {
+                }
+            },
+            {
+                .idMenu = SM_INFO_COMENTARIOS,
+                .limpiarConsola = 1,
+                .titulo = "OPCIONES DE COMENTARIO",
+                .opcionesUsuario = {
+                    "Mostrar comentarios",
+                    "Agregar comentario",
+                    "Modificar comentario",
+                    "Quitar comentario",
+                },
+                .cantOpcionesUsuario = 4,
+                .opcionesAdmin = {
+                    "Eliminar comentario",
+                },
+                .cantOpcionesAdmin = 1,
+                .menuObjetivoUsuario = {
+                    SP_MOSTRAR_COMENTARIOS,
+                    SP_AGREGAR_COMENTARIO,
+                    SP_MODIFICAR_COMENTARIO,
+                    SP_QUITAR_COMENTARIO,
+                },
+                .menuObjetivoAdmin = {
+                    SP_ELIMINAR_COMENTARIO,
                 }
             },
             {
@@ -201,7 +224,8 @@ void ejecutarInterfaz(stInterfaz interfaz, stControlador * controlador){
                 // Preguntar al usuario si quiere cerrar sesion
                 // Cierra sesion y vuelve al login
                 controlador->usuarioLogueado = NULL;
-                }
+            }
+            system("cls");
         }
         else if (validarOpcion(opcion, menuActual.cantOpcionesUsuario, menuActual.cantOpcionesAdmin)){
             // Opcion ingresada es valida

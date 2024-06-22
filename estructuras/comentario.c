@@ -1,9 +1,8 @@
-#include <stdio.h>
 #include "comentario.h"
 
 void mostrarComentario(stComentario comentario){
 
-    printf("Comentario: #%d, pelicula #%d, usuario #%d\n", comentario.idComentario, comentario.idPelicula, comentario.idUsuario);
+    printf("Comentario #%d\n", comentario.idComentario);
     printf("Fecha: %s\n", comentario.fechaComentario);
     printf("Titulo: %s\n", comentario.titulo);
     printf("Descripcion: %s\n", comentario.descripcion);
@@ -40,14 +39,15 @@ stComentario cargarComentario(int idUsuario, int idPelicula){
         if(!enRango(puntaje, 1, 5 + 1)){
             printf("Puntaje invalido! Intente nuevamente.\n");
         }
+        else{
+            comentario.puntaje = puntaje;
+        }
 
     }while(!enRango(puntaje, 1, 5 + 1));
 
     obtenerFechaActual(comentario.fechaComentario);
 
     printf("Comentario cargado con exito!\n");
-
-    mostrarComentario(comentario);
 
     system("pause");
     return comentario;

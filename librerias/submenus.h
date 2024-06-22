@@ -8,7 +8,7 @@
 #define SM_FAVORITOS 3
 #define SM_MOSTRAR_PELICULAS 4
 #define SM_INFO_PELICULA 5
-#define SM_MOSTRAR_COMENTARIOS 6
+#define SM_INFO_COMENTARIOS 6
 
 // Submenus admin
 #define SM_BAJA_USUARIO 100
