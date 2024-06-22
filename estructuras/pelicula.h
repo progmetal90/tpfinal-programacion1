@@ -20,7 +20,7 @@ typedef struct{
     char estudio[DIM_ESTUDIO];
     char categoria[DIM_CATEGORIA];
     float valoracion; // inicializar en 0 (sin valoracion)
-    int eliminado; // 0 si esta activo - 1 si esta eliminado
+    int eliminado; // 0 si esta activo - 1 si esta eliminado - 2 si esta dado de baja
 }stPelicula;
 
 stPelicula cargarPelicula (char titulo[]);
