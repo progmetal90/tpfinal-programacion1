@@ -1,38 +1,46 @@
 #include "validacion.h"
 
-const char ARROBA[] = "@";
-const char PUNTO[] = ".";
+const char ARROBA_STRING[] = "@";
+const char ARROBA = '@';
+const char PUNTO = '.';
 const char PUNTO_COM[] = ".com";
 
 int validarEmail(char email[]){
     // Comprueba que el email proporcionado sea valido
     // Necesita de un solo arroba, y un solo .com.
 
-    // Pasar mail a minuscula
-    email = strlwr(email);
+    // Pasar mail a minuscula, trabajo con copia para no alterar mail original
+    char emailMinuscula [DIM_EMAIL];
+    strcpy(emailMinuscula, email);
+
+    strlwr(emailMinuscula);
 
     int valido = 0;
     int puntoCom = 0;
     // Comprobar que el mail tenga un ".com"
+    // TODO: primer caracter y caracter anterior al arroba debe ser A-z o 0-9
 
-    char *substring = strstr(email, ARROBA); ///Busca a partir del @.
+    char * substring = strstr(emailMinuscula, ARROBA_STRING); // Busca a partir del @.
 
-    while(substring){
-    substring = strstr(substring, PUNTO_COM);
-        if(!substring){
-            printf("\nEl email no contiene \".COM \" .");
-            }
-            else{
+    while(substring && puntoCom <= 1){
+//        printf("substring: %s");
+//        system("pause");
+        substring = strstr(substring, PUNTO_COM);
+
+        if(substring){
             puntoCom++;
-            substring = strstr(substring + 1, PUNTO_COM);
+            // Avanzo 4 caracteres y sigo buscando punto coms.
+            substring = &substring[4];
+            if(substring[0] == 0){
+                substring = NULL;
             }
         }
-    /// Compara los 2 strings para que no se repitan el ".com" y el '@'
-    if(contarCaracterEnString(email, ARROBA) == 1 && puntoCom == 1){
-            valido = 1;
-    }else{
-    printf("\nEl email es invalido.");
     }
+    /// Compara los 2 strings para que no se repitan el ".com" y el '@'
+    if(contarCaracterEnString(emailMinuscula, ARROBA) == 1 && puntoCom == 1){
+        valido = 1;
+    }
+
     return valido;
 }
 

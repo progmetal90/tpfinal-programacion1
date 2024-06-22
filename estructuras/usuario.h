@@ -1,7 +1,6 @@
 #ifndef USUARIO_H_INCLUDED
 #define USUARIO_H_INCLUDED
 
-#define DIM_EMAIL 100
 #define DIM_PASSWORD 20
 #define DIM_USERNAME 20
 #define CANT_GENEROS 3

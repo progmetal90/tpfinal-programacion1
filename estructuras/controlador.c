@@ -394,7 +394,7 @@ stUsuario * iniciarSesion(stMemoria * memoria){
 int existeEmail(char * email, stUsuario * usuarios, int vUsuarios){
     int existeMail = -1; // 0 si no existe, sino devuelve la posicion/id del usuario
 
-    for(int i = 0; i < vUsuarios && existeMail == 0; i++){
+    for(int i = 0; i < vUsuarios && existeMail == -1; i++){
         if(strcmpi(usuarios[i].email, email) == 0){
             existeMail = i;
         }
@@ -657,7 +657,7 @@ void spEliminarPelicula (stMemoria * memoria) {
 
             //Se confirma que se quiera eliminar
             printf("SI SE ELIMINA DEL SISTEMA NO SE PODRA RECUPERAR\n");
-            printf("Enter para eliminar o cualquier tecla para cancelar\n", aux.titulo);
+            printf("Enter para eliminar o cualquier tecla para cancelar\n");
             control = getch();
             if(control == 13){
                 aux.eliminado = 1;

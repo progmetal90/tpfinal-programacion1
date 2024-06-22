@@ -2,6 +2,8 @@
 * Libreria con metodos para validacion de datos.
 */
 
+#define DIM_EMAIL 100
+
 #ifndef AUTENTIFICACION_H_INCLUDED
 #define AUTENTIFICACION_H_INCLUDED
 #include <stdio.h>
