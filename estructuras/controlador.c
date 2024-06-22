@@ -19,6 +19,15 @@ int ejecutarSubprograma(int subprograma, stControlador * controlador){
         case SP_CREAR_USUARIO:
             spCrearUsuario(controlador->memoria);
             break;
+        case SP_MODIFICAR_USUARIO:
+            spModificarUsuario(controlador->memoria, controlador->usuarioLogueado);
+            break;
+        case SP_VER_USUARIOS:
+            spVerUsuarios(controlador->memoria);
+            break;
+        case SP_ELIMINAR_USUARIO:
+            spEliminarUsuario(controlador->memoria);
+            break;
         case SP_AGREGAR_PELICULA:
             spAgregarPelicula(controlador->memoria);
             break;
@@ -52,10 +61,67 @@ void spAgregarComentario(stMemoria * memoria, stUsuario * usuarioLogueado){
     //cargarComentario(usuarioLogueado->idUsuario, 0);
 }
 
+void spModificarUsuario(stMemoria * memoria, stUsuario * usuario) {
+
+    stUsuario aux = *usuario;
+
+    aux = modificarUsuario (aux);
+
+    *usuario = aux;
+}
+
+void spEliminarUsuario(stMemoria * memoria) {
+
+    char mail[DIM_EMAIL];
+    int existeMail = 0;
+
+    printf("Ingrese el mail para buscar el usuario a eliminar: ");
+    obtenerStringDeUsuario(mail, DIM_EMAIL);
+
+    existeMail = existeEmail(mail, memoria->usuarios, memoria->vUsuarios);
+
+    if(existeMail != 0) {
+
+        stUsuario aux = memoria->usuarios[existeMail];
+        if(aux.idUsuario == 0) {
+            printf("No se puede bloquear a un ADMINISTRADOR.\n");
+            system("pause");
+        }
+        printf("Desea bloquear al usuario ID %d?\n", aux.idUsuario);
+        system("pause");
+        if (aux.eliminado == 1) {
+            printf("El usuario ya se encuentra bloqueado en el sistema.\n");
+        }
+        else {
+        aux.eliminado = 1;
+        sobreescribirUsuario(memoria, aux);
+        printf("Usuario bloqueado exitosamente. \n");
+        }
+    }
+
+    system("pause");
+
+}
+
+void spVerUsuarios(stMemoria * memoria) {
+
+int vUsuarios =  memoria->vUsuarios;
+
+    for(int i = 0 ; i < vUsuarios ; i++) {
+        mostrarUsuario(memoria->usuarios[i]);
+        imprimirLineaSeparadora(10);
+        if ((i + 1) % 3 == 0 || i == vUsuarios - 1) {
+            system("pause");
+            system("cls");
+            }
+    }
+
+}
+
 void spCrearUsuario(stMemoria * memoria){
 
     char mail[DIM_EMAIL];
-    int existe = -1;
+    int existe = 0;
     int emailValido = 0;
 
     do{
@@ -70,11 +136,11 @@ void spCrearUsuario(stMemoria * memoria){
     }
     existe = existeEmail(mail, memoria->usuarios, memoria->vUsuarios);
 
-        if(existe != -1) {
+        if(existe != 0) {
             printf("Ya existe un usuario registrado con ese correo. \n");
         }
 
-    }while(existe != -1); // No existe mail en la db
+    }while(existe != 0); // No existe mail en la db
 
     stUsuario aux = cargarUsuario(mail);
 
@@ -84,6 +150,7 @@ void spCrearUsuario(stMemoria * memoria){
 
 stUsuario * iniciarSesion(stMemoria * memoria){
     stUsuario * usuarioLogueado = NULL;
+    stUsuario aux;
     char email[DIM_USERNAME];
     char contrasenia[DIM_PASSWORD];
     int emailValido = 0;
@@ -105,25 +172,34 @@ stUsuario * iniciarSesion(stMemoria * memoria){
     }
     else{
         idUsuario = existeEmail(email, memoria->usuarios, memoria->vUsuarios);
-
-        // 2. Recibir contrasenia
-        printf("Ingrese su contrasenia (maximo %d caracteres): ", DIM_PASSWORD - 1);
-        obtenerStringDeUsuario(contrasenia, DIM_USERNAME);
-
-        // Comprobar que la contrasenia sea valida en formato
-        contraseniaValida = validarContrasenia(contrasenia);
-
-        // Si todo esto es correcto y las credenciales son correctas,
-        // buscar en arreglo de usuarios y devolver el puntero al usuario logueado.
-        if(idUsuario != -1 && contraseniaValida == 1 && strcmp(memoria->usuarios[idUsuario].password, contrasenia) == 0){
-            usuarioLogueado = &memoria->usuarios[idUsuario];
-
-            printf("Sesion iniciada correctamente. Bienvenido, %s!\n", usuarioLogueado->username);
+        aux = memoria->usuarios[idUsuario];
+        // Comprobar si esta bloqueado
+        if(aux.eliminado == 1) {
+            printf("Este usuario se encuentra bloqueado en el sistema.\n");
+            system("pause");
         }
-        else{
-            printf("Alguno de los datos ingresados es incorrecto! Intente nuevamente.\n");
+        else {
+
+            // 2. Recibir contrasenia
+            printf("Ingrese su contrasenia (maximo %d caracteres): ", DIM_PASSWORD - 1);
+            obtenerStringDeUsuario(contrasenia, DIM_USERNAME);
+
+            // Comprobar que la contrasenia sea valida en formato
+            contraseniaValida = validarContrasenia(contrasenia);
+
+
+            // Si todo esto es correcto y las credenciales son correctas,
+            // buscar en arreglo de usuarios y devolver el puntero al usuario logueado.
+            if(idUsuario != -1 && contraseniaValida == 1 && strcmp(memoria->usuarios[idUsuario].password, contrasenia) == 0){
+                usuarioLogueado = &memoria->usuarios[idUsuario];
+
+                printf("Sesion iniciada correctamente. Bienvenido, %s!\n", usuarioLogueado->username);
+            }
+            else{
+                printf("Alguno de los datos ingresados es incorrecto! Intente nuevamente.\n");
+            }
+            system("pause");
         }
-        system("pause");
     }
 
     // TODO: agregar funcion para salir del subprograma
@@ -131,9 +207,9 @@ stUsuario * iniciarSesion(stMemoria * memoria){
 }
 
 int existeEmail(char * email, stUsuario * usuarios, int vUsuarios){
-    int existeMail = -1; // -1 si no existe, sino devuelve la posicion/id del usuario
+    int existeMail = 0; // 0 si no existe, sino devuelve la posicion/id del usuario
 
-    for(int i = 0; i < vUsuarios && existeMail == -1; i++){
+    for(int i = 0; i < vUsuarios && existeMail == 0; i++){
         if(strcmpi(usuarios[i].email, email) == 0){
             existeMail = i;
         }

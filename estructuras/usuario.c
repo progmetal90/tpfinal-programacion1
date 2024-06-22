@@ -10,9 +10,11 @@ void mostrarUsuario(stUsuario usuario){
     printf("Genero: %c\n", usuario.genero);
     printf("Fecha nacimiento: %s\n", usuario.fechaNacimiento);
     printf("DNI: %s\n", usuario.dni);
+    printf("ELIMINADO: %d\n", usuario.eliminado);
     mostrarDomicilio(usuario.domicilio);
     // TODO: mostrar peliculas favoritas en un menu distinto?
 }
+
 
 stUsuario cargarUsuario(char * mail){
     const int DIM_ANIO = 5;
@@ -204,9 +206,183 @@ stUsuario cargarUsuario(char * mail){
     }while(strlen(pais) >= DIM_PAIS - 1);
 
     strcpy(aux.domicilio.pais, pais);
-    system("cls");
 
     printf("Usuario cargado con exito!\n");
+    system("pause");
 
     return aux;
+}
+
+
+stUsuario modificarUsuario(stUsuario usuario) {
+
+    const int DIM_ANIO = 5;
+    const int DIM_DIA = 3;
+    const int DIM_MES = 3;
+
+    char genero;
+    char control = 0;
+    char diaStr[DIM_DIA];
+    char mesStr[DIM_MES];
+    char anioStr[DIM_ANIO];
+    char dni[DIM_DNI];
+    char contrasenia[DIM_PASSWORD];
+
+    int opcion = 0;
+    int fechaValida = 0;
+    int dia, mes, anio;
+    int contraseniaValida = 0;
+
+
+    do{
+        system("cls");
+        printf("SELECCIONE EL CAMPO QUE DESEA CAMBIAR...\n");
+        printf("1- DNI.\n");
+        printf("2- DOMICILIO.\n");
+        printf("3- FECHA DE NACIMIENTO.\n");
+        printf("4- GENERO.\n");
+        printf("5- CONTRASENIA. \n");
+        printf("6- USERNAME.\n");
+
+        scanf("%d", &opcion);
+
+        switch(opcion){
+
+            case 1:
+
+                system("cls");
+
+                printf("DNI : %s\n", usuario.dni );
+
+                do {
+
+                    printf("Ingrese su DNI: \n");
+                    obtenerStringDeUsuario(dni, DIM_DNI);
+
+                }while(strlen(dni) < 7);
+
+                strcpy(dni, usuario.dni);
+
+                break;
+
+            case 2:
+
+                system("cls");
+
+                mostrarDomicilio(usuario.domicilio);
+
+                printf("NUEVA CALLE: ");
+                obtenerStringDeUsuario(usuario.domicilio.calle, DIM_CALLE);
+                printf("NUEVA ALTURA: ");
+                fflush(stdin);
+                scanf("%d", &usuario.domicilio.altura);
+                printf("NUEVA CIUDAD: ");
+                obtenerStringDeUsuario(usuario.domicilio.ciudad, DIM_CIUDAD);
+                printf("NUEVA LOCALIDAD: ");
+                obtenerStringDeUsuario(usuario.domicilio.localidad, DIM_LOCALIDAD);
+                printf("NUEVO CP: ");
+                fflush(stdin);
+                scanf("%d", &usuario.domicilio.cp);
+                printf("NUEVO PAIS: ");
+                obtenerStringDeUsuario(usuario.domicilio.pais, DIM_PAIS);
+
+                break;
+
+            case 3:
+
+                system("cls");
+
+                printf("FECHA DE NACIMIENTO: %s\n", usuario.fechaNacimiento);
+                printf("NUEVA FECHA DE NACIMIENTO: \n");
+
+                do {
+                    printf("Ingrese el dia de nacimiento: ");
+                    obtenerStringDeUsuario(diaStr, DIM_DIA);
+                    dia = atoi(diaStr);
+
+                    printf("Ingrese el mes de nacimiento: ");
+                    obtenerStringDeUsuario(mesStr, DIM_MES);
+                    mes = atoi(mesStr);
+
+                    printf("Ingrese el anio de nacimiento: ");
+                    obtenerStringDeUsuario(anioStr, DIM_ANIO);
+                    anio = atoi(anioStr);
+
+                    fechaValida = validarfecha(dia,mes,anio);
+                    if (fechaValida == 0) {
+                    printf("\nFecha invalida.\n");
+                    }
+
+                    }while(fechaValida != 1);
+
+                sprintf(usuario.fechaNacimiento, FORMATO_FECHA, anio, mes, dia);
+
+                break;
+
+            case 4:
+
+                system("cls");
+
+                printf("GENERO: %c\n", usuario.genero);
+                printf("NUEVO GENERO: ");
+
+                do{
+                    printf("Ingrese su genero (M / F / X): ");
+                    fflush(stdin);
+                    scanf("%c", &genero);
+
+                    if (validarGenero(genero) == 0) {
+                        printf("Opcion invalida. Por favor, ingrese M, F o X.\n");
+                    }
+
+                }while (validarGenero(genero) != 1);
+
+                usuario.genero = genero;
+
+                break;
+
+            case 5:
+
+                system("cls");
+
+                printf("CONTRASENIA: %s\n", usuario.password );
+
+                printf("Ingrese su nueva contrasenia (maximo %d caracteres): ", DIM_PASSWORD - 1);
+                obtenerStringDeUsuario(contrasenia, DIM_PASSWORD);
+
+                contraseniaValida = validarContrasenia(contrasenia);
+
+                while(contraseniaValida == 0) {
+                    printf("Contrasenia invalida, por favor prueba con otra: \n");
+                    obtenerStringDeUsuario(contrasenia, DIM_PASSWORD);
+                    contraseniaValida = validarContrasenia(contrasenia);
+                }
+
+                strcpy(usuario.password, contrasenia);
+                break;
+
+            case 6:
+
+                system("cls");
+
+                printf("USERNAME: %s\n", usuario.username );
+                printf("NUEVO USERNAME: ");
+                fflush(stdin);
+                obtenerStringDeUsuario(usuario.username, DIM_DNI);
+
+                break;
+
+
+            default:
+
+                printf("EL NUMERO INGRESADO NO COINCIDE CON LAS OPCIONES...\n");
+        }
+
+        printf("DESEA MODIFICAR OTRO CAMPO? s/n\n");
+        fflush(stdin);
+        scanf("%c", &control);
+
+        }while(control == 's' || control == 'S');
+
+        return usuario;
 }

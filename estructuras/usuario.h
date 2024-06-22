@@ -30,5 +30,7 @@ typedef struct{
 
 void mostrarUsuario(stUsuario usuario);
 stUsuario cargarUsuario();
+stUsuario modificarUsuario(stUsuario usuario);
+stUsuario eliminarUsuario(char * mail);
 
 #endif // USUARIO_H_INCLUDED
