@@ -9,10 +9,25 @@ void mostrarMenu(stMenu menu, int esAdmin){
 
     // Solo imprimir opciones admin si el usuario es administrador
     if(menu.cantOpcionesAdmin > 0 && esAdmin == 1){
+        printf(COLOR_ROJO);
+        printf("\n** OPCIONES DE ADMINISTRADOR**");
         imprimirOpciones(menu.opcionesAdmin, menu.cantOpcionesAdmin, ADMIN_MENU_OFFSET);
+        printf(COLOR_RESET);
     }
 
-    printf("\n[0] Volver\n");
+    printf("\n[0] ");
+    switch(menu.idMenu){
+        case SM_LOGIN:
+            printf("Salir del programa");
+            break;
+        case SM_MENU_PRINCIPAL:
+            printf("Cerrar sesion");
+            break;
+        default:
+            printf("Volver");
+            break;
+    }
+    imprimirSaltosDeLinea(1);
 }
 
 void imprimirOpciones(char opciones[][DIM_OPCION_MENU], int validos, int offset){
@@ -21,20 +36,6 @@ void imprimirOpciones(char opciones[][DIM_OPCION_MENU], int validos, int offset)
     for(int i = 0; i < validos; i++){
         printf("[%d] %s\n", i+offset, opciones[i]);
     }
-}
-
-void imprimirSaltosDeLinea(int cantidad){
-    for(int i = 0; i < cantidad; i++){
-        printf("\n");
-    }
-}
-
-void imprimirLineaSeparadora(char separador, int cantidad){
-    for(int i = 0; i < cantidad; i++){
-        printf("%c", separador);
-    }
-
-    imprimirSaltosDeLinea(1);
 }
 
 void imprimirTitulo(char titulo[], char separador){
