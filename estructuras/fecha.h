@@ -7,6 +7,7 @@
 
 #define DIM_FECHA 20
 #define FORMATO_FECHA "%04d-%02d-%02d"
+#define FORMATO_FECHA_ACTUAL "%Y-%m-%d"
 
 void obtenerFechaActual(char * buffer);
 

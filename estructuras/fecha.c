@@ -9,5 +9,5 @@ void obtenerFechaActual(char * buffer) {
 
     tiempo_local = localtime(&tiempo_actual);
 
-    strftime(buffer, DIM_FECHA, FORMATO_FECHA , tiempo_local);
+    strftime(buffer, DIM_FECHA, FORMATO_FECHA_ACTUAL , tiempo_local);
 }
