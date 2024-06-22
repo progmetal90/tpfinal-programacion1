@@ -12,7 +12,6 @@ void mostrarUsuario(stUsuario usuario){
     printf("DNI: %s\n", usuario.dni);
     printf("ELIMINADO: %d\n", usuario.eliminado);
     mostrarDomicilio(usuario.domicilio);
-    // TODO: mostrar peliculas favoritas en un menu distinto?
 }
 
 
@@ -368,7 +367,7 @@ stUsuario modificarUsuario(stUsuario usuario) {
                 printf("USERNAME: %s\n", usuario.username );
                 printf("NUEVO USERNAME: ");
                 fflush(stdin);
-                obtenerStringDeUsuario(usuario.username, DIM_DNI);
+                obtenerStringDeUsuario(usuario.username, DIM_USERNAME);
 
                 break;
 
