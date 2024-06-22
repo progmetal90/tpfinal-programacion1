@@ -102,7 +102,6 @@ int validarfecha(int dia, int mes, int anio) {
 
     int bisiesto = esBisiesto(anio);
 
-
     int diasPorMes[12][2] = {
         {31, 31},
         {28, 29},
@@ -120,6 +119,10 @@ int validarfecha(int dia, int mes, int anio) {
 
     if (dia >= 1 && dia <= diasPorMes[mes - 1][bisiesto]) {
         fechaValida = 1;
+    }
+
+    if(anio > 2023 || anio < 1920) { // TODO: Usar anio actual
+        fechaValida = 0;
     }
 
     return fechaValida;
