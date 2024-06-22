@@ -67,6 +67,10 @@
 			<Option compilerVar="CC" />
 		</Unit>
 		<Unit filename="estructuras/usuario.h" />
+		<Unit filename="librerias/consola.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="librerias/consola.h" />
 		<Unit filename="librerias/mock.c">
 			<Option compilerVar="CC" />
 		</Unit>

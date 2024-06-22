@@ -3,11 +3,12 @@
 #define ANCHO_DE_CONSOLA 50
 
 #include <string.h>
-#include "../librerias/validacion.h"
 #include "memoria.h"
+#include "../librerias/validacion.h"
 #include "../librerias/mock.h"
 #include "../librerias/subprogramas.h"
 #include "../librerias/submenus.h"
+#include "../librerias/consola.h"
 
 typedef struct{
     stMemoria * memoria;

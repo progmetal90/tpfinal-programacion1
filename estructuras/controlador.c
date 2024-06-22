@@ -181,7 +181,7 @@ void spMostrarComentarios(stMemoria * memoria){
         int comentariosMostrados = 0;
         char tituloBusqueda[] = "Comentarios de pelicula: ";
         printf("%s%s\n", tituloBusqueda, aux->titulo);
-        imprimirLineaSeparadora('-', strlen(tituloBusqueda) + strlen(aux->titulo));
+        imprimirLineaSeparadora(SEPARADOR_ESTRUCTURAS, strlen(tituloBusqueda) + strlen(aux->titulo));
         imprimirSaltosDeLinea(1);
 
         for(int i = 0; i < memoria->vComentarios; i++){
@@ -189,7 +189,7 @@ void spMostrarComentarios(stMemoria * memoria){
             if(comentario.eliminado != 1){
                 mostrarComentario(comentario);
                 imprimirSaltosDeLinea(1);
-                imprimirLineaSeparadora('-', ANCHO_DE_CONSOLA);
+                imprimirLineaSeparadora(SEPARADOR_ESTRUCTURAS, ANCHO_DE_CONSOLA);
                 imprimirSaltosDeLinea(1);
                 comentariosMostrados++;
             }
@@ -295,13 +295,12 @@ int vUsuarios =  memoria->vUsuarios;
 
     for(int i = 0 ; i < vUsuarios ; i++) {
         mostrarUsuario(memoria->usuarios[i]);
-        imprimirLineaSeparadora(10);
+        imprimirLineaSeparadora(SEPARADOR_ESTRUCTURAS, ANCHO_DE_CONSOLA);
         if ((i + 1) % 3 == 0 || i == vUsuarios - 1) {
             system("pause");
             system("cls");
-            }
+        }
     }
-
 }
 
 void spCrearUsuario(stMemoria * memoria){

@@ -194,6 +194,8 @@ void ejecutarInterfaz(stInterfaz interfaz, stControlador * controlador){
     int idProximoMenu;
     int esAdmin = 0;
 
+    mostrarLogo();
+
     // Posicion menor a 0 indica que salimos del login (cerrar programa)
     while(interfaz.posHistorial >= 0){
         if(interfaz.posHistorial == 0 && controlador->usuarioLogueado){
@@ -325,4 +327,19 @@ int validarOpcion(int opcion, int validosUsuario, int validosAdmin){
     }
 
     return valido;
+}
+
+
+void mostrarLogo(){
+    printf(" _____ _                            _____        __ _   \n");
+    printf("/  __ (_)                          /  ___|      / _| |  \n");
+    printf("| /  \\/_ _ __   ___ _ __ ___   __ _\\ `--.  ___ | |_| |_ \n");
+    printf("| |   | | '_ \\ / _ \\ '_ ` _ \\ / _` |`--. \\/ _ \\|  _| __|\n");
+    printf("| \\__/\\ | | | |  __/ | | | | | (_| /\\__/ / (_) | | | |_ \n");
+    printf(" \\____/_|_| |_|\\___|_| |_| |_|\\__,_\\____/ \\___/|_|  \\__|\n");
+    printf("                                                        \n");
+    printf("                                                        \n");
+
+    imprimirSaltosDeLinea(1);
+    system("pause");
 }
