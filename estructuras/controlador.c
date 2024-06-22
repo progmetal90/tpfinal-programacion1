@@ -289,13 +289,12 @@ int vUsuarios =  memoria->vUsuarios;
 
     for(int i = 0 ; i < vUsuarios ; i++) {
         mostrarUsuario(memoria->usuarios[i]);
-        imprimirLineaSeparadora(10);
+        imprimirLineaSeparadora('-', 10);
         if ((i + 1) % 3 == 0 || i == vUsuarios - 1) {
             system("pause");
             system("cls");
-            }
+        }
     }
-
 }
 
 void spCrearUsuario(stMemoria * memoria){
