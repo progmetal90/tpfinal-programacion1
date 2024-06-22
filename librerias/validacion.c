@@ -1,6 +1,7 @@
 #include "validacion.h"
 
-const char ARROBA = '@';
+const char ARROBA[] = "@";
+const char PUNTO[] = ".";
 const char PUNTO_COM[] = ".com";
 
 int validarEmail(char email[]){
@@ -11,14 +12,26 @@ int validarEmail(char email[]){
     email = strlwr(email);
 
     int valido = 0;
+    int puntoCom = 0;
     // Comprobar que el mail tenga un ".com"
-    char * substring = strstr(email, PUNTO_COM);
 
-    if(substring != NULL){
-        /// Compara los 2 strings para que no se repitan el ".com" y el '@'
-        if(contarCaracterEnString(email, ARROBA) == 1 && strcmpi(substring, PUNTO_COM) == 0){
-            valido = 1;
+    char *substring = strstr(email, ARROBA); ///Busca a partir del @.
+
+    while(substring){
+    substring = strstr(substring, PUNTO_COM);
+        if(!substring){
+            printf("\nEl email no contiene \".COM \" .");
+            }
+            else{
+            puntoCom++;
+            substring = strstr(substring + 1, PUNTO_COM);
+            }
         }
+    /// Compara los 2 strings para que no se repitan el ".com" y el '@'
+    if(contarCaracterEnString(email, ARROBA) == 1 && puntoCom == 1){
+            valido = 1;
+    }else{
+    printf("\nEl email es invalido.");
     }
     return valido;
 }
@@ -30,7 +43,7 @@ int contarCaracterEnString(char string[], char caracter){
     cantDeCaracteres = strlen(string);
 
     for(int i = 0 ; i < cantDeCaracteres ; i++){
-        if(string[i] == ARROBA){
+        if(string[i] == caracter){
             caracterContado++;}
     }
 
