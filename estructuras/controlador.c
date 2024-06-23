@@ -335,7 +335,7 @@ void spMostrarComentarios(stMemoria * memoria){
 
         for(int i = 0; i < memoria->vComentarios; i++){
             stComentario comentario = memoria->comentarios[i];
-            if(comentario.eliminado != 1){
+            if(comentario.eliminado != 1 && comentario.idPelicula == aux->idPelicula){
                 mostrarComentario(comentario);
                 imprimirSaltosDeLinea(1);
                 imprimirLineaSeparadora(SEPARADOR_ESTRUCTURAS, ANCHO_DE_CONSOLA);
