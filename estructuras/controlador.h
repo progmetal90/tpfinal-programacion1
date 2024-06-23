@@ -40,5 +40,7 @@ void eliminarComentariosDePelicula(stMemoria * memoria, int idPelicula);
 void spEliminarPelicula(stMemoria * memoria);
 void spDarDeBajaPelicula(stMemoria * memoria);
 int existeComentarioDeUsuario(stMemoria * memoria, int idPelicula, int idUsuario);
+void recalcularValoracion(stMemoria * memoria, int idPelicula);
+void spEliminarComentario(stMemoria * memoria);
 
 #endif // CONTROLADOR_H_INCLUDED

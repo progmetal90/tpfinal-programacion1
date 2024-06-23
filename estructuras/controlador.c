@@ -12,7 +12,7 @@ stControlador inicializarControlador(stMemoria * memoria){
 int ejecutarSubprograma(int subprograma, stControlador * controlador){
     int idProximoMenu = subprograma;
     system("cls");
-    switch(subprograma){
+    switch(subprograma){//
         case SP_INICIAR_SESION:
             controlador->usuarioLogueado = iniciarSesion(controlador->memoria);
             break;
@@ -64,6 +64,9 @@ int ejecutarSubprograma(int subprograma, stControlador * controlador){
         case SP_BAJA_PELICULA:
             spDarDeBajaPelicula(controlador->memoria);
             break;
+        case SP_ELIMINAR_COMENTARIO:
+            spEliminarComentario(controlador->memoria);
+            break;
         default:
             // Si llegamos aca nos olvidamos un subprograma o nos mandamos una cagada
             printf("ERROR! Subprograma %d invalido o indefinido!\n", subprograma);
@@ -74,19 +77,61 @@ int ejecutarSubprograma(int subprograma, stControlador * controlador){
     return idProximoMenu;
 }
 
+void spEliminarComentario(stMemoria * memoria){
+    char opcion;
+    int idComentario;
+    stComentario * comentario;
+
+    do{
+        printf("Ingrese el ID de comentario a borrar: \n");
+        scanf("%d", &idComentario);
+
+        comentario = obtenerComentario(memoria, idComentario);
+
+        if(!comentario){
+            printf("ID de comentario #%d invalido. ", idComentario);
+            printf("Intente nuevamente o presione ESC para salir.");
+            opcion = getch();
+            system("cls");
+        }
+    }while(opcion != 27 && !comentario);
+
+    system("cls");
+
+    mostrarComentario(*comentario);
+
+    printf("Desea eliminar el comentario? ");
+    printf("Presione ENTER para confirmar, o una tecla cualquiera para cancelar.\n");
+    opcion = getch();
+    imprimirSaltosDeLinea(1);
+
+    if(opcion == 13){
+        comentario->eliminado = 1;
+        recalcularValoracion(memoria, comentario->idPelicula);
+
+        printf("\nComentario eliminado exitosamente!\n");
+        system("pause");
+    }
+}
+
 void recalcularValoracion(stMemoria * memoria, int idPelicula){
     int sumaPuntajes = 0;
     int cantPuntajes = 0;
 
     for(int i = 0; i < memoria->vComentarios; i++){
         stComentario comentario = memoria->comentarios[i];
-        if(comentario.idPelicula == idPelicula){
+        if(comentario.idPelicula == idPelicula && comentario.eliminado == 0){
             sumaPuntajes += comentario.puntaje;
             cantPuntajes++;
         }
     }
 
-    memoria->peliculas[idPelicula].valoracion = (float)sumaPuntajes / cantPuntajes;
+    if(cantPuntajes == 0){
+        memoria->peliculas[idPelicula].valoracion = 0.0;
+    }
+    else{
+        memoria->peliculas[idPelicula].valoracion = (float)sumaPuntajes / cantPuntajes;
+    }
 }
 
 void eliminarComentariosDePelicula(stMemoria * memoria, int idPelicula){
