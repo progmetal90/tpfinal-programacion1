@@ -9,6 +9,63 @@ void mostrarComentario(stComentario comentario){
     printf("Puntaje: %d estrellas.\n", comentario.puntaje);
 }
 
+stComentario modificarComentario(stComentario comentario){
+    char control = 0;
+    int opcion = 0;
+
+    do{
+        system("cls");
+        printf("SELECCIONE EL CAMPO QUE DESEA CAMBIAR...\n");
+        printf("1- TITULO.\n");
+        printf("2- DESCRIPCION.\n");
+        printf("3- PUNTAJE.\n");
+
+        scanf("%d", &opcion);
+
+        switch(opcion){
+            case 1:
+                system("cls");
+                printf("Titulo: %s\n", comentario.titulo);
+
+                do{
+                    printf("Ingrese el nuevo titulo: ");
+                    obtenerStringDeUsuario(comentario.titulo, DIM_TITULO_COMENTARIO);
+                }while(strlen(comentario.titulo) == 0);
+
+                break;
+            case 2:
+                system("cls");
+                printf("Descripcion: %s\n", comentario.descripcion);
+
+                do{
+                    printf("Ingrese la nueva descripcion: ");
+                    obtenerStringDeUsuario(comentario.descripcion, DIM_DESCRIPCION_COMENTARIO);
+                }while(strlen(comentario.descripcion) == 0);
+
+                break;
+            case 3:
+                system("cls");
+                printf("Puntaje: %d\n", comentario.puntaje);
+
+                do{
+                    printf("Ingrese el nuevo puntaje: ");
+                    scanf("%d", &comentario.puntaje);
+                }while(enRango(comentario.puntaje, 1, 5 + 1));
+
+                break;
+            default:
+                    printf("EL NUMERO INGRESADO NO COINCIDE CON LAS OPCIONES...\n");
+        }
+
+        printf("DESEA MODIFICAR OTRO CAMPO? s/n\n");
+        fflush(stdin);
+        scanf("%c", &control);
+
+        }while(control == 's' || control == 'S');
+
+    return comentario;
+}
+
 stComentario cargarComentario(int idUsuario, int idPelicula){
     const int DIM_PUNTAJE = 3;
 
@@ -47,8 +104,5 @@ stComentario cargarComentario(int idUsuario, int idPelicula){
 
     obtenerFechaActual(comentario.fechaComentario);
 
-    printf("Comentario cargado con exito!\n");
-
-    system("pause");
     return comentario;
 }

@@ -23,5 +23,6 @@ typedef struct {
 
 void mostrarComentario(stComentario comentario);
 stComentario cargarComentario(int idUsuario, int idPelicula);
+stComentario modificarComentario(stComentario comentario);
 
 #endif // COMENTARIO_H_INCLUDED

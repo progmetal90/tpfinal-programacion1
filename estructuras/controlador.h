@@ -33,10 +33,12 @@ void spAgregarComentario(stMemoria * memoria, int idUsuario);
 void spModificarInfoPelicula (stMemoria * memoria);
 int buscarSiExisteIdPelicula (stMemoria * memoria, int idPelicula);
 void spMostrarComentarios(stMemoria * memoria);
+void spModificarComentario(stMemoria * memoria, int idUsuario);
 void spQuitarComentario(stMemoria * memoria, int idUsuario);
 int obtenerIdComentarioDeUsuario(stComentario * comentarios, int validos, int idPelicula, int idUsuario);
-void eliminarComentariosDePelicula(stComentario * comentarios, int validos, int idPelicula);
+void eliminarComentariosDePelicula(stMemoria * memoria, int idPelicula);
 void spEliminarPelicula(stMemoria * memoria);
 void spDarDeBajaPelicula(stMemoria * memoria);
+int existeComentarioDeUsuario(stMemoria * memoria, int idPelicula, int idUsuario);
 
 #endif // CONTROLADOR_H_INCLUDED

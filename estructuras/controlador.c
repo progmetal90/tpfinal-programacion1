@@ -51,7 +51,9 @@ int ejecutarSubprograma(int subprograma, stControlador * controlador){
             break;
         case SP_MOSTRAR_COMENTARIOS:
             spMostrarComentarios(controlador->memoria);
-            idProximoMenu = SM_INFO_COMENTARIOS;
+            break;
+        case SP_MODIFICAR_COMENTARIO:
+            spModificarComentario(controlador->memoria, controlador->usuarioLogueado->idUsuario);
             break;
         case SP_QUITAR_COMENTARIO:
             spQuitarComentario(controlador->memoria, controlador->usuarioLogueado->idUsuario);
@@ -72,12 +74,29 @@ int ejecutarSubprograma(int subprograma, stControlador * controlador){
     return idProximoMenu;
 }
 
-void eliminarComentariosDePelicula(stComentario * comentarios, int validos, int idPelicula){
-    for(int i = 0; i < validos; i++){
-        if(comentarios[i].idPelicula == idPelicula){
-            comentarios[i].eliminado = 1;
+void recalcularValoracion(stMemoria * memoria, int idPelicula){
+    int sumaPuntajes = 0;
+    int cantPuntajes = 0;
+
+    for(int i = 0; i < memoria->vComentarios; i++){
+        stComentario comentario = memoria->comentarios[i];
+        if(comentario.idPelicula == idPelicula){
+            sumaPuntajes += comentario.puntaje;
+            cantPuntajes++;
         }
     }
+
+    memoria->peliculas[idPelicula].valoracion = (float)sumaPuntajes / cantPuntajes;
+}
+
+void eliminarComentariosDePelicula(stMemoria * memoria, int idPelicula){
+    for(int i = 0; i < memoria->vComentarios; i++){
+        if(memoria->comentarios[i].idPelicula == idPelicula){
+            memoria->comentarios[i].eliminado = 1;
+        }
+    }
+
+    memoria->peliculas[idPelicula].valoracion = 0;
 }
 
 int obtenerIdComentarioDeUsuario(stComentario * comentarios, int validos, int idPelicula, int idUsuario){
@@ -93,6 +112,63 @@ int obtenerIdComentarioDeUsuario(stComentario * comentarios, int validos, int id
     }
 
     return id;
+}
+
+void spModificarComentario(stMemoria * memoria, int idUsuario){
+    int idPelicula;
+    char nombrePelicula[DIM_TITULO_PELICULA];
+    char opcion = 0;
+    stPelicula * peliculaP;
+    int idComentario;
+
+    do{
+        system("cls");
+        printf("Ingrese el nombre de la pelicula para modificar un comentario: ");
+        obtenerStringDeUsuario(nombrePelicula, DIM_TITULO_PELICULA);
+
+        idPelicula = existePelicula(nombrePelicula, memoria->peliculas, memoria->vPeliculas);
+
+        if(idPelicula == -1){
+            printf("La pelicula ingresada no existe. ");
+            printf("Intente nuevamente o presione ESC para salir.\n\n");
+            fflush(stdin);
+            opcion = getch();
+        }
+        else{
+            idComentario = -1;
+            peliculaP = obtenerPelicula(memoria, idPelicula);
+            // Comprobar que el usuario tenga un comentario en esa pelicula
+            idComentario = obtenerIdComentarioDeUsuario(memoria->comentarios, memoria->vComentarios, idPelicula, idUsuario);
+
+            if(idComentario == -1 || memoria->comentarios[idComentario].eliminado == 1){
+                printf("Usted no tiene comentarios en la pelicula '%s'.\n", peliculaP->titulo);
+                printf("Presione ESC para salir o una tecla cualquiera para intentar otra vez.\n");
+                fflush(stdin);
+                opcion = getch();
+            }
+            else{
+                printf("Quiere modificar su comentario de la pelicula '%s'?\n", peliculaP->titulo);
+                printf("Presione ENTER para confirmar o ESC para cancelar.");
+                fflush(stdin);
+                opcion = getch();
+                if(opcion == 13){
+                    stComentario * comentario = obtenerComentario(memoria, idComentario);
+
+                    stComentario comentarioModificado = modificarComentario(*comentario);
+                    sobreescribirComentario(memoria, comentarioModificado);
+
+                    // Solo recalcular puntaje si se modifico el mismo
+                    if(comentarioModificado.puntaje != comentario->puntaje){
+                        recalcularValoracion(memoria, idPelicula);
+                    }
+
+                    printf("\nComentario modificado exitosamente!\n");
+                    system("pause");
+                }
+                opcion = 27; // Salir
+            }
+        }
+    }while((idPelicula == -1 || idComentario == -1) && opcion != 27);
 }
 
 void spQuitarComentario(stMemoria * memoria, int idUsuario){
@@ -134,6 +210,8 @@ void spQuitarComentario(stMemoria * memoria, int idUsuario){
                 opcion = getch();
                 if(opcion == 13){
                     memoria->comentarios[idComentario].eliminado = 1;
+                    recalcularValoracion(memoria, idPelicula);
+
                     printf("\nComentario eliminado exitosamente!\n");
                     system("pause");
                 }
@@ -199,6 +277,20 @@ void spMostrarComentarios(stMemoria * memoria){
             printf("No se encontraron comentarios.\n\n");
         }
     }
+    system("pause");
+}
+
+int existeComentarioDeUsuario(stMemoria * memoria, int idPelicula, int idUsuario){
+    int existeComentario = -1; // 0 si no existe, sino devuelve la posicion/id del usuario
+
+    for(int i = 0; i < memoria->vComentarios && existeComentario == -1; i++){
+        stComentario comentario = memoria->comentarios[i];
+        if(comentario.idPelicula == idPelicula && comentario.idUsuario == idUsuario){
+            existeComentario= i;
+        }
+    }
+
+    return existeComentario;
 }
 
 void spAgregarComentario(stMemoria * memoria, int idUsuario){
@@ -206,6 +298,7 @@ void spAgregarComentario(stMemoria * memoria, int idUsuario){
     char nombrePelicula[DIM_TITULO_PELICULA];
     char opcion = 0;
     stComentario comentario;
+    int existeComentario;
 
     do{
         system("cls");
@@ -225,25 +318,34 @@ void spAgregarComentario(stMemoria * memoria, int idUsuario){
         }
         else{
             stPelicula * aux = obtenerPelicula(memoria, idPelicula);
-            printf("Quiere comentar la pelicula '%s'?\n", aux->titulo);
-            printf("Presione ENTER para confirmar, ESC para salir u otra tecla para reintentar.");
-            fflush(stdin);
-            opcion = getch();
-            if(opcion != 13){
-                idPelicula = -1;
+            existeComentario = existeComentarioDeUsuario(memoria, idPelicula, idUsuario);
+
+            if(existeComentario == -1){
+                printf("Quiere comentar la pelicula '%s'?\n", aux->titulo);
+                printf("Presione ENTER para confirmar, ESC para salir u otra tecla para reintentar.");
+                fflush(stdin);
+                opcion = getch();
+                if(opcion != 13){
+                    idPelicula = -1;
+                }
+            }
+            else{
+                printf("Usted ya comento la pelicula '%s'.\n", aux->titulo);
+                system("pause");
             }
         }
     }while(idPelicula == -1 && opcion != 27 && opcion != 13);
 
     system("cls");
 
-    if(idPelicula != -1){
+    if(idPelicula != -1 && existeComentario == -1){
         comentario = cargarComentario(idUsuario, idPelicula);
 
         agregarComentario(memoria, comentario);
+        recalcularValoracion(memoria, idPelicula);
 
-        printf("Comentario cargado con exito!");
-        system("cls");
+        printf("Comentario cargado con exito!\n");
+        system("pause");
     }
 }
 
