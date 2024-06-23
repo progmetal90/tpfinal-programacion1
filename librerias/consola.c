@@ -13,3 +13,20 @@ void imprimirLineaSeparadora(char separador, int cantidad){
 
     imprimirSaltosDeLinea(1);
 }
+
+int separadorDeConsola (){
+
+    char control;
+    int respuesta = 0;
+
+    printf("ENTER PARA PASAR A LA SIGUENTE PAGINA\n");
+    control = getch();
+
+    if(control == 13){
+        respuesta = 1;
+    }
+
+    system("cls");
+
+    return respuesta;
+}

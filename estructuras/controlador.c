@@ -721,36 +721,53 @@ void spFiltrarPorTitulo(stMemoria * memoria, int esAdmin){
     char dato[DIM_TITULO_PELICULA];
     int esIgual;
     int encontroAlgo = 0;
+    int opcion = 1;
 
-    // Pedirle al usuario el nombre a buscar
-    printf("TITULO DE LA PELICULA A BUSCAR: ");
-    obtenerStringDeUsuario(dato, DIM_TITULO_PELICULA);
+    do{
+        system("cls");
+        // Pedirle al usuario el nombre a buscar
+        printf("TITULO DE LA PELICULA A BUSCAR: ");
+        obtenerStringDeUsuario(dato, DIM_TITULO_PELICULA);
+        system("cls");
 
-    // Buscar en el arreglo de peliculas
-    for(int i = 0; i < memoria->vPeliculas; i++){
-        aux = memoria->peliculas[i];
-        esIgual = filtrarPeliculaTitulo(aux, dato);
+        if(strlen(dato) > 2){
+            // Buscar en el arreglo de peliculas
+            for(int i = 0; i < memoria->vPeliculas && opcion == 1; i++){
+                aux = memoria->peliculas[i];
+                esIgual = filtrarPeliculaTitulo(aux, dato);
 
-        //Si el titulo esa pelicula es igual a lo que se busca
-        if(esIgual == 1){
-            if(aux.eliminado == 0 || esAdmin == 1){
-                encontroAlgo = 1;
-                mostrarPelicula(memoria->peliculas[i]);
-                //Si es admin mostramos en que estado esta esa pelicula
-                if(esAdmin){
-                    printf("ELIMINADO: %d\n", aux.eliminado);
+                //Si el titulo esa pelicula es igual a lo que se busca
+                if(esIgual == 1){
+                    if(aux.eliminado == 0 || esAdmin == 1){
+                        encontroAlgo++;
+
+                        mostrarPelicula(memoria->peliculas[i]);
+                        //Si es admin mostramos en que estado esta esa pelicula
+                        if(esAdmin){
+                            printf("ELIMINADO: %d\n", aux.eliminado);
+                        }
+                        imprimirSaltosDeLinea(1);
+                        imprimirLineaSeparadora('-', ANCHO_DE_CONSOLA);
+                        if(encontroAlgo % 3 == 0){
+                            opcion = separadorDeConsola();
+                        }
+                    }
                 }
-                imprimirSaltosDeLinea(2);
-                imprimirLineaSeparadora('-', ANCHO_DE_CONSOLA);
             }
+        }else{
+            printf(COLOR_AMARILLO);
+            printf("INGRESAR AL MENOS 3 CARACTERES");
+            printf(COLOR_RESET);
+            imprimirSaltosDeLinea(2);
+            system("pause");
         }
-    }
-    if(!encontroAlgo){
+    }while(strlen(dato) <= 2);
+
+    if(!encontroAlgo && strlen(dato) > 2){
         printf("%s NO SE ENCUENTRA EN EL SISTEMA\n", dato);
     }
 
     system("pause");
-    puts("");
 }
 
 void spFiltrarPorDirector(stMemoria * memoria, int esAdmin){
@@ -759,32 +776,51 @@ void spFiltrarPorDirector(stMemoria * memoria, int esAdmin){
     char dato[DIM_DIRECTOR];
     int esIgual;
     int encontroAlgo = 0;
+    int opcion = 1;
+    system("cls");
 
-    // Pedirle al usuario el nombre a buscar
-    printf("DIRECTOR DE LA PELICULA A BUSCAR: ");
-    obtenerStringDeUsuario(dato, DIM_DIRECTOR);
+    do{
+        system("cls");
+        // Pedirle al usuario el nombre a buscar
+        printf("DIRECTOR DE LA PELICULA A BUSCAR: ");
+        obtenerStringDeUsuario(dato, DIM_DIRECTOR);
+        system("cls");
 
-    // Buscar en el arreglo de peliculas
-    for(int i = 0; i < memoria->vPeliculas; i++){
-        aux = memoria->peliculas[i];
-        esIgual = filtrarPeliculaDirector(aux, dato);
+        if(strlen(dato) > 2){
+            // Buscar en el arreglo de peliculas
+            for(int i = 0; i < memoria->vPeliculas && opcion == 1; i++){
+                aux = memoria->peliculas[i];
+                esIgual = filtrarPeliculaDirector(aux, dato);
 
-        //Si el titulo esa pelicula es igual a lo que se busca
-        if(esIgual == 1){
-            if(aux.eliminado == 0 || esAdmin == 1){
-                encontroAlgo = 1;
+                //Si el titulo esa pelicula es igual a lo que se busca
+                if(esIgual == 1){
+                    if(aux.eliminado == 0 || esAdmin == 1){
+                        encontroAlgo++;
 
-                mostrarPelicula(memoria->peliculas[i]);
-                //Si es admin mostramos en que estado esta esa pelicula
-                if(esAdmin){
-                    printf("ELIMINADO: %d\n", aux.eliminado);
+                        mostrarPelicula(memoria->peliculas[i]);
+                        //Si es admin mostramos en que estado esta esa pelicula
+                        if(esAdmin){
+                            printf("ELIMINADO: %d\n", aux.eliminado);
+                        }
+                        imprimirSaltosDeLinea(1);
+                        imprimirLineaSeparadora('-', ANCHO_DE_CONSOLA);
+                        //Cada 3 peliculas
+                        if(encontroAlgo % 3 == 0){
+                            opcion = separadorDeConsola();
+                        }
+                    }
                 }
-                imprimirSaltosDeLinea(2);
-                imprimirLineaSeparadora('-', ANCHO_DE_CONSOLA);
             }
+        }else{
+            printf(COLOR_AMARILLO);
+            printf("INGRESAR AL MENOS 3 CARACTERES");
+            printf(COLOR_RESET);
+            imprimirSaltosDeLinea(2);
+            system("pause");
         }
-    }
-    if(!encontroAlgo){
+    }while(strlen(dato) <= 2);
+
+    if(!encontroAlgo && strlen(dato) > 2){
         printf("%s NO SE ENCUENTRA EN EL SISTEMA\n", dato);
     }
 
@@ -796,34 +832,50 @@ void spFiltrarPorCategoria(stMemoria * memoria, int esAdmin){
     stPelicula aux;
     char dato[DIM_CATEGORIA];
     int esIgual;
-    int encotroAlgo = 0;
+    int encontroAlgo = 0;
+    int opcion = 1;
+    system("cls");
 
-    // Pedirle al usuario el nombre a buscar
-    printf("CATEGORIA DE LA PELICULA A BUSCAR: ");
-    obtenerStringDeUsuario(dato, DIM_CATEGORIA);
+    do{
+        system("cls");
+        // Pedirle al usuario el nombre a buscar
+        printf("CATEGORIA DE LA PELICULA A BUSCAR: ");
+        obtenerStringDeUsuario(dato, DIM_CATEGORIA);
+        system("cls");
 
+        if(strlen(dato) > 2){
+            // Buscar en el arreglo de peliculas
+            for(int i = 0; i < memoria->vPeliculas && opcion > 0; i++){
+                aux = memoria->peliculas[i];
+                esIgual = filtrarPeliculaCategoria(aux, dato);
 
-    // Buscar en el arreglo de peliculas
-    for(int i = 0; i < memoria->vPeliculas; i++){
-        aux = memoria->peliculas[i];
-        esIgual = filtrarPeliculaCategoria(aux, dato);
-
-        //Si el titulo esa pelicula es igual a lo que se busca
-        if(esIgual == 1){
-            if(aux.eliminado == 0 || esAdmin == 1){
-                encotroAlgo = 1;
-                mostrarPelicula(memoria->peliculas[i]);
-                //Si es admin mostramos en que estado esta esa pelicula
-                if(esAdmin){
-                    printf("ELIMINADO: %d\n", aux.eliminado);
+                //Si el titulo esa pelicula es igual a lo que se busca
+                if(esIgual == 1){
+                    if(aux.eliminado == 0 || esAdmin == 1){
+                        encontroAlgo++;
+                        mostrarPelicula(memoria->peliculas[i]);
+                        //Si es admin mostramos en que estado esta esa pelicula
+                        if(esAdmin){
+                            printf("ELIMINADO: %d\n", aux.eliminado);
+                        }
+                        imprimirSaltosDeLinea(1);
+                        imprimirLineaSeparadora('=', ANCHO_DE_CONSOLA);
+                        if(encontroAlgo % 3 == 0){
+                            opcion = separadorDeConsola();
+                        }
+                    }
                 }
-                imprimirSaltosDeLinea(2);
-                imprimirLineaSeparadora('=', ANCHO_DE_CONSOLA);
             }
+        }else{
+            printf(COLOR_AMARILLO);
+            printf("INGRESAR AL MENOS 3 CARACTERES");
+            printf(COLOR_RESET);
+            imprimirSaltosDeLinea(2);
+            system("pause");
         }
-    }
+    }while(strlen(dato) <= 2);
 
-    if(encotroAlgo == 0){
+    if(!encontroAlgo && strlen(dato) > 2){
         printf("%s NO SE ENCUENTRA EN EL SISTEMA\n", dato);
     }
 
@@ -867,10 +919,10 @@ void spModificarInfoPelicula (stMemoria * memoria){
             printf("\nSE MODIFICO CON EXITO!\n");
 
             //Se muestra despues de modificaciones
-            imprimirLineaSeparadora('=', ANCHO_DE_CONSOLA);
+            imprimirLineaSeparadora('-', ANCHO_DE_CONSOLA);
             mostrarPelicula(pelicula);
             imprimirSaltosDeLinea(2);
-            imprimirLineaSeparadora('=', ANCHO_DE_CONSOLA);
+            imprimirLineaSeparadora('-', ANCHO_DE_CONSOLA);
             imprimirSaltosDeLinea(2);
         }
     }else{

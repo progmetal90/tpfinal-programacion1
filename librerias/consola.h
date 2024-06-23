@@ -16,5 +16,6 @@
 
 void imprimirSaltosDeLinea(int cantidad);
 void imprimirLineaSeparadora(char separador, int cantidad);
+int separadorDeConsola ();
 
 #endif // CONSOLA_H_INCLUDED
