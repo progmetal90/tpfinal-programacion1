@@ -2,7 +2,7 @@
 #define COMENTARIO_H_INCLUDED
 
 #define DIM_TITULO_COMENTARIO 100
-#define DIM_DESCRIPCION_COMENTARIO 100
+#define DIM_DESCRIPCION_COMENTARIO 500
 
 #include <stdio.h>
 #include <string.h>
