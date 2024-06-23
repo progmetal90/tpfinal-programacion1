@@ -29,7 +29,7 @@ typedef struct{
 }stUsuario;
 
 void mostrarUsuario(stUsuario usuario);
-stUsuario cargarUsuario();
+stUsuario cargarUsuario(char * mail);
 stUsuario modificarUsuario(stUsuario usuario);
 stUsuario eliminarUsuario(char * mail);
 stUsuario agregarFavorito(stUsuario usuario, int idPelicula);

@@ -448,7 +448,6 @@ void spEliminarUsuario(stMemoria * memoria) {
 
     char opcion = 0;
     char mail[DIM_EMAIL];
-    char opcion2 = 0;
     int existeMail = 0;
 
     printf("Ingrese el mail para buscar el usuario a eliminar: ");
@@ -467,16 +466,16 @@ void spEliminarUsuario(stMemoria * memoria) {
         }
         else {
             printf("Desea bloquear al usuario ID %d. Presione ENTER para confirmar o ESC para salir.\n", aux.idUsuario);
-            opcion2 = getch();
+            opcion = getch();
 
-            if (opcion2 == 13) {
+            if (opcion == 13) {
                 if (aux.eliminado == 1) {
                     printf(COLOR_AMARILLO);
                     printf("El usuario ya se encuentra bloqueado en el sistema.\n");
                     printf(COLOR_RESET);
                     printf("Si desea darlo de alta presione ENTER.\n");
-                    opcion2 = getch();
-                    if (opcion2 == 13) {
+                    opcion = getch();
+                    if (opcion == 13) {
                         aux.eliminado = 0;
                         sobreescribirUsuario(memoria, aux);
                         system("cls");
@@ -491,7 +490,7 @@ void spEliminarUsuario(stMemoria * memoria) {
                     printf("USUARIO BLOQUEADO EXITOSAMENTE.\n");
                     printf(COLOR_RESET);
                 }
-            } else if (opcion2 == 27) {
+            } else if (opcion == 27) {
                 printf("Operacion cancelada.\n");
             }
         }
@@ -503,7 +502,6 @@ void spEliminarUsuario(stMemoria * memoria) {
         printf(COLOR_RESET);
         system("pause");
     }
-
 
 }
 
@@ -551,10 +549,6 @@ void spAgregarFavorito(stMemoria * memoria, stUsuario * usuario) {
             }
         else{
                 aux = agregarFavorito(aux, idPelicula);
-                printf(COLOR_VERDE);
-                printf("PELICULA AGREGADA CON EXITO");
-                printf(COLOR_RESET);
-                system("pause");
             }
         opcion = 27; // Salir
 

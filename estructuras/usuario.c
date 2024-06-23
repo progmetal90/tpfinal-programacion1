@@ -28,11 +28,15 @@ stUsuario agregarFavorito(stUsuario usuario, int idPelicula) {
 
     if (existe == 1) {
         printf("La pelicula ya esta en la lista de favoritos.\n");
+        system("pause");
     }
     else if (usuario.vFavoritos < DIM_PELISFAVORITAS) {
         usuario.favoritos[usuario.vFavoritos] = idPelicula;
         usuario.vFavoritos++;
-        printf("Pelicula agregada a favoritos. \n");
+        printf(COLOR_VERDE);
+        printf("PELICULA AGREGADA CON EXITO\n");
+        printf(COLOR_RESET);
+        system("pause");
     }
     else {
         printf("Su lista de favoritos esta llena.\n");
@@ -57,10 +61,10 @@ stUsuario quitarFavorito(stUsuario usuario, int idPelicula) {
     }
 
     if (existe == 1) {
-        usuario.vFavoritos--;
         for (int j = i; j < usuario.vFavoritos - 1; j++) {
             usuario.favoritos[j] = usuario.favoritos[j + 1];
         }
+        usuario.vFavoritos--;
     }
     else {
         printf("Esa pelicula no esta en tus favoritos.\n");
