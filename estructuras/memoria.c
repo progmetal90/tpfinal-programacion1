@@ -19,6 +19,8 @@ stMemoria inicializarMemoria(){
 
     cargarArchivosEnMemoria(&memoria);
 
+    inicializarBaseDeDatos(&memoria);
+
     return memoria;
 }
 
@@ -208,4 +210,90 @@ void guardarCambios(stMemoria * memoria){
     else{
         printf("Error guardando comentarios en disco!\n");
     }
+}
+
+void inicializarBaseDeDatos(stMemoria * memoria){
+    // Inicializar base de datos para entrega final
+    // Borrar los archivos de prueba antes de llamar a esta funcion!
+    int archivos = 0;
+
+    // UNICAMENTE cargar base de datos a memoria si no existen los archivos.
+    FILE * archiPeliculas = fopen(NOM_ARCHIVO_PELICULAS, "rb");
+    FILE * archiUsuarios = fopen(NOM_ARCHIVO_USUARIOS, "rb");
+    FILE * archiComentarios = fopen(NOM_ARCHIVO_COMENTARIOS, "rb");
+
+    if(archiPeliculas){
+        archivos++;
+    }
+    if(archiUsuarios){
+        archivos++;
+    }
+    if(archiComentarios){
+        archivos++;
+    }
+
+    if(archivos == 0){
+        // Crear estructuras
+        printf("\nNo se encontro la base de datos! Regenerando estructuras...\n");
+
+        // 150 Peliculas
+        for(int i = 0; i < 150; i++){
+            stPelicula pelicula;
+            pelicula = cargarPeliculaRandom(i);
+            agregarPelicula(memoria, pelicula);
+        }
+
+        // 100 Usuarios
+        for(int i = 0; i < 100; i++){
+            stUsuario usuario = cargarUsuarioRandom(i);
+
+            // Cargar favoritos
+            usuario.vFavoritos = rand()%20;
+
+            // Generar favoritos con ID unica dentro de las IDs disponibles en la db
+            for(int i = 0; i < usuario.vFavoritos; i++){
+                int repetido = 0;
+
+                usuario.favoritos[i] = rand()%memoria->vPeliculas;
+                for(int j = 0; j < i && repetido == 0; j++){
+                    if(usuario.favoritos[j] == usuario.favoritos[i]){
+                        // Esto tecnicamente podria llevar a un loop infinito?
+                        // Muy posiblemente hay una mejor manera de hacerlo pero el TP se entrega maniana.
+                        // Esperemos que no pase :D
+                        // En el peor de los casos, se ejecuta solo una vez al crear la db.
+                        i--;
+                        repetido = 1;
+                    }
+                }
+            }
+
+            agregarUsuario(memoria, usuario);
+        }
+
+        // Definir usuario id 0 como admin
+        memoria->usuarios[0].esAdmin = 1;
+
+        // 100 Comentarios
+        for(int i = 0; i < 100; i++){
+            stComentario comentario;
+            comentario = cargarComentarioRandom();
+            comentario.idComentario = i;
+            comentario.idPelicula = i;
+            comentario.idUsuario = rand()%memoria->vUsuarios;
+
+            agregarComentario(memoria, comentario);
+
+        }
+
+        guardarCambios(memoria);
+
+        printf("Base de datos generada con exito.\n");
+    }
+    else if (archivos < 3){
+        printf("Base de datos incompleta! Falta alguno de los archivos.\n");
+        printf("Elimine los archivos .dat y reinicie la aplicacion para ");
+        printf("regenerar la base de datos.\n");
+    }
+
+    _fcloseall();
 }

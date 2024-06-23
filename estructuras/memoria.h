@@ -6,6 +6,7 @@
 #include "comentario.h"
 #include "usuario.h"
 #include "pelicula.h"
+#include "../librerias/mock.h"
 #include "../librerias/consola.h"
 
 #define INCREMENTO_FIJO 100
@@ -41,6 +42,7 @@ void sobreescribirUsuario(stMemoria * memoria, stUsuario usuario);
 void sobreescribirComentario(stMemoria * memoria, stComentario comentario);
 int obtenerCantidadElementos(char nombreArchivo[], int dimDatos);
 void cargarArchivosEnMemoria(stMemoria * memoria);
+void inicializarBaseDeDatos(stMemoria * memoria);
 
 
 #endif // MEMORIA_H_INCLUDED

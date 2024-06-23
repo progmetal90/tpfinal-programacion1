@@ -15,7 +15,7 @@
 void cargarCalleRandom(char calle[]);
 void cargarEmailRandom(char email[]);
 void cargarFechaRandom(char * fecha);
-stUsuario cargarUsuarioRandom();
+stUsuario cargarUsuarioRandom(int id);
 stDomicilio cargarDomicilioRandom();
 void cargarCiudadRandom(char ciudad[]);
 void cargarLocalidadRandom(char localidad[]);
@@ -30,7 +30,8 @@ void cargarTituloPeliculaRandom(char tituloPelicula[]);
 void cargarDirectorRandom(char director[]);
 void cargarEstudioRandom(char estudio[]);
 void cargarCategoriaRandom(char categoria[]);
-stPelicula cargarPeliculaRandom();
+stPelicula cargarPeliculaRandom(int id);
+void cargarPasswordRandom(char password[]);
 
 
 #endif // MOCK_H_INCLUDED

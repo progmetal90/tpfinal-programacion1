@@ -9,19 +9,6 @@ int main()
     stMemoria memoria = inicializarMemoria(); // Cargo archivos a memoria
     stControlador controlador = inicializarControlador(&memoria);
 
-//    stUsuario admin = cargarUsuarioRandom();
-//    admin.esAdmin = 1;
-//    strcpy(admin.username, "administrador");
-//    strcpy(admin.email, "admin@gmail.com");
-//    strcpy(admin.password, "Abc123");
-//
-//    agregarUsuario(&memoria, admin);
-//
-//    // Provisorio: cargar 10 de cada estructura a memoria
-//    for(int i = 0; i < 50; i++){
-//        agregarPelicula(&memoria, cargarPeliculaRandom());
-//    }
-
     int memoriaValida = validarMemoria(&memoria);
 
     if(memoriaValida){
