@@ -14,6 +14,60 @@ void mostrarUsuario(stUsuario usuario){
     mostrarDomicilio(usuario.domicilio);
 }
 
+stUsuario agregarFavorito(stUsuario usuario, int idPelicula) {
+
+    int existe = 0;
+    int i = 0;
+
+    while (existe == 0 && i < usuario.vFavoritos) {
+        if (usuario.favoritos[i] == idPelicula) {
+            existe = 1;
+        }
+        i++;
+    }
+
+    if (existe == 1) {
+        printf("La pelicula ya esta en la lista de favoritos.\n");
+    }
+    else if (usuario.vFavoritos < DIM_PELISFAVORITAS) {
+        usuario.favoritos[usuario.vFavoritos] = idPelicula;
+        usuario.vFavoritos++;
+        printf("Pelicula agregada a favoritos. \n");
+    }
+    else {
+        printf("Su lista de favoritos esta llena.\n");
+    }
+
+    return usuario;
+
+}
+
+stUsuario quitarFavorito(stUsuario usuario, int idPelicula) {
+
+    int existe = 0;
+    int i = 0;
+
+    while (existe == 0 && i < usuario.vFavoritos) {
+        if (usuario.favoritos[i] == idPelicula) {
+            existe = 1;
+        }
+        else {
+            i++;
+        }
+    }
+
+    if (existe == 1) {
+        usuario.vFavoritos--;
+        for (int j = i; j < usuario.vFavoritos - 1; j++) {
+            usuario.favoritos[j] = usuario.favoritos[j + 1];
+        }
+    }
+    else {
+        printf("Esa pelicula no esta en tus favoritos.\n");
+    }
+
+    return usuario;
+}
 
 stUsuario cargarUsuario(char * mail){
     const int DIM_ANIO = 5;
@@ -260,7 +314,8 @@ stUsuario modificarUsuario(stUsuario usuario) {
 
                 }while(strlen(dni) < 7);
 
-                strcpy(dni, usuario.dni);
+                strcpy(usuario.dni , dni);
+
 
                 break;
 
@@ -382,6 +437,9 @@ stUsuario modificarUsuario(stUsuario usuario) {
         scanf("%c", &control);
 
         }while(control == 's' || control == 'S');
+
+        printf("Datos cambiados con exito.\n");
+        system("pause");
 
         return usuario;
 }

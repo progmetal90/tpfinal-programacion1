@@ -42,5 +42,8 @@ void spDarDeBajaPelicula(stMemoria * memoria);
 int existeComentarioDeUsuario(stMemoria * memoria, int idPelicula, int idUsuario);
 void recalcularValoracion(stMemoria * memoria, int idPelicula);
 void spEliminarComentario(stMemoria * memoria);
+void spAgregarFavorito(stMemoria * memoria, stUsuario * usuario);
+void spMostrarFavoritos(stMemoria * memoria, stUsuario * usuario);
+void spQuitarFavorito(stMemoria * memoria, stUsuario * usuario);
 
 #endif // CONTROLADOR_H_INCLUDED

@@ -28,6 +28,15 @@ int ejecutarSubprograma(int subprograma, stControlador * controlador){
         case SP_ELIMINAR_USUARIO:
             spEliminarUsuario(controlador->memoria);
             break;
+        case SP_AGREGAR_FAVORITOS:
+            spAgregarFavorito(controlador->memoria, controlador->usuarioLogueado);
+            break;
+        case SP_QUITAR_FAVORITOS:
+            spQuitarFavorito(controlador->memoria, controlador->usuarioLogueado);
+            break;
+        case SP_MOSTRAR_FAVORITOS:
+            spMostrarFavoritos(controlador->memoria, controlador->usuarioLogueado);
+            break;
         case SP_AGREGAR_PELICULA:
             spAgregarPelicula(controlador->memoria);
             break;
@@ -394,6 +403,17 @@ void spAgregarComentario(stMemoria * memoria, int idUsuario){
     }
 }
 
+void spMostrarFavoritos(stMemoria * memoria, stUsuario * usuario) {
+
+    stUsuario aux = *usuario;
+
+    for(int i = 0 ; i < aux.vFavoritos ; i++) {
+        printf("ID: %d - %s \n", aux.favoritos[i], memoria->peliculas[aux.favoritos[i]].titulo);
+    }
+    system("pause");
+}
+
+
 void spModificarUsuario(stMemoria * memoria, stUsuario * usuario) {
 
     stUsuario aux = *usuario;
@@ -405,8 +425,10 @@ void spModificarUsuario(stMemoria * memoria, stUsuario * usuario) {
 
 void spEliminarUsuario(stMemoria * memoria) {
 
+    char opcion = 0;
     char mail[DIM_EMAIL];
-    int existeMail;
+    char opcion2 = 0;
+    int existeMail = 0;
 
     printf("Ingrese el mail para buscar el usuario a eliminar: ");
     obtenerStringDeUsuario(mail, DIM_EMAIL);
@@ -420,25 +442,38 @@ void spEliminarUsuario(stMemoria * memoria) {
         if(aux.idUsuario == 0) {
             printf("No se puede bloquear al usuario admin (ID 0).\n");
         }
-        else{
-            printf("Desea bloquear al usuario ID %d?\n", aux.idUsuario);
-            system("pause");
+        else {
+            printf("Desea bloquear al usuario ID %d. Presione ENTER para confirmar o ESC para salir.\n", aux.idUsuario);
+            opcion2 = getch();
 
-            if (aux.eliminado == 1) {
-                printf("El usuario ya se encuentra bloqueado en el sistema.\n");
-            }
-            else {
-                aux.eliminado = 1;
-                sobreescribirUsuario(memoria, aux);
-                printf("Usuario bloqueado exitosamente. \n");
+            if (opcion2 == 13) {
+                if (aux.eliminado == 1) {
+                    printf("El usuario ya se encuentra bloqueado en el sistema.\n");
+                    printf("Si desea darlo de alta presione ENTER.\n");
+                    opcion2 = getch();
+                    if (opcion2 == 13) {
+                        aux.eliminado = 0;
+                        sobreescribirUsuario(memoria, aux);
+                        system("cls");
+                        printf("USUARIO DADO DE ALTA EXITOSAMENTE\n");
+                    }
+                } else {
+                    aux.eliminado = 1;
+                    sobreescribirUsuario(memoria, aux);
+                    printf("Usuario bloqueado exitosamente.\n");
+                }
+            } else if (opcion2 == 27) {
+                printf("Operacion cancelada.\n");
             }
         }
-    }
-    else{
-        printf("No existe el mail %s en la base de datos.\n", mail);
+
+        system("pause");
+    } else {
+        printf("El email ingresado no corresponde a ningun usuario.\n");
+        system("pause");
     }
 
-    system("pause");
+
 }
 
 void spVerUsuarios(stMemoria * memoria) {
@@ -453,6 +488,73 @@ int vUsuarios =  memoria->vUsuarios;
             system("cls");
         }
     }
+}
+
+void spAgregarFavorito(stMemoria * memoria, stUsuario * usuario) {
+
+    int idPelicula;
+    char nombrePelicula[DIM_TITULO_PELICULA];
+    char opcion = 0;
+
+    stUsuario aux = *usuario;
+
+    do{
+        system("cls");
+        printf("Ingrese el nombre de la pelicula para agregar a favoritos: ");
+        obtenerStringDeUsuario(nombrePelicula, DIM_TITULO_PELICULA);
+
+        idPelicula = existePelicula(nombrePelicula, memoria->peliculas, memoria->vPeliculas);
+
+        if(idPelicula == -1){
+            printf("La pelicula ingresada no existe. \n");
+            printf("Intente nuevamente o presione ESC para salir.\n");
+            fflush(stdin);
+            opcion = getch();
+            }
+        else{
+                aux = agregarFavorito(aux, idPelicula);
+                system("pause");
+            }
+        opcion = 27; // Salir
+
+    }while((idPelicula == -1) && opcion != 27);
+
+    *usuario = aux;
+
+}
+
+void spQuitarFavorito(stMemoria * memoria, stUsuario * usuario) {
+
+    int idPelicula;
+    char nombrePelicula[DIM_TITULO_PELICULA];
+    char opcion = 0;
+
+    stUsuario aux = *usuario;
+
+    do{
+        system("cls");
+        printf("Ingrese el nombre de la pelicula para quitar de favoritos: ");
+        obtenerStringDeUsuario(nombrePelicula, DIM_TITULO_PELICULA);
+
+        idPelicula = existePelicula(nombrePelicula, memoria->peliculas, memoria->vPeliculas);
+
+        if(idPelicula == -1){
+            printf("La pelicula ingresada no existe.\n");
+            printf("Intente nuevamente o presione ESC para salir.\n");
+            fflush(stdin);
+            opcion = getch();
+            }
+        else{
+                aux = quitarFavorito(aux, idPelicula);
+                printf("Pelicula eliminada de favoritos.\n");
+                system("pause");
+            }
+        opcion = 27; // Salir
+
+    }while((idPelicula == -1) && opcion != 27);
+
+    *usuario = aux;
+
 }
 
 void spCrearUsuario(stMemoria * memoria){

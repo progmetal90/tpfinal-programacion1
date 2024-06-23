@@ -32,5 +32,7 @@ void mostrarUsuario(stUsuario usuario);
 stUsuario cargarUsuario();
 stUsuario modificarUsuario(stUsuario usuario);
 stUsuario eliminarUsuario(char * mail);
+stUsuario agregarFavorito(stUsuario usuario, int idPelicula);
+stUsuario quitarFavorito(stUsuario usuario, int idPelicula);
 
 #endif // USUARIO_H_INCLUDED

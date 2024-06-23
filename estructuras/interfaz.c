@@ -41,9 +41,8 @@ stInterfaz inicializarInterfaz(){
                     "Ver usuarios",
                     "Eliminar usuario",
                     "Eliminar pelicula",
-                    "Submenu prueba",
                 },
-                .cantOpcionesAdmin = 4,
+                .cantOpcionesAdmin = 3,
                 .menuObjetivoUsuario = {
                     SM_BUSCAR_PELICULA,
                     SP_AGREGAR_PELICULA,
@@ -54,7 +53,6 @@ stInterfaz inicializarInterfaz(){
                     SP_VER_USUARIOS,
                     SM_BAJA_USUARIO,
                     SM_BAJA_PELICULA,
-                    SP_AGREGAR_COMENTARIO,
                 }
             },
             {
@@ -92,9 +90,9 @@ stInterfaz inicializarInterfaz(){
                 },
                 .cantOpcionesAdmin = 0,
                 .menuObjetivoUsuario = {
-                    SP_FILTRAR_POR_TITULO,
-                    SP_FILTRAR_POR_DIRECTOR,
-                    SP_FILTRAR_POR_CATEGORIA,
+                    SP_MOSTRAR_FAVORITOS,
+                    SP_AGREGAR_FAVORITOS,
+                    SP_QUITAR_FAVORITOS,
                 },
                 .menuObjetivoAdmin = {
                 }
@@ -148,15 +146,13 @@ stInterfaz inicializarInterfaz(){
                 .limpiarConsola = 1,
                 .titulo = "ADMINISTRAR USUARIO",
                 .opcionesUsuario = {
-                    "Dar de baja",
-                    "Eliminar definitivamente",
+                    "Bloquear usuario",
                 },
-                .cantOpcionesUsuario = 2,
+                .cantOpcionesUsuario = 1,
                 .opcionesAdmin = {
                 },
                 .cantOpcionesAdmin = 0,
                 .menuObjetivoUsuario = {
-                    SP_BAJA_USUARIO,
                     SP_ELIMINAR_USUARIO,
                 },
                 .menuObjetivoAdmin = {
