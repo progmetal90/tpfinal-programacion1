@@ -1012,9 +1012,15 @@ void spModificarInfoPelicula (stMemoria * memoria){
 
 void spEliminarPelicula (stMemoria * memoria) {
 
+    int i = 0;
+    int j = 0;
+    int c = 0;
+    //contadores.
     char tituloPelicula[DIM_TITULO_PELICULA];
     char control = 0;
     int idPelicula;
+    int encontrado = 0;
+    int encontrado2 = 0;
     stPelicula aux;
 
     //Se pide el dato a buscar
@@ -1046,6 +1052,29 @@ void spEliminarPelicula (stMemoria * memoria) {
             printf("Enter para eliminar o cualquier tecla para cancelar\n");
             control = getch();
             if(control == 13){
+                //Bucle para recorrer todos los usuarios y eliminar esta pelicula de favoritos
+                for(i = 0; i < memoria->vUsuarios; i++){
+                    //SubBucle para recorrer los favoritos de los usuarios y verificar si esta la id de la pelicula
+                    for(j = 0; j < memoria->usuarios[i].vFavoritos; j++){
+                        if(memoria->usuarios[i].favoritos[j] == idPelicula){
+                            //SubBucle para eliminar la id y mover todos los favoritos una posicion a la izquierda
+                            for(c = j; c < memoria->usuarios[i].vFavoritos; c++){
+                                memoria->usuarios[i].favoritos[c] = memoria->usuarios[i].favoritos[c+1];
+                            }
+                        memoria->usuarios[i].vFavoritos --;
+                        }
+                    }
+                }
+                //Mismo funcionamiento que el bucle anterior pero para eliminar los comentarios de esta pelicula
+                for(i = 0; i < memoria->vComentarios; i++){
+                    if(memoria->comentarios[i].idPelicula == idPelicula){
+                        for(c = i; c < memoria->vComentarios; c++){
+                            memoria->comentarios[c] = memoria->comentarios[c+1];
+                        }
+                    memoria->vComentarios --;
+                    }
+                }
+
                 aux.eliminado = 1;
                 sobreescribirPelicula(memoria, aux);
                 system("cls");
