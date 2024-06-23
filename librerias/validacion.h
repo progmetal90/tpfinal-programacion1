@@ -13,7 +13,7 @@
 #include <conio.h>
 #include <string.h>
 
-
+int esAlfanumerico(char caracter);
 int validarEmail(char email[]);
 int validarContrasenia(char contrasenia[]);
 int contarCaracterEnString(char string[], char caracter);

@@ -5,6 +5,11 @@ const char ARROBA = '@';
 const char PUNTO = '.';
 const char PUNTO_COM[] = ".com";
 
+int esAlfanumerico(char caracter){
+    // Chequea caracteres A-z o 0-9
+    return enRango(caracter, 48, 58) || enRango(caracter, 97, 123);
+}
+
 int validarEmail(char email[]){
     // Comprueba que el email proporcionado sea valido
     // Necesita de un solo arroba, y un solo .com.
@@ -17,28 +22,40 @@ int validarEmail(char email[]){
 
     int valido = 0;
     int puntoCom = 0;
-    // Comprobar que el mail tenga un ".com"
-    // TODO: primer caracter y caracter anterior al arroba debe ser A-z o 0-9
+    int formatoValido = 1;
+
+    char primerCaracter = emailMinuscula[0];
+    // Primer caracter y caracter anterior al arroba debe ser alfanumerico (A-z o 0-9)
+    formatoValido = esAlfanumerico(primerCaracter);
 
     char * substring = strstr(emailMinuscula, ARROBA_STRING); // Busca a partir del @.
 
-    while(substring && puntoCom <= 1){
-//        printf("substring: %s");
-//        system("pause");
-        substring = strstr(substring, PUNTO_COM);
+    if(substring && formatoValido){
+        char * anteriorAlArroba = substring - sizeof(char);
+        formatoValido = esAlfanumerico(*anteriorAlArroba);
 
-        if(substring){
-            puntoCom++;
-            // Avanzo 4 caracteres y sigo buscando punto coms.
-            substring = &substring[4];
-            if(substring[0] == 0){
-                substring = NULL;
+        while(substring && puntoCom <= 1 && formatoValido){
+            substring = strstr(substring, PUNTO_COM);
+
+            if(substring){
+                puntoCom++;
+                // Avanzo 4 caracteres y sigo buscando punto coms.
+                substring = &substring[4];
+                if(substring[0] == 0){
+                    // Fin de string
+                    substring = NULL;
+                }
+                else if(substring[0] != '.'){
+                    // Lo que sigue al .com no es valido
+                    formatoValido = 0;
+                }
             }
         }
-    }
-    /// Compara los 2 strings para que no se repitan el ".com" y el '@'
-    if(contarCaracterEnString(emailMinuscula, ARROBA) == 1 && puntoCom == 1){
-        valido = 1;
+
+        /// Compara los 2 strings para que no se repitan el ".com" y el '@'
+        if(formatoValido && contarCaracterEnString(emailMinuscula, ARROBA) == 1 && puntoCom == 1){
+            valido = 1;
+        }
     }
 
     return valido;
