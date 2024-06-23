@@ -465,7 +465,10 @@ void spEliminarUsuario(stMemoria * memoria) {
             printf(COLOR_RESET);
         }
         else {
-            printf("Desea bloquear al usuario ID %d. Presione ENTER para confirmar o ESC para salir.\n", aux.idUsuario);
+            printf(COLOR_AMARILLO);
+            printf("Desea bloquear al usuario ID %d. ", aux.idUsuario);
+            printf(COLOR_RESET);
+            printf("Presione ENTER para confirmar o ESC para salir.\n");
             opcion = getch();
 
             if (opcion == 13) {
@@ -508,18 +511,18 @@ void spEliminarUsuario(stMemoria * memoria) {
 void spVerUsuarios(stMemoria * memoria) {
 
     int vUsuarios =  memoria->vUsuarios;
+    int opcion = 1;
 
     printf(COLOR_ROJO);
     mostrarUsuario(memoria->usuarios[0]);
     printf(COLOR_RESET);
     imprimirLineaSeparadora(SEPARADOR_ESTRUCTURAS, ANCHO_DE_CONSOLA);
 
-    for(int i = 1 ; i < vUsuarios ; i++) {
+    for(int i = 1 ; i < vUsuarios && opcion > 0; i++) {
         mostrarUsuario(memoria->usuarios[i]);
         imprimirLineaSeparadora(SEPARADOR_ESTRUCTURAS, ANCHO_DE_CONSOLA);
         if ((i + 1) % 3 == 0 || i == vUsuarios - 1) {
-            system("pause");
-            system("cls");
+            opcion = separadorDeConsola();
         }
     }
 }
@@ -663,7 +666,7 @@ stUsuario * iniciarSesion(stMemoria * memoria){
         if(aux && aux->eliminado == 1) {
             printf(COLOR_ROJO);
             printf("Este usuario se encuentra bloqueado en el sistema.\n");
-            printf(COLOR_ROJO);
+            printf(COLOR_RESET);
             system("pause");
         }
         else {
