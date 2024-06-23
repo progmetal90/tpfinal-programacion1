@@ -512,36 +512,31 @@ stUsuario * iniciarSesion(stMemoria * memoria){
         idUsuario = existeEmail(email, memoria->usuarios, memoria->vUsuarios);
         aux = obtenerUsuario(memoria, idUsuario);
 
-        if(aux){
-            // Comprobar si esta bloqueado
-            if(aux->eliminado == 1) {
-                printf("Este usuario se encuentra bloqueado en el sistema.\n");
-                system("pause");
-            }
-            else {
-                // 2. Recibir contrasenia
-                printf("Ingrese su contrasenia (maximo %d caracteres): ", DIM_PASSWORD - 1);
-                obtenerStringDeUsuario(contrasenia, DIM_USERNAME);
-
-                // Comprobar que la contrasenia sea valida en formato
-                contraseniaValida = validarContrasenia(contrasenia);
-
-
-                // Si todo esto es correcto y las credenciales son correctas,
-                // buscar en arreglo de usuarios y devolver el puntero al usuario logueado.
-                if(idUsuario != -1 && contraseniaValida == 1 && strcmp(aux->password, contrasenia) == 0){
-                    usuarioLogueado = aux;
-
-                    printf("Sesion iniciada correctamente. Bienvenido, %s!\n", usuarioLogueado->username);
-                }
-                else{
-                    printf("Alguno de los datos ingresados es incorrecto! Intente nuevamente.\n");
-                }
-                system("pause");
-            }
+        // Comprobar si esta bloqueado
+        if(aux && aux->eliminado == 1) {
+            printf("Este usuario se encuentra bloqueado en el sistema.\n");
+            system("pause");
         }
-        else{
-            printf("Alguno de los datos ingresados es incorrecto! Intente nuevamente.\n");
+        else {
+            // 2. Recibir contrasenia
+            printf("Ingrese su contrasenia (maximo %d caracteres): ", DIM_PASSWORD - 1);
+            obtenerStringDeUsuario(contrasenia, DIM_USERNAME);
+
+            // Comprobar que la contrasenia sea valida en formato
+            contraseniaValida = validarContrasenia(contrasenia);
+
+
+            // Si todo esto es correcto y las credenciales son correctas,
+            // buscar en arreglo de usuarios y devolver el puntero al usuario logueado.
+            if(aux && idUsuario != -1 && contraseniaValida == 1 && strcmp(aux->password, contrasenia) == 0){
+                usuarioLogueado = aux;
+
+                printf("Sesion iniciada correctamente. Bienvenido, %s!\n", usuarioLogueado->username);
+            }
+            else{
+                printf("Alguno de los datos ingresados es incorrecto! Intente nuevamente.\n");
+            }
+            system("pause");
         }
     }
 
