@@ -23,7 +23,7 @@ void obtenerOpcion(int * opcion){
 
     obtenerStringDeUsuario(opcionString, DIM_OPCION_STRING);
 
-    if(esNumeroValido(opcionString)){
+    if(strlen(opcionString) > 0 && esNumeroValido(opcionString)){
         *opcion = atoi(opcionString);
     }
     else{
