@@ -623,7 +623,7 @@ void spFiltrarPorTitulo(stMemoria * memoria, int esAdmin){
     stPelicula aux;
     char dato[DIM_TITULO_PELICULA];
     int esIgual;
-    int encotroAlgo = 0;
+    int encontroAlgo = 0;
 
     // Pedirle al usuario el nombre a buscar
     printf("TITULO DE LA PELICULA A BUSCAR: ");
@@ -637,7 +637,7 @@ void spFiltrarPorTitulo(stMemoria * memoria, int esAdmin){
         //Si el titulo esa pelicula es igual a lo que se busca
         if(esIgual == 1){
             if(aux.eliminado == 0 || esAdmin == 1){
-                encotroAlgo = 1;
+                encontroAlgo = 1;
                 mostrarPelicula(memoria->peliculas[i]);
                 //Si es admin mostramos en que estado esta esa pelicula
                 if(esAdmin){
@@ -648,7 +648,7 @@ void spFiltrarPorTitulo(stMemoria * memoria, int esAdmin){
             }
         }
     }
-    if(!encotroAlgo){
+    if(!encontroAlgo){
         printf("%s NO SE ENCUENTRA EN EL SISTEMA\n", dato);
     }
 
