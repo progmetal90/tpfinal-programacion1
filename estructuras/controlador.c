@@ -98,29 +98,35 @@ void spEliminarComentario(stMemoria * memoria){
         comentario = obtenerComentario(memoria, idComentario);
 
         if(!comentario){
+            printf(COLOR_AMARILLO);
             printf("ID de comentario #%d invalido. ", idComentario);
+            printf(COLOR_RESET);
             printf("Intente nuevamente o presione ESC para salir.");
+            fflush(stdin);
             opcion = getch();
             system("cls");
+        }else{
+                system("cls");
+
+            mostrarComentario(*comentario);
+
+            printf("Desea eliminar el comentario? ");
+            printf("Presione ENTER para confirmar, o una tecla cualquiera para cancelar.\n");
+            fflush(stdin);
+            opcion = getch();
+            imprimirSaltosDeLinea(1);
+
+            if(opcion == 13){
+                comentario->eliminado = 1;
+                recalcularValoracion(memoria, comentario->idPelicula);
+
+                printf(COLOR_VERDE);
+                printf("\nComentario eliminado exitosamente!\n");
+                printf(COLOR_RESET);
+                system("pause");
+            }
         }
     }while(opcion != 27 && !comentario);
-
-    system("cls");
-
-    mostrarComentario(*comentario);
-
-    printf("Desea eliminar el comentario? ");
-    printf("Presione ENTER para confirmar, o una tecla cualquiera para cancelar.\n");
-    opcion = getch();
-    imprimirSaltosDeLinea(1);
-
-    if(opcion == 13){
-        comentario->eliminado = 1;
-        recalcularValoracion(memoria, comentario->idPelicula);
-
-        printf("\nComentario eliminado exitosamente!\n");
-        system("pause");
-    }
 }
 
 void recalcularValoracion(stMemoria * memoria, int idPelicula){
@@ -183,7 +189,9 @@ void spModificarComentario(stMemoria * memoria, int idUsuario){
         idPelicula = existePelicula(nombrePelicula, memoria->peliculas, memoria->vPeliculas);
 
         if(idPelicula == -1){
+            printf(COLOR_AMARILLO);
             printf("La pelicula ingresada no existe. ");
+            printf(COLOR_RESET);
             printf("Intente nuevamente o presione ESC para salir.\n\n");
             fflush(stdin);
             opcion = getch();
@@ -215,8 +223,9 @@ void spModificarComentario(stMemoria * memoria, int idUsuario){
                     if(comentarioModificado.puntaje != comentario->puntaje){
                         recalcularValoracion(memoria, idPelicula);
                     }
-
+                    printf(COLOR_VERDE);
                     printf("\nComentario modificado exitosamente!\n");
+                    printf(COLOR_RESET);
                     system("pause");
                 }
                 opcion = 27; // Salir
@@ -240,7 +249,9 @@ void spQuitarComentario(stMemoria * memoria, int idUsuario){
         idPelicula = existePelicula(nombrePelicula, memoria->peliculas, memoria->vPeliculas);
 
         if(idPelicula == -1){
+            printf(COLOR_AMARILLO);
             printf("La pelicula ingresada no existe. ");
+            printf(COLOR_RESET);
             printf("Intente nuevamente o presione ESC para salir.\n\n");
             fflush(stdin);
             opcion = getch();
@@ -252,7 +263,9 @@ void spQuitarComentario(stMemoria * memoria, int idUsuario){
             idComentario = obtenerIdComentarioDeUsuario(memoria->comentarios, memoria->vComentarios, idPelicula, idUsuario);
 
             if(idComentario == -1 || memoria->comentarios[idComentario].eliminado == 1){
+                printf(COLOR_AMARILLO);
                 printf("Usted no tiene comentarios en la pelicula '%s'.\n", aux->titulo);
+                printf(COLOR_RESET);
                 printf("Presione ESC para salir o una tecla cualquiera para intentar otra vez.\n");
                 fflush(stdin);
                 opcion = getch();
@@ -266,7 +279,9 @@ void spQuitarComentario(stMemoria * memoria, int idUsuario){
                     memoria->comentarios[idComentario].eliminado = 1;
                     recalcularValoracion(memoria, idPelicula);
 
+                    printf(COLOR_VERDE);
                     printf("\nComentario eliminado exitosamente!\n");
+                    printf(COLOR_RESET);
                     system("pause");
                 }
                 opcion = 27; // Salir
@@ -289,7 +304,9 @@ void spMostrarComentarios(stMemoria * memoria){
         idPelicula = existePelicula(nombrePelicula, memoria->peliculas, memoria->vPeliculas);
 
         if(idPelicula == -1){
+            printf(COLOR_AMARILLO);
             printf("La pelicula ingresada no existe. ");
+            printf(COLOR_RESET);
             printf("Intente nuevamente o presione ESC para salir.\n\n");
             fflush(stdin);
             opcion = getch();
@@ -362,7 +379,9 @@ void spAgregarComentario(stMemoria * memoria, int idUsuario){
         idPelicula = existePelicula(nombrePelicula, memoria->peliculas, memoria->vPeliculas);
 
         if(idPelicula == -1){
+            printf(COLOR_AMARILLO);
             printf("La pelicula ingresada no existe. ");
+            printf(COLOR_RESET);
             printf("Intente nuevamente o presione ESC para salir.");
             fflush(stdin);
             opcion = getch();
@@ -398,7 +417,9 @@ void spAgregarComentario(stMemoria * memoria, int idUsuario){
         agregarComentario(memoria, comentario);
         recalcularValoracion(memoria, idPelicula);
 
+        printf(COLOR_VERDE);
         printf("Comentario cargado con exito!\n");
+        printf(COLOR_RESET);
         system("pause");
     }
 }
@@ -440,7 +461,9 @@ void spEliminarUsuario(stMemoria * memoria) {
         stUsuario aux = memoria->usuarios[existeMail];
 
         if(aux.idUsuario == 0) {
-            printf("No se puede bloquear al usuario admin (ID 0).\n");
+            printf(COLOR_ROJO);
+            printf("NO SE PUEDE BLOQUEAR AL USUARIO ADMIN (ID 0).\n");
+            printf(COLOR_RESET);
         }
         else {
             printf("Desea bloquear al usuario ID %d. Presione ENTER para confirmar o ESC para salir.\n", aux.idUsuario);
@@ -448,19 +471,25 @@ void spEliminarUsuario(stMemoria * memoria) {
 
             if (opcion2 == 13) {
                 if (aux.eliminado == 1) {
+                    printf(COLOR_AMARILLO);
                     printf("El usuario ya se encuentra bloqueado en el sistema.\n");
+                    printf(COLOR_RESET);
                     printf("Si desea darlo de alta presione ENTER.\n");
                     opcion2 = getch();
                     if (opcion2 == 13) {
                         aux.eliminado = 0;
                         sobreescribirUsuario(memoria, aux);
                         system("cls");
+                        printf(COLOR_VERDE);
                         printf("USUARIO DADO DE ALTA EXITOSAMENTE\n");
+                        printf(COLOR_RESET);
                     }
                 } else {
                     aux.eliminado = 1;
                     sobreescribirUsuario(memoria, aux);
-                    printf("Usuario bloqueado exitosamente.\n");
+                    printf(COLOR_VERDE);
+                    printf("USUARIO BLOQUEADO EXITOSAMENTE.\n");
+                    printf(COLOR_RESET);
                 }
             } else if (opcion2 == 27) {
                 printf("Operacion cancelada.\n");
@@ -469,7 +498,9 @@ void spEliminarUsuario(stMemoria * memoria) {
 
         system("pause");
     } else {
+        printf(COLOR_AMARILLO);
         printf("El email ingresado no corresponde a ningun usuario.\n");
+        printf(COLOR_RESET);
         system("pause");
     }
 
@@ -478,9 +509,14 @@ void spEliminarUsuario(stMemoria * memoria) {
 
 void spVerUsuarios(stMemoria * memoria) {
 
-int vUsuarios =  memoria->vUsuarios;
+    int vUsuarios =  memoria->vUsuarios;
 
-    for(int i = 0 ; i < vUsuarios ; i++) {
+    printf(COLOR_ROJO);
+    mostrarUsuario(memoria->usuarios[0]);
+    printf(COLOR_RESET);
+    imprimirLineaSeparadora(SEPARADOR_ESTRUCTURAS, ANCHO_DE_CONSOLA);
+
+    for(int i = 1 ; i < vUsuarios ; i++) {
         mostrarUsuario(memoria->usuarios[i]);
         imprimirLineaSeparadora(SEPARADOR_ESTRUCTURAS, ANCHO_DE_CONSOLA);
         if ((i + 1) % 3 == 0 || i == vUsuarios - 1) {
@@ -506,13 +542,18 @@ void spAgregarFavorito(stMemoria * memoria, stUsuario * usuario) {
         idPelicula = existePelicula(nombrePelicula, memoria->peliculas, memoria->vPeliculas);
 
         if(idPelicula == -1){
+            printf(COLOR_AMARILLO);
             printf("La pelicula ingresada no existe. \n");
+            printf(COLOR_RESET);
             printf("Intente nuevamente o presione ESC para salir.\n");
             fflush(stdin);
             opcion = getch();
             }
         else{
                 aux = agregarFavorito(aux, idPelicula);
+                printf(COLOR_VERDE);
+                printf("PELICULA AGREGADA CON EXITO");
+                printf(COLOR_RESET);
                 system("pause");
             }
         opcion = 27; // Salir
@@ -539,14 +580,18 @@ void spQuitarFavorito(stMemoria * memoria, stUsuario * usuario) {
         idPelicula = existePelicula(nombrePelicula, memoria->peliculas, memoria->vPeliculas);
 
         if(idPelicula == -1){
+            printf(COLOR_AMARILLO);
             printf("La pelicula ingresada no existe.\n");
+            printf(COLOR_RESET);
             printf("Intente nuevamente o presione ESC para salir.\n");
             fflush(stdin);
             opcion = getch();
             }
         else{
                 aux = quitarFavorito(aux, idPelicula);
-                printf("Pelicula eliminada de favoritos.\n");
+                printf(COLOR_VERDE);
+                printf("PELICULA ELIMINADA CON EXITO.\n");
+                printf(COLOR_RESET);
                 system("pause");
             }
         opcion = 27; // Salir
@@ -569,7 +614,9 @@ void spCrearUsuario(stMemoria * memoria){
         emailValido = validarEmail(mail);
 
         while(emailValido == 0){
+            printf(COLOR_AMARILLO);
             printf("\nEl email ingresado es invalido! Intente nuevamente:\n");
+            printf(COLOR_RESET);
             obtenerStringDeUsuario(mail, DIM_EMAIL);
             emailValido = validarEmail(mail);
         }
@@ -577,7 +624,9 @@ void spCrearUsuario(stMemoria * memoria){
         existe = existeEmail(mail, memoria->usuarios, memoria->vUsuarios);
 
         if(existe != -1) {
+            printf(COLOR_AMARILLO);
             printf("Ya existe un usuario registrado con ese correo. \n");
+            printf(COLOR_RESET);
         }
 
     }while(existe != -1); // No existe mail en la db
@@ -607,7 +656,9 @@ stUsuario * iniciarSesion(stMemoria * memoria){
 
     // Comprobar si el mail existe
     if(emailValido == 0){
+        printf(COLOR_AMARILLO);
         printf("El email ingresado es invalido! Intente nuevamente.\n");
+        printf(COLOR_RESET);
         system("pause");
     }
     else{
@@ -616,7 +667,9 @@ stUsuario * iniciarSesion(stMemoria * memoria){
 
         // Comprobar si esta bloqueado
         if(aux && aux->eliminado == 1) {
+            printf(COLOR_ROJO);
             printf("Este usuario se encuentra bloqueado en el sistema.\n");
+            printf(COLOR_ROJO);
             system("pause");
         }
         else {
@@ -633,10 +686,14 @@ stUsuario * iniciarSesion(stMemoria * memoria){
             if(aux && idUsuario != -1 && contraseniaValida == 1 && strcmp(aux->password, contrasenia) == 0){
                 usuarioLogueado = aux;
 
+                printf(COLOR_CYAN);
                 printf("Sesion iniciada correctamente. Bienvenido, %s!\n", usuarioLogueado->username);
+                printf(COLOR_RESET);
             }
             else{
+                printf(COLOR_AMARILLO);
                 printf("Alguno de los datos ingresados es incorrecto! Intente nuevamente.\n");
+                printf(COLOR_RESET);
             }
             system("pause");
         }
@@ -696,7 +753,9 @@ void spAgregarPelicula(stMemoria * memoria){
 
         //Si existe se pregunta si quiere salir o seguir cargando
         if(esIgual == 1){
-            printf("EL TITULO INGRESADO YA EXISTE\n");
+            printf(COLOR_AMARILLO);
+            printf("El titulo ingresado ya existe\n");
+            printf(COLOR_RESET);
             printf("para salir presione esc");
             fflush(stdin);
             control = getch();
@@ -708,7 +767,9 @@ void spAgregarPelicula(stMemoria * memoria){
 
             agregarPelicula(memoria, pelicula);
 
+            printf(COLOR_VERDE);
             printf("PELICULA CARGADA CON EXITO!\n");
+            printf(COLOR_RESET);
 
             system("pause");
         }
@@ -744,10 +805,12 @@ void spFiltrarPorTitulo(stMemoria * memoria, int esAdmin){
                         mostrarPelicula(memoria->peliculas[i]);
                         //Si es admin mostramos en que estado esta esa pelicula
                         if(esAdmin){
+                            printf(COLOR_ROJO);
                             printf("ELIMINADO: %d\n", aux.eliminado);
+                            printf(COLOR_RESET);
                         }
                         imprimirSaltosDeLinea(1);
-                        imprimirLineaSeparadora('-', ANCHO_DE_CONSOLA);
+                        imprimirLineaSeparadora(SEPARADOR_ESTRUCTURAS, ANCHO_DE_CONSOLA);
                         if(encontroAlgo % 3 == 0){
                             opcion = separadorDeConsola();
                         }
@@ -764,7 +827,9 @@ void spFiltrarPorTitulo(stMemoria * memoria, int esAdmin){
     }while(strlen(dato) <= 2);
 
     if(!encontroAlgo && strlen(dato) > 2){
+        printf(COLOR_AMARILLO);
         printf("%s NO SE ENCUENTRA EN EL SISTEMA\n", dato);
+        printf(COLOR_RESET);
     }
 
     system("pause");
@@ -800,7 +865,9 @@ void spFiltrarPorDirector(stMemoria * memoria, int esAdmin){
                         mostrarPelicula(memoria->peliculas[i]);
                         //Si es admin mostramos en que estado esta esa pelicula
                         if(esAdmin){
+                            printf(COLOR_ROJO);
                             printf("ELIMINADO: %d\n", aux.eliminado);
+                            printf(COLOR_RESET);
                         }
                         imprimirSaltosDeLinea(1);
                         imprimirLineaSeparadora('-', ANCHO_DE_CONSOLA);
@@ -821,7 +888,9 @@ void spFiltrarPorDirector(stMemoria * memoria, int esAdmin){
     }while(strlen(dato) <= 2);
 
     if(!encontroAlgo && strlen(dato) > 2){
+        printf(COLOR_AMARILLO);
         printf("%s NO SE ENCUENTRA EN EL SISTEMA\n", dato);
+        printf(COLOR_RESET);
     }
 
     system("pause");
@@ -856,7 +925,9 @@ void spFiltrarPorCategoria(stMemoria * memoria, int esAdmin){
                         mostrarPelicula(memoria->peliculas[i]);
                         //Si es admin mostramos en que estado esta esa pelicula
                         if(esAdmin){
+                            printf(COLOR_ROJO);
                             printf("ELIMINADO: %d\n", aux.eliminado);
+                            printf(COLOR_RESET);
                         }
                         imprimirSaltosDeLinea(1);
                         imprimirLineaSeparadora('=', ANCHO_DE_CONSOLA);
@@ -876,7 +947,9 @@ void spFiltrarPorCategoria(stMemoria * memoria, int esAdmin){
     }while(strlen(dato) <= 2);
 
     if(!encontroAlgo && strlen(dato) > 2){
+        printf(COLOR_AMARILLO);
         printf("%s NO SE ENCUENTRA EN EL SISTEMA\n", dato);
+        printf(COLOR_RESET);
     }
 
     system("pause");
@@ -906,7 +979,10 @@ void spModificarInfoPelicula (stMemoria * memoria){
         pelicula = memoria->peliculas[i];
         //Si esta eliminada aca termina la funcion
         if(pelicula.eliminado == 1 || pelicula.eliminado == 2){
+            printf(COLOR_RESET);
             printf("%s Se encuentra eliminada del sistema", pelicula.titulo);
+            printf(COLOR_AMARILLO);
+
             imprimirSaltosDeLinea(2);
             system("pause");
             system("cls");
@@ -916,7 +992,9 @@ void spModificarInfoPelicula (stMemoria * memoria){
 
             sobreescribirPelicula(memoria, pelicula);
 
+            printf(COLOR_VERDE);
             printf("\nSE MODIFICO CON EXITO!\n");
+            printf(COLOR_RESET);
 
             //Se muestra despues de modificaciones
             imprimirLineaSeparadora('-', ANCHO_DE_CONSOLA);
@@ -927,7 +1005,9 @@ void spModificarInfoPelicula (stMemoria * memoria){
         }
     }else{
         //Si no existe se devuelve al menu anterior
-        printf("EL TITULO INGRESADO NO EXISTE\n");
+        printf(COLOR_AMARILLO);
+        printf("El titulo ingresado no existe\n");
+        printf(COLOR_RESET);
         system("pause");
         system("cls");
     }
@@ -963,7 +1043,9 @@ void spEliminarPelicula (stMemoria * memoria) {
             imprimirSaltosDeLinea(2);
 
             //Se confirma que se quiera eliminar
+            printf(COLOR_ROJO);
             printf("SI SE ELIMINA DEL SISTEMA NO SE PODRA RECUPERAR\n");
+            printf(COLOR_RESET);
             printf("Enter para eliminar o cualquier tecla para cancelar\n");
             control = getch();
             if(control == 13){
@@ -999,17 +1081,23 @@ void spDarDeBajaPelicula (stMemoria * memoria) {
 
         if(aux.eliminado == 1){
             //Si se encuentra eliminada aca termina la funcion
+            printf(COLOR_AMARILLO);
             printf("%s ya se encuentra eliminada del sistema.\n", aux.titulo);
+            printf(COLOR_RESET);
         }else if (aux.eliminado == 2){
             //Si ya esta dada de baja se pregunta si se quiere dar de alta
+            printf(COLOR_AMARILLO);
             printf("%s ya se encuentra dada de baja del sistema.\n", aux.titulo);
+            printf(COLOR_RESET);
             printf("Si desea darla de alta presione enter\n");
             control2 = getch();
             if(control2 == 13){
                 aux.eliminado = 0;
                 sobreescribirPelicula(memoria, aux);
                 system("cls");
+                printf(COLOR_VERDE);
                 printf("\nPELICULA DADA DE ALTA EXITOSAMENTE\n");
+                printf(COLOR_RESET);
             }
         }
         else {
@@ -1026,7 +1114,9 @@ void spDarDeBajaPelicula (stMemoria * memoria) {
                 aux.eliminado = 2;
                 sobreescribirPelicula(memoria, aux);
                 system("cls");
+                printf(COLOR_VERDE);
                 printf("\nPELICULA DADA DE BAJA EXITOSAMENTE\n");
+                printf(COLOR_RESET);
             }
         }
     }
