@@ -45,5 +45,6 @@ void spEliminarComentario(stMemoria * memoria);
 void spAgregarFavorito(stMemoria * memoria, stUsuario * usuario);
 void spMostrarFavoritos(stMemoria * memoria, stUsuario * usuario);
 void spQuitarFavorito(stMemoria * memoria, stUsuario * usuario);
+void eliminarFavoritosPelicula (stMemoria * memoria, int idPelicula);
 
 #endif // CONTROLADOR_H_INCLUDED
