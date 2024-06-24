@@ -955,7 +955,7 @@ void spFiltrarPorCategoria(stMemoria * memoria, int esAdmin){
 void spModificarInfoPelicula (stMemoria * memoria){
 
     char tituloPelicula[DIM_TITULO_PELICULA];
-    int existe;
+    int existe = 0;
     int i = 0;
     stPelicula pelicula;
 
