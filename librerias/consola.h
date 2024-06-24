@@ -1,7 +1,9 @@
 #ifndef CONSOLA_H_INCLUDED
 #define CONSOLA_H_INCLUDED
 
+#include <stdlib.h>
 #include <stdio.h>
+#include <conio.h>
 
 #define COLOR_ROJO "\x1b[31m"
 #define COLOR_VERDE "\x1b[32m"
